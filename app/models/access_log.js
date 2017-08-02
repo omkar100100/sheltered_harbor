@@ -2,7 +2,7 @@
 var Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   var AccessLog = sequelize.define("AccessLog", {
-    id: {
+      id: {
           type: Sequelize.INTEGER,
           primaryKey: true,
           autoIncrement: true,
@@ -29,8 +29,8 @@ module.exports = function(sequelize, DataTypes) {
             key: 'id'
           }
         }
-      })
-  });
+    })
+
   
   // AccessLog.associate = function(models) {
   //   AccessLog.belongsTo(models.User, {

@@ -37,9 +37,6 @@ module.exports = function(sequelize, DataTypes) {
         }
       });
 
- UserInstitute.associate = function(models) {
-    User.hasMany(models.AccessLog);
- }
-  
+
   return UserInstitute;
 };

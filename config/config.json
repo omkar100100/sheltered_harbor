@@ -1,0 +1,19 @@
+{
+  "production": {
+    "dialect": "sqlite",
+    "storage": "./db.development.sqlite"
+  },
+  "test": {
+    "dialect": "sqlite",
+    "storage": ":memory:"
+  },
+  "development": {
+   "host": "localhost",
+    "port": 5432,
+    "database": "sheltered_harbor",
+    "schema": "development",
+    "username": "postgres",
+    "password": "admin123",
+    "dialect": "postgres"
+  }
+}

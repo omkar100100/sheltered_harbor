@@ -1,0 +1,22 @@
+{
+
+"app": {
+    "port": 8001,
+    "maxCPUs": 1
+  },
+  "dialect" : "postgres",
+  "postgres": {
+    "host": "localhost",
+    "port": 5432,
+    "database": "sheltered_harbor",
+    "schema": "development",
+    "username": "postgres",
+    "password": "admin123",
+    "dialect": "postgres",
+    "pool": {
+      "max": 5,
+      "min": 0,
+      "idle": 10000
+    }
+  }
+}

@@ -2,33 +2,29 @@
 var Sequelize = require('sequelize');
 
 module.exports = function(sequelize, DataTypes) {
-  var User = sequelize.define("User", {
-        id: {
+  var UserInstitute = sequelize.define("UserInstitute", {
+         id: {
           type: Sequelize.INTEGER,
           primaryKey: true,
           autoIncrement: true,
           allowNull: false
         },
-        FirstName: Sequelize.STRING,
-        LastName: Sequelize.STRING,
-        Email: Sequelize.STRING,
-        Mobile: Sequelize.STRING,
-        RoleId: {
+        UserId :{
           type: Sequelize.INTEGER,
           allowNull: false,
           references: {
-            model: 'Role',
+            model: 'Users',
             key: 'id'
           }
         },
-        Username: Sequelize.STRING,
-        Password: Sequelize.STRING,
-        IsActive:{
-          type: Sequelize.BOOLEAN,
-          allowNull: false, 
-          defaultValue: true
+        InstituteId :{
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'Institute',
+            key: 'id'
+          }
         },
-        Token: Sequelize.STRING,
         createdAt: {
           type: Sequelize.DATE,
           allowNull: false,
@@ -39,11 +35,11 @@ module.exports = function(sequelize, DataTypes) {
           allowNull: false,
           defaultValue: Sequelize.NOW
         }
-    })
+      });
 
- User.associate = function(models) {
+ UserInstitute.associate = function(models) {
     User.hasMany(models.AccessLog);
  }
   
-  return User;
+  return UserInstitute;
 };

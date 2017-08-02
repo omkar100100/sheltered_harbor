@@ -1,8 +1,9 @@
 "use strict";
-var Sequelize = require('sequelize');
 
-module.exports = function(sequelize, DataTypes) {
-  var User = sequelize.define("User", {
+module.exports = {
+  up: function (queryInterface, Sequelize) {
+    return queryInterface
+      .createTable('Users', {
         id: {
           type: Sequelize.INTEGER,
           primaryKey: true,
@@ -39,11 +40,11 @@ module.exports = function(sequelize, DataTypes) {
           allowNull: false,
           defaultValue: Sequelize.NOW
         }
-    })
+      })
+  },
 
- User.associate = function(models) {
-    User.hasMany(models.AccessLog);
- }
-  
-  return User;
+ down: function (queryInterface, Sequelize) {
+    return queryInterface
+      .dropTable('Users');
+  }
 };

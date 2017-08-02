@@ -31,7 +31,7 @@ module.exports = {
             key: 'id'
           }
         }
-      });
+      })
   },
 
   down: function (queryInterface, Sequelize) {

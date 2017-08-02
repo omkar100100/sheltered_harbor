@@ -3,26 +3,29 @@
 module.exports = {
   up: function (queryInterface, Sequelize) {
     return queryInterface
-      .createTable('Users', {
-        id: {
+      .createTable('UserInstitute', {
+       id: {
           type: Sequelize.INTEGER,
           primaryKey: true,
           autoIncrement: true,
           allowNull: false
         },
-        FirstName: Sequelize.STRING,
-        LastName: Sequelize.STRING,
-        Email: Sequelize.STRING,
-        Mobile: Sequelize.STRING,
-        RoleId: Sequelize.INTEGER,
-        Username: Sequelize.STRING,
-        Password: Sequelize.STRING,
-        IsActive:{
-          type: Sequelize.BOOLEAN,
-          allowNull: false, 
-          defaultValue: true
+        UserId :{
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'Users',
+            key: 'id'
+          }
         },
-        Token: Sequelize.STRING,
+        InstituteId :{
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'Institute',
+            key: 'id'
+          }
+        },
         createdAt: {
           type: Sequelize.DATE,
           allowNull: false,
@@ -33,11 +36,11 @@ module.exports = {
           allowNull: false,
           defaultValue: Sequelize.NOW
         }
-      })
+      });
   },
 
- down: function (queryInterface, Sequelize) {
+  down: function (queryInterface, Sequelize) {
     return queryInterface
-      .dropTable('Users');
+      .dropTable('UserInstitute');
   }
 };

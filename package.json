@@ -1,9 +1,11 @@
 {
-  "name": "node-postgres-promises",
-  "version": "0.0.0",
+  "name": "sheltered_harbor",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "pretest": "jshint .",
+    "start": "node app",
+    "test": "mocha test/*test.js"
   },
   "dependencies": {
     "bluebird": "^3.4.7",

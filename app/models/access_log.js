@@ -29,18 +29,17 @@ module.exports = function(sequelize, DataTypes) {
             key: 'id'
           }
         }
+      })
   });
   
-  AccessLog.associate = function(models) {
-    // Using additional options like CASCADE etc for demonstration
-    // Can also simply do Task.belongsTo(models.User);
-    AccessLog.belongsTo(models.User, {
-      onDelete: "CASCADE",
-      foreignKey: {
-        allowNull: false
-      }
-    });
-  }
+  // AccessLog.associate = function(models) {
+  //   AccessLog.belongsTo(models.User, {
+  //     onDelete: "CASCADE",
+  //     foreignKey: {
+  //       allowNull: false
+  //     }
+  //   });
+  // }
   
   return AccessLog;
 };

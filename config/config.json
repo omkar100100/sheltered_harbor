@@ -8,12 +8,12 @@
     "storage": ":memory:"
   },
   "development": {
-   "host": "localhost",
+   "host": "10.10.10.4",
     "port": 5432,
-    "database": "sheltered_harbor5",
-    "schema": "development",
+    "database": "sheltered_harbor",
+    //"schema": "development",
     "username": "postgres",
-    "password": "admin123",
+    "password": "",
     "dialect": "postgres"
   }
 }

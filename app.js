@@ -11,14 +11,9 @@ var pug = require('pug');
 var routes = require('./routes/index');
 var config=require('./config');
 var helmet=require('helmet');
-var Web3 = require('web3');
-var solc = require('solc');
 var fs=require('fs');
-var Wallet = require("ethers-wallet");
-var Tx = require('ethereumjs-tx');
 var Sequelize = require('sequelize');
 const acl =  require('express-acl');
-
 var routes = require('./routes');
 var users  = require('./routes/users');
 
@@ -32,7 +27,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(logger('dev'));   
 
-//routes(app, express);
 app.use('/', routes);
 app.use('/user', users);
 
@@ -61,7 +55,7 @@ app.use(function(err, req, res, next) {
     res.status(err.status || 500)
   .json({
     status: 'error',
-    message: err.message
+    message: err
   });
 });
 

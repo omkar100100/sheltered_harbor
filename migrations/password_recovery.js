@@ -3,7 +3,7 @@
 module.exports = {
   up: function (queryInterface, Sequelize) {
     return queryInterface
-      .createTable('PasswordRecovery', {
+      .createTable('PasswordRecoverys', {
         id: {
           type: Sequelize.INTEGER,
           primaryKey: true,
@@ -37,6 +37,6 @@ module.exports = {
 
   down: function (queryInterface, Sequelize) {
     return queryInterface
-      .dropTable('PasswordRecovery');
+      .dropTable('PasswordRecoverys');
   }
 };

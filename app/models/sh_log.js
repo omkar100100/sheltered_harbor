@@ -10,7 +10,10 @@ module.exports = function(sequelize, DataTypes) {
           allowNull: false
         },
         TxHash : Sequelize.STRING,
-        Filename: Sequelize.STRING,
+        Filename: { 
+          type:Sequelize.STRING
+        },
+
         Tag: Sequelize.STRING,
         AdditionalData: Sequelize.STRING,
         UploadTimestamp: Sequelize.DATE,
@@ -42,6 +45,12 @@ module.exports = function(sequelize, DataTypes) {
           allowNull: false,
           defaultValue: Sequelize.NOW
         }
+  }, {
+      getterMethods: {
+          fullName: function(){
+            return "hello"
+          }
+      }
   })
 
  SHLog.associate = function(models) {

@@ -3,7 +3,7 @@
 module.exports = {
   up: function (queryInterface, Sequelize) {
     return queryInterface
-      .createTable('SHLog', {
+      .createTable('SHLogs', {
         id: {
           type: Sequelize.INTEGER,
           primaryKey: true,
@@ -21,7 +21,7 @@ module.exports = {
           type: Sequelize.INTEGER,
           allowNull: false,
           references: {
-            model: 'Institute',
+            model: 'Institutes',
             key: 'id'
           }
         },
@@ -29,7 +29,7 @@ module.exports = {
           type: Sequelize.INTEGER,
           allowNull: false,
           references: {
-            model: 'Institute',
+            model: 'Institutes',
             key: 'id'
           }
         },

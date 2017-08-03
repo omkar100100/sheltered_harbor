@@ -2,7 +2,7 @@
 var Sequelize = require('sequelize');
 
 module.exports = function(sequelize, DataTypes) {
-  var Institute = sequelize.define("Institute", {
+      var Institute = sequelize.define("Institute", {
          id: {
           type: Sequelize.INTEGER,
           primaryKey: true,
@@ -52,8 +52,12 @@ module.exports = function(sequelize, DataTypes) {
           allowNull: false,
           defaultValue: Sequelize.NOW
         }
-      });
+  })
+ 
 
-  
+
+  Institute.associate = function(models){
+    Institute.hasMany(models.SHLog);
+  }
   return Institute;
 };

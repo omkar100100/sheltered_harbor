@@ -1,3 +1,5 @@
+//(function(){
+
 var express = require('express');
 var http = require('http');
 var path = require('path');
@@ -15,25 +17,30 @@ var fs=require('fs');
 var Wallet = require("ethers-wallet");
 var Tx = require('ethereumjs-tx');
 var Sequelize = require('sequelize');
+const acl =  require('express-acl');
 
-var routes = require('./routes/index');
+var routes = require('./routes');
 var users  = require('./routes/users');
 
-//import {API} from 'ethereum/etherscan';
+
 
 var currentConfig=config.getCurrentConfig();
 console.log(currentConfig.app.port);
 
 var app = express();
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(logger('dev'));   
+
+//routes(app, express);
+app.use('/', routes);
+app.use('/user', users);
+
 http.createServer(app).listen("8001",function(){
     console.log("Express Server Started");
 });
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(logger('dev'));   
-app.use('/', routes);
-app.use('/user', users);
+//app.use('/user', users);
 
 
 // development error handler
@@ -83,3 +90,6 @@ app.use(function(err, req, res, next) {
 
 
 module.exports = app;
+
+
+//})();

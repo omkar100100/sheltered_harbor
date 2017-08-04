@@ -1,5 +1,5 @@
 var models  = require('../app/models');
-var instituteController = require('../app/controllers/InstituteController');
+var instituteController = require('../app/controllers/instituteController');
 var express = require('express');
 
 router=express.Router();

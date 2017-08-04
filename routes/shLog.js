@@ -1,5 +1,5 @@
 var models  = require('../app/models');
-var shLogController = require('../app/controllers/sHLogController');
+var shLogController = require('../app/controllers/shLogController');
 var express = require('express');
 
 router=express.Router();

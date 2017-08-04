@@ -10,9 +10,10 @@
   "development": {
    "host": "10.10.10.4",
     "port": 5432,
-    "database": "test_schema",
+    "database": "postgres",
      "username": "postgres",
     "password": "",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "schema":"sh"
   }
 }

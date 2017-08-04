@@ -45,12 +45,9 @@ module.exports = function(sequelize, DataTypes) {
           allowNull: false,
           defaultValue: Sequelize.NOW
         }
-  }, {
-      getterMethods: {
-          fullName: function(){
-            return "hello"
-          }
-      }
+  },{
+    freezeTableName: true,
+    tableName: 'SHLog'
   })
 
  SHLog.associate = function(models) {

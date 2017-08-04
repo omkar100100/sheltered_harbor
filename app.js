@@ -1,4 +1,4 @@
-//(function(){
+
 
 var express = require('express');
 var http = require('http');
@@ -13,9 +13,14 @@ var config=require('./config');
 var helmet=require('helmet');
 var fs=require('fs');
 var Sequelize = require('sequelize');
-const acl =  require('express-acl');
-var routes = require('./routes');
+
+var models  = require('./app/models');
+// var routes = require('./routes');
 var users  = require('./routes/users');
+var roles=require('./routes/roles');
+var nodes=require('./routes/quorumNode');
+var institute=require('./routes/institute');
+var shLog=require('./routes/shLog');
 
 
 
@@ -27,30 +32,42 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(logger('dev'));   
 
-app.use('/', routes);
-app.use('/user', users);
+
+app.use('/role',roles);
+app.use('/user',users);
+app.use('/node',nodes);
+app.use('/institute',institute);
+app.use('/shLog',shLog);
 
 http.createServer(app).listen("8001",function(){
     console.log("Express Server Started");
 });
 
-//app.use('/user', users);
+models.Role.sync().then(function(){
+   models.User.sync().then(function(){
+      models.AccessLog.sync().then(function(){
+        models.IdType.sync().then(function(){
+          models.QuorumNode.sync().then(function(){
+              models.Institute.sync().then(function(){
+                models.PasswordRecovery.sync().then(function(){
+                  models.SHLog.sync().then(function(){
+                      models.ServiceProviderMapping.sync().then(function(){
+                          models.UserInstitute.sync().then(function(){
+                            // models.ContractHistory.sync.then(function(){
+                              
+                            // })
+                          })
+                      })
+                  })
+                })
+              })
+          })
+        })     
+      })  
+   })
+});
 
 
-// development error handler
-// will print stacktrace
-// if (app.get('env') === 'development') {
-//   app.use(function(err, req, res, next) {
-//     res.status( err.code || 500 )
-//     .json({
-//       status: 'error',
-//       message: err
-//     });
-//   });
-// }
-
-// production error handler
-// no stacktraces leaked to user
 app.use(function(err, req, res, next) {
     res.status(err.status || 500)
   .json({
@@ -59,31 +76,7 @@ app.use(function(err, req, res, next) {
   });
 });
 
-// app.use(helmet.csp({
-//   defaultSrc: ["'self'"],
-//   scriptSrc: ['*.google-analytics.com'],
-//   styleSrc: ["'unsafe-inline'"],
-//   imgSrc: ['*.google-analytics.com'],
-//   connectSrc: ["'none'"],
-//   fontSrc: [],
-//   objectSrc: [],
-//   mediaSrc: [],
-//   frameSrc: []
-// }));
-
-
-//app.use(helmet.xssFilter());
-
-// app.use(helmet.hsts({
-//   maxAge: 7776000000,
-//   includeSubdomains: true
-// }));
-
-/////////////////////////////////////////////////////////////////////////////////////////////
-
-
 
 module.exports = app;
 
 
-//})();

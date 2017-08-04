@@ -13,27 +13,33 @@ module.exports = function(sequelize, DataTypes) {
         Address: Sequelize.STRING,
         PhoneNumber: Sequelize.STRING,
         ContractState: Sequelize.STRING,
-        ContractFrom: Sequelize.INTEGER,
-        ContractTo: Sequelize.STRING,
+        ContractFrom:{ 
+          type: Sequelize.DATE ,
+          defaultValue: Sequelize.NOW
+        },
+        ContractTo: { 
+          type: Sequelize.DATE ,
+          allowNull: true
+        },
         ContactName: Sequelize.STRING,
         ContactEmail: Sequelize.STRING,
         ContactPhone: Sequelize.STRING,
         Type: Sequelize.STRING,
         UniqueId: Sequelize.STRING,
-        ServiceProviderId :{
-          type: Sequelize.INTEGER,
-          allowNull: false,
-          references: {
-            model: 'Institute',
-            key: 'id'
-          }
-        },
+        // ServiceProviderId :{
+        //   type: Sequelize.INTEGER,
+        //   allowNull: false,
+        //   references: {
+        //     model: 'Institute',
+        //     key: 'id'
+        //   }
+        // },
         IdType :Sequelize.STRING,
         NodeId: {
           type: Sequelize.INTEGER,
           allowNull: false,
           references: {
-            model: 'Node',
+            model: 'QuorumNode',
             key: 'id'
           }
         },
@@ -52,6 +58,9 @@ module.exports = function(sequelize, DataTypes) {
           allowNull: false,
           defaultValue: Sequelize.NOW
         }
+  },{
+    freezeTableName: true,
+    tableName: 'Institute'
   })
  
 

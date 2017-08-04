@@ -23,7 +23,10 @@ module.exports = function(sequelize, DataTypes) {
           allowNull: false,
           defaultValue: Sequelize.NOW
         }
-    });
+    },{
+    freezeTableName: true,
+    tableName: 'QuorumNode'
+  });
 
   
   return QuorumNode;

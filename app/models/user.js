@@ -17,7 +17,7 @@ module.exports = function(sequelize, DataTypes) {
           type: Sequelize.INTEGER,
           allowNull: false,
           references: {
-            model: 'Role',
+            model: 'Roles',
             key: 'id'
           }
         },
@@ -39,6 +39,9 @@ module.exports = function(sequelize, DataTypes) {
           allowNull: false,
           defaultValue: Sequelize.NOW
         }
+    },{
+      freezeTableName: true,
+      tableName: 'Users'
     })
 
  User.associate = function(models) {

@@ -30,6 +30,9 @@ module.exports = function(sequelize, DataTypes) {
           defaultValue: Sequelize.NOW
         }
     
+    },{
+      freezeTableName: true,
+      tableName: 'PasswordRecovery'
     });
   
    return PasswordRecovery;

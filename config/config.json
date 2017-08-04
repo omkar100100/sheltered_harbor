@@ -10,7 +10,7 @@
   "development": {
    "host": "10.10.10.4",
     "port": 5432,
-    "database": "sheltered_harbor",
+    "database": "test_schema",
      "username": "postgres",
     "password": "",
     "dialect": "postgres"

@@ -29,7 +29,10 @@ module.exports = function(sequelize, DataTypes) {
             key: 'id'
           }
         }
-    })
+    }, {
+    freezeTableName: true,
+    tableName: 'AccessLog'
+  })
 
   
   // AccessLog.associate = function(models) {

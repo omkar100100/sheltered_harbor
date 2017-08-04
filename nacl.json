@@ -9,4 +9,19 @@
     ],
     "action": "allow"
   }]
-}]
+},
+
+{
+  "group": "admin",
+  "permissions": [{
+    "resource": "role",
+    "methods": [
+      "POST",
+      "GET",
+      "PUT"
+    ],
+    "action": "allow"
+  }]
+}
+
+]

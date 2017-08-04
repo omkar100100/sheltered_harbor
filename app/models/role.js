@@ -9,7 +9,20 @@ module.exports = function(sequelize, DataTypes) {
           autoIncrement: true,
           allowNull: false
         },
-        name: Sequelize.STRING 
+        name: Sequelize.STRING ,
+         createdAt: {
+          type: Sequelize.DATE,
+          allowNull: false,
+          defaultValue: Sequelize.NOW
+        },
+        updatedAt:{ 
+          type: Sequelize.DATE, 
+          allowNull: false,
+          defaultValue: Sequelize.NOW
+        }
+  },{
+    freezeTableName: true,
+    tableName: 'Roles'
   })
 
   return Role;

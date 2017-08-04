@@ -43,29 +43,39 @@ http.createServer(app).listen("8001",function(){
     console.log("Express Server Started");
 });
 
-models.Role.sync().then(function(){
-   models.User.sync().then(function(){
-      models.AccessLog.sync().then(function(){
-        models.IdType.sync().then(function(){
-          models.QuorumNode.sync().then(function(){
-              models.Institute.sync().then(function(){
-                models.PasswordRecovery.sync().then(function(){
-                  models.SHLog.sync().then(function(){
-                      models.ServiceProviderMapping.sync().then(function(){
-                          models.UserInstitute.sync().then(function(){
-                            // models.ContractHistory.sync.then(function(){
-                              
-                            // })
-                          })
-                      })
+
+sequelize.transaction.then(function(t){
+    models.Role.sync().then(function(){
+    models.User.sync().then(function(){
+        models.AccessLog.sync().then(function(){
+          models.IdType.sync().then(function(){
+            models.QuorumNode.sync().then(function(){
+                models.Institute.sync().then(function(){
+                  models.PasswordRecovery.sync().then(function(){
+                    models.SHLog.sync().then(function(){
+                        models.ServiceProviderMapping.sync().then(function(){
+                            models.UserInstitute.sync().then(function(){
+                              // models.ContractHistory.sync.then(function(){
+                                
+                              // })
+                                  t.commit();
+                            }).catch(function(error){
+                                return t.rollback();
+                            })
+                        })
+                    })
                   })
                 })
-              })
-          })
-        })     
-      })  
-   })
-});
+            })
+          })     
+        })  
+    })
+  });
+
+})// end transaction
+
+
+
 
 
 app.use(function(err, req, res, next) {

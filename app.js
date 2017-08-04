@@ -44,7 +44,7 @@ http.createServer(app).listen("8001",function(){
 });
 
 
-sequelize.transaction.then(function(t){
+Sequelize.transaction.then(function(t){
     models.Role.sync().then(function(){
     models.User.sync().then(function(){
         models.AccessLog.sync().then(function(){

@@ -12,6 +12,9 @@ if (process.env.DATABASE_URL) {
   var sequelize = new Sequelize('postgres://postgres@10.10.10.4:5432/postgres?schema=sh');
 }
 
+sequelize.authenticate().then(function(errors){
+  console.log("Errors:"+ errors);
+});
 
 var db        = {};
 

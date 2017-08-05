@@ -9,7 +9,7 @@ if (process.env.DATABASE_URL) {
   var sequelize = new Sequelize(process.env.DATABASE_URL,config);
 } else {
   //var sequelize = new Sequelize(config.database, config.username, config.password, config);
-  var sequelize = new Sequelize('postgres://postgres@10.10.10.4:5432/postgres?schema=sh');
+  var sequelize = new Sequelize('postgres://postgres@10.10.10.4:5432/postgres');
 }
 
 sequelize.authenticate().then(function(errors){

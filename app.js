@@ -44,25 +44,7 @@ http.createServer(app).listen("8001",function(){
 });
 
 
-// return Sequelize.transaction({type: Sequelize.Transaction.TYPES.EXCLUSIVE}, transaction => {
-
-//  // your transactions
-
-// }).then(result => {
-//   // transaction has been committed. Do something after the commit if required.
-// }).catch(err => {
-//   // do something with the err.
-// });
-
-// models.UserInstitute.sync().then(function(){
-//                                   t.commit();
-//                             }).catch(function(error){
-//                                 return t.rollback();
-// })
-
-
-// Sequelize.transaction({type: Sequelize.Transaction.TYPES.EXCLUSIVE}, transaction => {
-//     models.Role.sync().then(function(){
+// models.Role.sync().then(function(){
 //     models.User.sync().then(function(){
 //         models.AccessLog.sync().then(function(){
 //           models.IdType.sync().then(function(){
@@ -75,7 +57,7 @@ http.createServer(app).listen("8001",function(){
 //                               // models.ContractHistory.sync.then(function(){
                                 
 //                               // })
-//                                   t.commit();
+                               
 //                             }).catch(function(error){
 //                                 return t.rollback();
 //                             })
@@ -87,12 +69,7 @@ http.createServer(app).listen("8001",function(){
 //           })     
 //         })  
 //     })
-//   });
-
-// })// end transaction
-
-
-
+// })
 
 
 app.use(function(err, req, res, next) {

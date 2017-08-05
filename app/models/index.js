@@ -8,8 +8,20 @@ var config    = require(path.join(__dirname, '..', '..','config', 'config.json')
 if (process.env.DATABASE_URL) {
   var sequelize = new Sequelize(process.env.DATABASE_URL,config);
 } else {
-  //var sequelize = new Sequelize(config.database, config.username, config.password, config);
-  var sequelize = new Sequelize('postgres://postgres@10.10.10.4:5432/postgres');
+ 
+ var sequelize = new Sequelize('postgres','postgres',"",{
+    host: '10.10.10.4',
+    dialect :'postgres', 
+    port:'5432',
+    schema:'sh'
+  });
+
+  // var sequelize = new Sequelize('postgres','postgres',"admin123",{
+  //   host: 'localhost',
+  //   dialect :'postgres', 
+  //   port:'5432',
+  //   schema:'sh'
+  // });
 }
 
 sequelize.authenticate().then(function(errors){

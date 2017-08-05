@@ -26,14 +26,14 @@ module.exports = function(sequelize, DataTypes) {
         ContactPhone: Sequelize.STRING,
         Type: Sequelize.STRING,
         UniqueId: Sequelize.STRING,
-        // ServiceProviderId :{
-        //   type: Sequelize.INTEGER,
-        //   allowNull: false,
-        //   references: {
-        //     model: 'Institute',
-        //     key: 'id'
-        //   }
-        // },
+        ServiceProviderId :{
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'Institute',
+            key: 'id'
+          }
+        },
         IdType :Sequelize.STRING,
         NodeId: {
           type: Sequelize.INTEGER,
@@ -59,8 +59,9 @@ module.exports = function(sequelize, DataTypes) {
           defaultValue: Sequelize.NOW
         }
   },{
-    freezeTableName: true,
-    tableName: 'Institute'
+      schema : 'sh',
+      freezeTableName: true,
+      tableName: 'Institute'
   })
  
 

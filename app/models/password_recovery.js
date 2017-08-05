@@ -31,8 +31,9 @@ module.exports = function(sequelize, DataTypes) {
         }
     
     },{
-      freezeTableName: true,
-      tableName: 'PasswordRecovery'
+        schema : 'sh',
+        freezeTableName: true,
+        tableName: 'PasswordRecovery'
     });
   
    return PasswordRecovery;

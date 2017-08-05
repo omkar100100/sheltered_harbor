@@ -21,7 +21,7 @@ module.exports = function(sequelize, DataTypes) {
           defaultValue: Sequelize.NOW
         }
   },{
-   // schema: "sh",
+    schema: "sh",
     freezeTableName: true,
     tableName: 'Roles'
   })

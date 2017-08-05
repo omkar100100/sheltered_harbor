@@ -21,8 +21,9 @@ module.exports = function(sequelize, DataTypes) {
           defaultValue: Sequelize.NOW
         }
     },{
-    freezeTableName: true,
-    tableName: 'IdTypes'
+       schema : 'sh',
+      freezeTableName: true,
+      tableName: 'IdTypes'
   });
 
   return IdType;

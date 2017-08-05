@@ -24,8 +24,9 @@ module.exports = function(sequelize, DataTypes) {
           defaultValue: Sequelize.NOW
         }
     },{
-    freezeTableName: true,
-    tableName: 'QuorumNode'
+       schema : 'sh',
+      freezeTableName: true,
+      tableName: 'QuorumNode'
   });
 
   

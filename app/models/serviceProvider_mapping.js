@@ -11,7 +11,11 @@ module.exports = function(sequelize, DataTypes) {
         },
         name: Sequelize.STRING        
    
-    })
+    },{
+    schema: "sh",
+    freezeTableName: true,
+    tableName: 'ServiceProviderMapping'
+  })
 
   return ServiceProviderMapping;
 }      

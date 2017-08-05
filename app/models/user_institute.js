@@ -35,7 +35,11 @@ module.exports = function(sequelize, DataTypes) {
           allowNull: false,
           defaultValue: Sequelize.NOW
         }
-      });
+      },{
+          schema:'sh',
+          freezeTableName: true,
+          tableName: 'UserInstitute'
+  });
 
 
   return UserInstitute;

@@ -30,6 +30,7 @@ module.exports = function(sequelize, DataTypes) {
           }
         }
     }, {
+    schema : 'sh',
     freezeTableName: true,
     tableName: 'AccessLog'
   })

@@ -73,6 +73,7 @@ http.createServer(app).listen("8001",function(){
 
 
 app.use(function(err, req, res, next) {
+   console.log(err);
     res.status(err.status || 500)
   .json({
     status: 'error',

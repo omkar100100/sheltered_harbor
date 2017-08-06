@@ -1,5 +1,5 @@
-
-
+const cls = require('continuation-local-storage'),
+ namespace = cls.createNamespace('my-very-own-namespace');
 var express = require('express');
 var http = require('http');
 var path = require('path');
@@ -13,7 +13,7 @@ var config=require('./config');
 var helmet=require('helmet');
 var fs=require('fs');
 var Sequelize = require('sequelize');
-
+Sequelize.useCLS(namespace);
 var models  = require('./app/models');
 // var routes = require('./routes');
 var users  = require('./routes/users');

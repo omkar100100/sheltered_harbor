@@ -40,12 +40,12 @@ app.use('/node',nodes);
 app.use('/institute',institute);
 app.use('/shLog',shLog);
 
-models.sequelize.sync({force:true}).then(function () {
+//models.sequelize.sync({force:true}).then(function () {
     console.log("Models Synchronized");
     http.createServer(app).listen("8001",function(){
         console.log("Express Server Started");
     });
-});
+//});
 
 
 

@@ -16,7 +16,8 @@ RoleController.prototype.getRole = function(req, res) {
 RoleController.prototype.createRole = function(req, res) {
         var role=req.body;
         var roleService = new RoleService();
-        roleService.createRole(role).then(function(role){
+        roleService.createRole(role,req.app)
+        .then(function(role){
             return res.json(role);
         })
 };

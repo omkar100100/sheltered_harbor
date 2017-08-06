@@ -32,6 +32,7 @@ getResuls =function(results){
 }
 
 SHLogService.prototype.getSHLogsForInstitutes=function(){
+    //http://bluebirdjs.com/docs/api/promise.join.html
     return Promise.resolve(
             models.Institute.findAll({
                 where: { IsActive : true }

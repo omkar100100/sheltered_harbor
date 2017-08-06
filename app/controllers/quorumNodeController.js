@@ -16,9 +16,18 @@ QuorumNodeController.prototype.getNode = function(req, res) {
 QuorumNodeController.prototype.createNode = function(req, res) {
         var node=req.body;
         var quorumNodeService = new QuorumNodeService();
-        quorumNodeService.createNode(node).then(function(node){
-            return res.json(node);
+        quorumNodeService.createNode(node,req.app)
+        .then(function(node){
+                 //console.log(node)
+                 return res.json(node);
         })
+        .error(function(e){
+                console.log("Error handler " + e)
+        })
+
+        // .resolve(function(node){
+        //     return res.json(node);
+        // })
 };
 
 QuorumNodeController.prototype.getAllNodes = function(req, res) {

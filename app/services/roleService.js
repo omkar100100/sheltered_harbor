@@ -1,8 +1,13 @@
+// const cls = require('continuation-local-storage'),
+//  namespace = cls.createNamespace('my-very-own-namespace');
 var models  = require('../models');
 var Promise = require('bluebird');
+// var Sequelize = require('sequelize');
+// Sequelize.useCLS(namespace);
 
-var RoleService=function(){};
 
+
+RoleService=function(app){}
 
 RoleService.prototype.getRole=function(roleId){
     return Promise.resolve(
@@ -12,12 +17,19 @@ RoleService.prototype.getRole=function(roleId){
     );
 }
 
-RoleService.prototype.createRole=function(role){
-   return Promise.resolve(
-        models.Role.create(role).then(function(role){
-            return role;
-        })
-    );
+RoleService.prototype.createRole=function(role,app){
+    var models1 = app.get('models');
+  //   models1.sequelize.transaction(function (t1) {
+        return Promise.resolve(function(){
+            //var role1=models1.Role.build(role);
+           models.Role.create(role)
+           .then(function(role){
+                console.log(role);
+                return role;
+            });
+        });
+  // });
+
 };
 
 
@@ -40,6 +52,6 @@ RoleService.prototype.getAllRoles=function(){
 // };
 
 
-
-
 module.exports=RoleService;
+
+

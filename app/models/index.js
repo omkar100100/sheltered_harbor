@@ -1,27 +1,34 @@
 "use strict";
 
+ 
+ 
 var fs        = require("fs");
 var path      = require("path");
 var Sequelize = require("sequelize");
+const cls = require('continuation-local-storage'),
+ namespace = cls.createNamespace('my-very-own-namespace');
+ Sequelize.useCLS(namespace);
+
+ 
 var env       = process.env.NODE_ENV || "development";
 var config    = require(path.join(__dirname, '..', '..','config', 'config.json'))[env];
 if (process.env.DATABASE_URL) {
   var sequelize = new Sequelize(process.env.DATABASE_URL,config);
 } else {
  
- var sequelize = new Sequelize('postgres','postgres',"",{
-    host: '10.10.10.4',
+//  var sequelize = new Sequelize('postgres','postgres',"",{
+//     host: '10.10.10.4',
+//     dialect :'postgres', 
+//     port:'5432',
+//     schema:'sh'
+//   });
+
+  var sequelize = new Sequelize('postgres','postgres',"admin123",{
+    host: 'localhost',
     dialect :'postgres', 
     port:'5432',
     schema:'sh'
   });
-
-  // var sequelize = new Sequelize('postgres','postgres',"admin123",{
-  //   host: 'localhost',
-  //   dialect :'postgres', 
-  //   port:'5432',
-  //   schema:'sh'
-  // });
 }
 
 sequelize.authenticate().then(function(errors){

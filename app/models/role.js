@@ -24,6 +24,22 @@ module.exports = function(sequelize, DataTypes) {
     schema: "sh",
     freezeTableName: true,
     tableName: 'Roles'
+  }, {
+      classMethods: {
+        getSequelize:function(){
+          return sequelize;
+        },
+
+        createRole: function(role,sequelize) {
+          role.save()
+          .error(function(error){
+            console.log(error);
+          })
+          .success(function(result){
+            return result
+          })
+        }
+    }
   })
 
   return Role;

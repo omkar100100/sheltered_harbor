@@ -1,5 +1,4 @@
-const cls = require('continuation-local-storage'),
- namespace = cls.createNamespace('my-very-own-namespace');
+
 var express = require('express');
 var http = require('http');
 var path = require('path');
@@ -13,8 +12,8 @@ var config=require('./config');
 var helmet=require('helmet');
 var fs=require('fs');
 var Sequelize = require('sequelize');
-Sequelize.useCLS(namespace);
-var models  = require('./app/models');
+
+// var models  = require('./app/models');
 // var routes = require('./routes');
 var users  = require('./routes/users');
 var roles=require('./routes/roles');
@@ -32,6 +31,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(logger('dev'));   
 
+app.set('models', require('./app/models'));
+var models = app.get('models');
 
 app.use('/role',roles);
 app.use('/user',users);
@@ -39,9 +40,14 @@ app.use('/node',nodes);
 app.use('/institute',institute);
 app.use('/shLog',shLog);
 
-http.createServer(app).listen("8001",function(){
-    console.log("Express Server Started");
+models.sequelize.sync({force:true}).then(function () {
+    console.log("Models Synchronized");
+    http.createServer(app).listen("8001",function(){
+        console.log("Express Server Started");
+    });
 });
+
+
 
 
 // models.Role.sync().then(function(){

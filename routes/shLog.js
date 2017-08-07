@@ -9,9 +9,9 @@ router.post('/', function(req, res) {
       shLogController.createSHLog(req,res);
 });
 
-router.get('/institute/:instituteId',function(req,res){
-      shLogController.getSHLog(req,res);
-});
+// router.get('/:instituteId',function(req,res){
+//       shLogController.getSHLog(req,res);
+// });
 
 router.get('/institute/',function(req,res){
       shLogController.getSHLogsForInstitutes(req,res);

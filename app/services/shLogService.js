@@ -32,39 +32,32 @@ getResuls =function(results){
 }
 
 SHLogService.prototype.getSHLogsForInstitutes=function(){
-    //http://bluebirdjs.com/docs/api/promise.join.html
     return Promise.resolve(
             models.Institute.findAll({
                 where: { IsActive : true }
             }).then(function(institutes){
-                    pArr=[];
-                    var shLogsArr=[];
-                    institutes.forEach(function(institute){
-                        //    Promise p = SHLogService.prototype.getSHLog(institute.id).resolve(
-                        //        Object.prototype.extend = function(obj) {
-                        //             for (var i in obj) {
-                        //                 if (obj.hasOwnProperty(i)) {
-                        //                     this[i] = obj[i];
-                        //                 }
-                        //             }
-                        //         };
-                        //         var tempSHLog=shLogs[0];
-                        //         var shLogId=tempSHLog.id;
-                        //         tempSHLog.extend(institute);
-                        //         tempSHLog.id=shLogId;
-                        //         shLogsArr.push(tempSHLog);        
-                        //    )
-                        //    pArr.push(p);
-                           
+                    var shLogsArr=[]
+                    var fn = function asyncMultiplyBy2(institute){
+                                    return SHLogService.prototype.getSHLog(institute.id).then(function(shLogs){
+                                        var obj={};
+                                        var tempSHLog=shLogs[0];
+                                        obj.logId=tempSHLog.id;
+                                        obj.instituteName=institute.LegalName;
+                                        obj.submittedBy=institute.ServiceProviderId;
+                                        obj.lastSubmittedOn=tempSHLog.UploadTimestamp;
+                                        obj.daysSinceLastSubmission="tobeCalculated";
+                                        obj.instituteId=institute.id;
+                                        return shLogsArr.push(obj);
+                                    })
+
+                    };
+
+                    var actions=institutes.map(fn);
+                    var results = Promise.all(actions); 
+                    return Promise.join(results,function(results){
+                        return shLogsArr;
                     })
-
-                         Promise.all(pArr).then(values => { 
-                                console.log(values); // [3, 1337, "foo"] 
-                          });
-
-
-
-
+     
             })
     );
 }

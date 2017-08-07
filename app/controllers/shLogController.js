@@ -26,7 +26,8 @@ SHLogController.prototype.getSHLog = function(req, res) {
 
 SHLogController.prototype.getSHLogsForInstitutes = function(req, res) {
         var sHLogService = new SHLogService();
-        sHLogService.getSHLogsForInstitutes().then(function(shLogs) {
+       sHLogService.getSHLogsForInstitutes()
+        .then(function(shLogs) {
             return  res.json(shLogs);
         })
 };

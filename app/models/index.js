@@ -5,9 +5,9 @@
 var fs        = require("fs");
 var path      = require("path");
 var Sequelize = require("sequelize");
-const cls = require('continuation-local-storage'),
- namespace = cls.createNamespace('my-very-own-namespace');
- Sequelize.useCLS(namespace);
+// const cls = require('continuation-local-storage'),
+//  namespace = cls.createNamespace('my-very-own-namespace');
+//  Sequelize.useCLS(namespace);
 
  
 var env       = process.env.NODE_ENV || "development";

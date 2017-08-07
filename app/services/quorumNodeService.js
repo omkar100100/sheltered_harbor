@@ -14,7 +14,7 @@ NodeService.prototype.getNode=function(nodeId){
 
 NodeService.prototype.createNode=function(node,app){
    var models1 = app.get('models');
-   return models1.sequelize.transaction({isolationLevel: models1.Sequelize.Transaction.ISOLATION_LEVELS.SERIALIZABLE}, t1 => {
+   return models1.sequelize.transaction({isolationLevel: models1.Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED}, t1 => {
             return new Promise(function(resolve, reject){
                 models1.QuorumNode.create(node,{transaction:t1})
                 .then(function(node){

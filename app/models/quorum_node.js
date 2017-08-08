@@ -9,7 +9,7 @@ module.exports = function(sequelize, DataTypes) {
           autoIncrement: true,
           allowNull: false
         },
-        NodeName: Sequelize.STRING,
+        Name: Sequelize.STRING,
         EthereumHash : Sequelize.STRING,
         IpAddress: Sequelize.STRING,
         LastSyncDate: Sequelize.STRING,
@@ -24,7 +24,7 @@ module.exports = function(sequelize, DataTypes) {
           defaultValue: Sequelize.NOW
         }
     },{
-       schema : 'sh',
+       schema : 'public',
       freezeTableName: true,
       tableName: 'QuorumNode'
   });

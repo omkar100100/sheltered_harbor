@@ -1,9 +1,9 @@
-// const cls = require('continuation-local-storage'),
-//  namespace = cls.createNamespace('my-very-own-namespace');
+//const cls = require('continuation-local-storage'),
+//namespace = cls.createNamespace('my-very-own-namespace');
 var models  = require('../models');
 var Promise = require('bluebird');
-// var Sequelize = require('sequelize');
-// Sequelize.useCLS(namespace);
+var Sequelize = require('sequelize');
+//Sequelize.useCLS(namespace);
 
 
 
@@ -19,18 +19,17 @@ RoleService.prototype.getRole=function(roleId){
 
 RoleService.prototype.createRole=function(role,app){
     var models1 = app.get('models');
-  //   models1.sequelize.transaction(function (t1) {
-        return Promise.resolve(function(){
-            //var role1=models1.Role.build(role);
-           models.Role.create(role)
-           .then(function(role){
-                console.log(role);
-                return role;
-            });
-        });
-  // });
+    return models1.sequelize.transaction({isolationLevel: models1.Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED}, t1 => {
+        return new Promise(function(resolve,reject){
+            models1.Role.create(role,{transaction:t1})
+            .then(function(role){
+                   resolve(role);
+            })
+        })
+    })
 
 };
+
 
 
 RoleService.prototype.getAllRoles=function(){

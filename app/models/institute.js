@@ -25,15 +25,16 @@ module.exports = function(sequelize, DataTypes) {
         ContactEmail: Sequelize.STRING,
         ContactPhone: Sequelize.STRING,
         Type: Sequelize.STRING,
-        UniqueId: Sequelize.STRING,
-        // ServiceProviderId :{
-        //   type: Sequelize.INTEGER,
-        //   allowNull: false,
-        //   references: {
-        //     model: 'Institute',
-        //     key: 'id'
-        //   }
-        // },
+        Identifier: Sequelize.STRING,
+        ServiceProviderId :{
+          type: Sequelize.INTEGER,
+          allowNull: true,
+          references: {
+            model: 'Institute',
+            key: 'id',
+            deferrable: Sequelize.Deferrable.NOT
+          }
+        },
         IdType :Sequelize.STRING,
         NodeId: {
           type: Sequelize.INTEGER,

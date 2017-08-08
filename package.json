@@ -22,6 +22,7 @@
     "install": "^0.10.1",
     "jquery-extend": "^2.0.3",
     "jsonwebtoken": "^5.7.0",
+    "moment": "^2.18.1",
     "morgan": "^1.6.1",
     "mysql": "^2.14.0",
     "npm": "^5.3.0",

@@ -40,7 +40,7 @@ module.exports = function(sequelize, DataTypes) {
           defaultValue: Sequelize.NOW
         }
     },{
-      schema:'sh',
+      schema:'public',
       freezeTableName: true,
       tableName: 'Users'
     })

@@ -12,7 +12,7 @@ module.exports = function(sequelize, DataTypes) {
         name: Sequelize.STRING        
    
     },{
-    schema: "sh",
+    schema: "public",
     freezeTableName: true,
     tableName: 'ServiceProviderMapping'
   })

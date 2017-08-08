@@ -2,6 +2,8 @@ var models  = require('../models');
 var Promise = require('bluebird');
 var jQuery = require("jquery-extend");
 var async=require('async');
+var InstitueService=require('./instituteService');
+var Moment=require('moment');
 
 var SHLogService=function(){};
 
@@ -27,9 +29,55 @@ SHLogService.prototype.getSHLog=function(instituteId){
 }
 
 
-getResuls =function(results){
-    return results;
+
+SHLogService.prototype.saveSHLogInstitute=function(log){
+    return new Promise(function(resolve,reject){    
+        var file={};
+        var fileParts=[];
+
+        //var fullFileName="SH_20160620_021000021_3_10_001_00_OptionalMyStuffSuffix";
+        var fullFileName=log.FileName;
+   
+        fileParts=fullFileName.split("_");
+        console.log(fileParts);
+        file.prefix=fileParts[0];
+        var moment= new Moment({year: fileParts[1].substring(0,4), month: fileParts[1].substring(4,6), day: fileParts[1].substring(6,8)});
+        file.fileDate=moment.format();
+        file.instIdentifier=fileParts[2];
+        file.instIdType=fileParts[3];
+        file.fileSet=fileParts[4];
+        file.version=fileParts[5];
+        file.fileId=fileParts[6];
+        file.seq=fileParts[7];
+        var instituteService=new InstitueService();
+        instituteService.getInstituteByIdentifier(file.instIdentifier).then(function(institute){
+            var shLog={}
+            shLog.TxHash=log.TxHash;
+            shLog.Filename=fullFileName;
+            shLog.Tag=log.Tag;
+            shLog.AdditionalData=log.AdditionalData;
+            shLog.AttestationDate=file.fileDate;
+            shLog.Status=true;
+            shLog.InstituteId=institute.id;
+            if(institute.ServiceProviderId){
+                shLog.ServiceProviderId=institute.ServiceProviderId;
+            }else{
+                shLog.ServiceProviderId=institute.id;
+            }
+            
+    
+            SHLogService.prototype.createSHLog(shLog)
+            .then(function(result){
+                resolve(result);
+            })
+            .catch(function(error){
+                reject(error);
+            })
+
+      })
+    })
 }
+
 
 SHLogService.prototype.getSHLogsForInstitutes=function(){
     return Promise.resolve(

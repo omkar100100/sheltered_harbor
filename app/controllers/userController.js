@@ -17,7 +17,7 @@ UserController.prototype.getUser = function(req, res) {
 UserController.prototype.createUser = function(req, res) {
         var user=req.body;
         var userService = new UserService();
-        userService.createUser(user).then(function(user){
+        userService.createUser(user,req.app).then(function(user){
             return res.json(user);
         })
 };

@@ -8,16 +8,30 @@ module.exports = function(sequelize, DataTypes) {
           autoIncrement: true,
           allowNull: false
         },
-        // InstituteId: {
-        //   type:Sequelize.NUMEBR,
-        //   references: {
-        //     model: 'Institute',
-        //     key: 'id'
-        //   }
-        // } ,
-        RenewalDate: Sequelize.DATE,
-        OldFromDate: Sequelize.DATE,
-        OldToDate: Sequelize.DATE,
+        InstituteId: {
+          type: Sequelize.INTEGER,
+          allowNull: false,
+          references: {
+            model: 'Institute',
+            key: 'id'
+          }
+        },
+        RenewalDateFrom: { 
+          type:Sequelize.DATE,
+          allowNull:false
+        },
+        RenewalDateTo: { 
+          type:Sequelize.DATE,
+          allowNull:false
+        },
+        OldFromDate: {
+          type:Sequelize.DATE,
+          allowNull:true
+        },
+        OldToDate: { 
+          type:Sequelize.DATE,
+          allowNull:true
+        },
         Note: Sequelize.STRING,
         
         createdAt: {

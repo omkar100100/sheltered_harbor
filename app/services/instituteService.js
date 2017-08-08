@@ -1,5 +1,6 @@
 var models  = require('../models');
 var Promise = require('bluebird');
+var ContractService=require('./contractHistoryService');
 
 var InstituteService=function(){};
 
@@ -31,9 +32,19 @@ var InstituteService=function(){};
    
 // }
 
-InstituteService.prototype.createInstitute=function(institute){
+InstituteService.prototype.createInstitute=function(institute,app){
    return Promise.resolve(
         models.Institute.create(institute).then(function(institute){
+            var contractService=new ContractService();
+            var contract={};
+            contract.InstituteId=institute.id;
+            contract.RenewalDateFrom=institute.ContractFrom;
+            contract.RenewalDateTo=institute.ContractTo;
+            //TODO: calculate if old contract exists
+            contract.OldFromDate=null;
+            contract.OldToDate=null;
+            contract.Note=null;
+            contractService.logContractHistory(contract,app);
             return institute;
         })
     );

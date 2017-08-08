@@ -24,6 +24,16 @@ SHLogController.prototype.getSHLog = function(req, res) {
   
 };
 
+SHLogController.prototype.getSHLogsByInstitute = function(req, res) {
+        var instituteId=req.params.instituteId;
+        var sHLogService = new SHLogService();
+        sHLogService.getSHLogs(instituteId).then(function(shLogs) {
+            return  res.json(shLogs);
+        })
+  
+};
+
+
 SHLogController.prototype.saveSHLogsForInstitute= function(req, res) {
         var sHLogService = new SHLogService();
         var log=req.body;

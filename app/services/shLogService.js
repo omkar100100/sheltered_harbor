@@ -28,6 +28,27 @@ SHLogService.prototype.getSHLog=function(instituteId){
     );
 }
 
+SHLogService.prototype.getSHLogs=function(instituteId){
+    return Promise.resolve(
+        models.SHLog.findAll({
+            where:{"InstituteId":instituteId },
+            order: [ [ 'UploadTimestamp', 'DESC' ]]
+        }).then(function(shLogs){
+            shLogArr=[];
+            shLogs.forEach(function(shLog){
+                var obj={};
+                obj.Filename=shLog.Filename;
+                obj.DateTime=shLog.AttestationDate;
+                obj.FileDate=shLog.UploadTimestamp;
+                obj.Hash=shLog.TxHash;
+                shLogArr.push(obj);
+            })
+            
+            return shLogArr;
+        })
+    );
+}
+
 
 
 SHLogService.prototype.saveSHLogInstitute=function(log){

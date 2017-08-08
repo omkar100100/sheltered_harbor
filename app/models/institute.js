@@ -15,11 +15,11 @@ module.exports = function(sequelize, DataTypes) {
         ContractState: Sequelize.STRING,
         ContractFrom:{ 
           type: Sequelize.DATE ,
-          defaultValue: Sequelize.NOW
+          allowNull:false
         },
         ContractTo: { 
           type: Sequelize.DATE ,
-          allowNull: true
+          allowNull: false
         },
         ContactName: Sequelize.STRING,
         ContactEmail: Sequelize.STRING,

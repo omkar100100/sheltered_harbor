@@ -16,7 +16,7 @@ if (process.env.DATABASE_URL) {
   var sequelize = new Sequelize(process.env.DATABASE_URL,config);
 } else {
  
- var sequelize = new Sequelize('postgres','postgres',"",{
+ var sequelize = new Sequelize('postgres','postgres',null,{
     host: 'localhost',
     dialect :'postgres', 
     port:'5432',

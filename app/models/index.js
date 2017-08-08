@@ -17,19 +17,21 @@ if (process.env.DATABASE_URL) {
 } else {
  
  var sequelize = new Sequelize('postgres','postgres',"",{
-    host: '10.11.11.4',
+    host: 'localhost',
     dialect :'postgres', 
     port:'5432',
     schema:'public'
   });
 
-//   var sequelize = new Sequelize('postgres','postgres',"admin123",{
-//     host: 'localhost',
-//     dialect :'postgres', 
-//     port:'5432',
-//     schema:'public'
-//   });
-// }
+  // var sequelize = new Sequelize('postgres','postgres',"admin123",{
+  //   host: 'localhost',
+  //   dialect :'postgres', 
+  //   port:'5432',
+  //   schema:'public'
+  // });
+
+
+}
 
 sequelize.authenticate().then(function(errors){
   console.log("Errors:"+ errors);

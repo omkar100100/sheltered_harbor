@@ -9,7 +9,7 @@ module.exports = function(sequelize, DataTypes) {
           autoIncrement: true,
           allowNull: false
         },
-        Name: Sequelize.STRING,
+        name: Sequelize.STRING,
         EthereumHash : Sequelize.STRING,
         IpAddress: Sequelize.STRING,
         LastSyncDate: Sequelize.STRING,

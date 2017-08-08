@@ -9,8 +9,11 @@ module.exports = function(sequelize, DataTypes) {
           autoIncrement: true,
           allowNull: false
         },
-        name: Sequelize.STRING ,
-         createdAt: {
+        name:{ 
+            type: Sequelize.STRING,
+            allowNull: false
+         } ,
+        createdAt: {
           type: Sequelize.DATE,
           allowNull: false,
           defaultValue: Sequelize.NOW

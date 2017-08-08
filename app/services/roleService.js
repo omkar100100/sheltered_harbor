@@ -19,14 +19,14 @@ RoleService.prototype.getRole=function(roleId){
 
 RoleService.prototype.createRole=function(role,app){
     var models1 = app.get('models');
-    return models1.sequelize.transaction({isolationLevel: models1.Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED}, t1 => {
+    //return models1.sequelize.transaction({isolationLevel: models1.Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED}, t1 => {
         return new Promise(function(resolve,reject){
-            models1.Role.create(role,{transaction:t1})
+            models1.Role.create(role)
             .then(function(role){
                    resolve(role);
             })
         })
-    })
+   // })
 
 };
 

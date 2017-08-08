@@ -3,7 +3,7 @@ var Promise = require('bluebird');
 var jQuery = require("jquery-extend");
 var async=require('async');
 var InstitueService=require('./instituteService');
-var Moment=require('moment');
+var Moment= require('moment-timezone');
 
 var SHLogService=function(){};
 
@@ -21,7 +21,7 @@ SHLogService.prototype.getSHLog=function(instituteId){
         models.SHLog.findAll({
             limit : 1,
             where:{"InstituteId":instituteId },
-            order: [ [ 'AttestationDate', 'DESC' ]]
+            order: [ [ 'UploadTimestamp', 'DESC' ]]
         }).then(function(shLog){
             return shLog;
         })
@@ -57,6 +57,7 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
             shLog.Tag=log.Tag;
             shLog.AdditionalData=log.AdditionalData;
             shLog.AttestationDate=file.fileDate;
+            shLog.UploadTimestamp=file.fileDate;
             shLog.Status=true;
             shLog.InstituteId=institute.id;
             if(institute.ServiceProviderId){
@@ -89,13 +90,19 @@ SHLogService.prototype.getSHLogsForInstitutes=function(){
                                     return SHLogService.prototype.getSHLog(institute.id).then(function(shLogs){
                                         var obj={};
                                         var tempSHLog=shLogs[0];
-                                        obj.logId=tempSHLog.id;
-                                        obj.instituteName=institute.LegalName;
-                                        obj.submittedBy=institute.ServiceProviderId;
-                                        obj.lastSubmittedOn=tempSHLog.UploadTimestamp;
-                                        obj.daysSinceLastSubmission="tobeCalculated";
-                                        obj.instituteId=institute.id;
-                                        return shLogsArr.push(obj);
+                                        if(tempSHLog){
+                                            obj.logId=tempSHLog.id;
+                                            obj.instituteName=institute.LegalName;
+                                            obj.submittedBy=institute.ServiceProviderId;
+                                            obj.lastSubmittedOn=tempSHLog.UploadTimestamp;
+
+                                            var since= new Moment(tempSHLog.AttestationDate).fromNow();
+                                            obj.daysSinceLastSubmission=since;
+                                            obj.instituteId=institute.id;
+                                            shLogsArr.push(obj);
+                                        }
+                                        
+                                        return shLogsArr;
                                     })
 
                     };

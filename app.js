@@ -37,37 +37,37 @@ app.use('/node',nodes);
 app.use('/institute',institute);
 app.use('/shlog',shLog);
 
-models.sequelize.sync({force:true}).then(function () {
+//models.sequelize.sync({force:true}).then(function () {
     console.log("Models Synchronized");
     http.createServer(app).listen("8001",function(){
         console.log("Express Server Started");
     });
-});
+//});
 
 
-// models.Role.sync().then(function(){
-//     models.User.sync().then(function(){
-//         models.AccessLog.sync().then(function(){
-//           models.IdType.sync().then(function(){
-//             models.QuorumNode.sync().then(function(){
-//                 models.Institute.sync().then(function(){
-//                   models.PasswordRecovery.sync().then(function(){
-//                     models.SHLog.sync().then(function(){
-//                         models.ServiceProviderMapping.sync().then(function(){
-//                             models.UserInstitute.sync().then(function(){
-//                                 models.InstituteHistory.sync().then(function(){
+models.Role.sync().then(function(){
+    models.User.sync().then(function(){
+        models.AccessLog.sync().then(function(){
+          models.IdType.sync().then(function(){
+            models.QuorumNode.sync().then(function(){
+                models.Institute.sync().then(function(){
+                  models.PasswordRecovery.sync().then(function(){
+                    models.SHLog.sync().then(function(){
+                        models.ServiceProviderMapping.sync().then(function(){
+                            models.UserInstitute.sync().then(function(){
+                                models.InstituteHistory.sync().then(function(){
                                
-//                                 })
-//                             })
-//                         })
-//                     })
-//                   })
-//                 })
-//             })
-//           })     
-//         })  
-//     })
-// })
+                                })
+                            })
+                        })
+                    })
+                  })
+                })
+            })
+          })     
+        })  
+    })
+})
 
 
 

@@ -33,6 +33,15 @@ SHLogController.prototype.getSHLogsByInstitute = function(req, res) {
   
 };
 
+SHLogController.prototype.getSHLogByTxHash = function(req, res) {
+        var request=req.body;
+        var sHLogService = new SHLogService();
+        sHLogService.getSHLogByTxHash(request).then(function(shLog) {
+            response.handleSuccessResponse(200, shLog, res);
+        })
+  
+};
+
 
 SHLogController.prototype.saveSHLogsForInstitute= function(req, res) {
         var sHLogService = new SHLogService();

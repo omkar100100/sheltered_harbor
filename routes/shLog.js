@@ -26,5 +26,9 @@ router.post('/institute/',function(req,res){
       shLogController.saveSHLogsForInstitute(req,res);
 });
 
+router.post('/institute/tx',function(req,res){
+      shLogController.getSHLogByTxHash(req,res);
+});
+
 
 module.exports=router;

@@ -28,6 +28,16 @@ SHLogService.prototype.getSHLog=function(instituteId){
     );
 }
 
+SHLogService.prototype.getSHLogByTxHash=function(request){
+    return Promise.resolve(
+        models.SHLog.findAll({
+            where:{"TxHash":request.TxHash }
+           }).then(function(shLog){
+            return shLog;
+        })
+    );
+}
+
 SHLogService.prototype.getSHLogs=function(instituteId){
     return Promise.resolve(
         models.SHLog.findAll({

@@ -39,7 +39,7 @@ SHLogController.prototype.saveSHLogsForInstitute= function(req, res) {
         var log=req.body;
        sHLogService.saveSHLogInstitute(log)
         .then(function(shLog) {
-            response.handleSuccessResponse(200, log, res);
+            response.handleSuccessResponse(200, shLog, res);
         })
 };
 

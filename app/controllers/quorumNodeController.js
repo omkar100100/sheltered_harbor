@@ -1,5 +1,5 @@
 var QuorumNodeService=require('../services/quorumNodeService');
-
+var response=require('../common/response');
 
 var QuorumNodeController = function() {
 };
@@ -8,7 +8,7 @@ QuorumNodeController.prototype.getNode = function(req, res) {
         var nodeId=req.params.nodeId;
         var quorumNodeService = new QuorumNodeService();
         quorumNodeService.getNode(nodeId).then(function(result) {
-            return  res.json(result);
+            response.handleSuccessResponse(200, result, res);
         })
   
 };
@@ -18,22 +18,19 @@ QuorumNodeController.prototype.createNode = function(req, res) {
         var quorumNodeService = new QuorumNodeService();
         quorumNodeService.createNode(node,req.app)
         .then(function(node){
-                 //console.log(node)
-                 return res.json(node);
+                response.handleSuccessResponse(200, node, res);
         })
         .error(function(e){
                 console.log("Error handler " + e)
         })
 
-        // .resolve(function(node){
-        //     return res.json(node);
-        // })
+      
 };
 
 QuorumNodeController.prototype.getAllNodes = function(req, res) {
         var quorumNodeService = new QuorumNodeService();
         quorumNodeService.getAllNodes().then(function(result) {
-           return res.json(result);
+           response.handleSuccessResponse(200, result, res);
         }) 
 };
 

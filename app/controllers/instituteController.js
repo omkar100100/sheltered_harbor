@@ -1,5 +1,5 @@
 var InstituteService=require('../services/instituteService');
-
+var response=require('../common/response');
 
 var InstituteController = function() {
 };
@@ -8,7 +8,7 @@ InstituteController.prototype.getInstitute = function(req, res) {
         var instituteId=req.params.instituteId;
         var instituteService = new InstituteService();
         instituteService.getInstitute(instituteId).then(function(result) {
-            return  res.json(result);
+            response.handleSuccessResponse(200, result, res);
         })
   
 };
@@ -17,14 +17,14 @@ InstituteController.prototype.createInstitute = function(req, res) {
         var institute=req.body;
         var instituteService = new InstituteService();
         instituteService.createInstitute(institute,req.app).then(function(institute){
-            return res.json(institute);
+            response.handleSuccessResponse(200, institute, res);
         })
 };
 
 InstituteController.prototype.getAllInstitutes= function(req, res) {
         var instituteService = new InstituteService();
         instituteService.getAllInstitutes().then(function(result) {
-           return res.json(result);
+           response.handleSuccessResponse(200, result, res);
         })
   
 };
@@ -33,7 +33,7 @@ InstituteController.prototype.updateActiveStatus= function(req, res) {
         var instituteService = new InstituteService();
         var status=req.body;
         instituteService.updateActiveStatus(status,req.app).then(function(result) {
-           return res.json(result);
+           response.handleSuccessResponse(200, result, res);
         })
   
 };

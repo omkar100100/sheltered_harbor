@@ -22,10 +22,7 @@ var InstituteService=function(){};
 //     );
 // }
 
-// //TODO: UPDATE CONTRACT
-// InstituteService.prototype.updateContract=function(instituteId){
-   
-// }
+
 
 // //TODO: TOGGLE STATUS
 // InstituteService.prototype.toggleStatus=function(instituteId){
@@ -50,6 +47,21 @@ InstituteService.prototype.createInstitute=function(institute,app){
     );
 };
 
+InstituteService.prototype.updateContract=function(newContract,app){
+    var models1 = app.get('models');
+   return Promise.resolve(
+       InstituteService.prototype.getInstituteByIdentifier(newContract.institueIdentifier,app)
+       .then(function(institute){
+            //TODO:
+            institute.ContractFrom=newContract.ContractFrom
+            institute.ContractTo=newContract.ContractTo;
+            models1.Institute.update(instituteModel)
+            .then(function(updatedInstitute){
+                return updatedInstitute;
+            })
+       })
+    );
+};
 
 InstituteService.prototype.getAllInstitutes=function(){
     return Promise.resolve(
@@ -72,5 +84,19 @@ InstituteService.prototype.getInstituteByIdentifier=function(identifier){
     )
 };
 
+InstituteService.prototype.updateActiveStatus=function(status,app){
+    var models1 = app.get('models');
+
+    return Promise.resolve(
+        models1.Institute.findOne({
+            where: { Identifier: status.identifier }
+        }).then(function(institute){
+             institute.IsActive=status.active;
+             institute.save().then(function(result){
+                 return result;
+             })
+        })
+    )
+};
 
 module.exports=InstituteService;

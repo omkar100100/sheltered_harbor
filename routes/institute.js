@@ -22,5 +22,8 @@ router.put('/contract', function(req, res) {
       contractHistoryController.updateInstituteContract(req,res);
 });
 
+router.put('/enable', function(req, res) {
+      instituteController.updateActiveStatus(req,res);
+});
 
 module.exports=router;

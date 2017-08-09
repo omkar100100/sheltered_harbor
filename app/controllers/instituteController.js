@@ -29,6 +29,16 @@ InstituteController.prototype.getAllInstitutes= function(req, res) {
   
 };
 
+InstituteController.prototype.updateActiveStatus= function(req, res) {
+        var instituteService = new InstituteService();
+        var status=req.body;
+        instituteService.updateActiveStatus(status,req.app).then(function(result) {
+           return res.json(result);
+        })
+  
+};
+
+
 
 
 

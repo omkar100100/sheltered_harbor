@@ -13,12 +13,34 @@ var config=require('./config');
 var helmet=require('helmet');
 var fs=require('fs');
 var users  = require('./routes/users');
+var master=require('./routes/masterData');
 var roles=require('./routes/roles');
 var nodes=require('./routes/quorumNode');
 var institute=require('./routes/institute');
 var shLog=require('./routes/shLog');
 var cors = require('cors');
 
+// var TokenSigner = require('jwt-js').TokenSigner;
+// var decodeToken = require('jwt-js').decodeToken;
+
+//     rawPrivateKey = '278a5de700e29faae8e40e366ec5012b5ec63d36ec77e8a2417154cc1d25383f',
+//     tokenPayload = {"issuedAt": "1440713414.85", 
+//     "challenge": "7cd9ed5e-bb0e-49ea-a323-f28bde3a0549", 
+//     "issuer": 
+//         {"publicKey": "03fdd57adec3d438ea237fe46b33ee1e016eda6b585c3e27ea66686c2ea5358479", 
+//         "chainPath": "bd62885ec3f0e3838043115f4ce25eedd22cc86711803fb0c19601eeef185e39", 
+//         "publicKeychain": "xpub661MyMwAqRbcFQVrQr4Q4kPjaP4JjWaf39fBVKjPdK6oGBayE46GAmKzo5UDPQdLSM9DufZiP8eauy56XNuHicBySvZp7J5wsyQVpi2axzZ", 
+//         "blockchainid": "ryan"
+//         }
+//     },
+
+
+//     token = new TokenSigner('ES256k', rawPrivateKey).sign(tokenPayload)
+
+//     console.log(token);
+    
+//     tokenData = decodeToken(token)
+//     console.log(tokenData);
 
 var currentConfig=config.getCurrentConfig();
 console.log(currentConfig.app.port);
@@ -36,6 +58,7 @@ app.use('/user',users);
 app.use('/node',nodes);
 app.use('/institute',institute);
 app.use('/shlog',shLog);
+app.use('/master',master);
 
 //models.sequelize.sync({force:true}).then(function () {
     console.log("Models Synchronized");
@@ -56,7 +79,9 @@ models.Role.sync().then(function(){
                         models.ServiceProviderMapping.sync().then(function(){
                             models.UserInstitute.sync().then(function(){
                                 models.InstituteHistory.sync().then(function(){
+                                        // models.Registration.sync().then(function(){
                                
+                                        // })
                                 })
                             })
                         })

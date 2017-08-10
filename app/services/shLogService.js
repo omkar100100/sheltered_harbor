@@ -117,19 +117,31 @@ SHLogService.prototype.getSHLogsForInstitutes=function(){
                 where: { IsActive : true }
             }).then(function(institutes){
                     var shLogsArr=[]
-                    var fn = function asyncMultiplyBy2(institute){
+                    var fn = function generate(institute){
                                     return SHLogService.prototype.getSHLog(institute.id).then(function(shLogs){
                                         var obj={};
                                         var tempSHLog=shLogs[0];
                                         if(tempSHLog){
                                             obj.logId=tempSHLog.id;
                                             obj.instituteName=institute.LegalName;
-                                            obj.submittedBy=institute.ServiceProviderId;
+                                            if(!institute.ServiceProviderId){
+                                                obj.submittedBy="Institution"
+                                            }else{
+                                                obj.submittedBy="Service Provider"
+                                            }
+                                            
                                             obj.lastSubmittedOn=tempSHLog.UploadTimestamp;
 
                                             var since= new Moment(tempSHLog.AttestationDate).fromNow();
                                             obj.daysSinceLastSubmission=since;
                                             obj.instituteId=institute.id;
+
+                                            var more={};
+                                            more.Filename=tempSHLog.Filename;
+                                            more.Tag=tempSHLog.Tag;
+                                            more.Hash=tempSHLog.TxHash;
+                                            more.AdditionalData=tempSHLog.AdditionalData;
+                                            obj.more=more;
                                             shLogsArr.push(obj);
                                         }
                                         

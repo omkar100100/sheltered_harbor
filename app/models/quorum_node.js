@@ -10,7 +10,10 @@ module.exports = function(sequelize, DataTypes) {
           allowNull: false
         },
         name: Sequelize.STRING,
-        EthereumHash : Sequelize.STRING,
+        EthereumHash : { 
+          type:Sequelize.STRING,
+          unique: true
+        },
         IpAddress: Sequelize.STRING,
         LastSyncDate: Sequelize.STRING,
         createdAt: {

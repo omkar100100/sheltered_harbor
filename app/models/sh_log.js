@@ -9,7 +9,10 @@ module.exports = function(sequelize, DataTypes) {
           autoIncrement: true,
           allowNull: false
         },
-        TxHash : Sequelize.STRING,
+        TxHash : {
+          type:Sequelize.STRING,
+          unique: true
+      },
         Filename: { 
           type:Sequelize.STRING
         },

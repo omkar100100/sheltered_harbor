@@ -25,7 +25,10 @@ module.exports = function(sequelize, DataTypes) {
         ContactEmail: Sequelize.STRING,
         ContactPhone: Sequelize.STRING,
         Type: Sequelize.STRING,
-        Identifier: Sequelize.STRING,
+        Identifier: {
+          type:Sequelize.STRING,
+          unique: true
+        },
         ServiceProviderId :{
           type: Sequelize.INTEGER,
           allowNull: true,

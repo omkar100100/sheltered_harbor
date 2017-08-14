@@ -2,7 +2,7 @@ var models  = require('../app/models');
 var instituteController = require('../app/controllers/instituteController');
 var contractHistoryController = require('../app/controllers/contractHistoryController');
 var express = require('express');
-var response=require('../common/response');
+var response=require('../app/common/response');
 
 router=express.Router();
 

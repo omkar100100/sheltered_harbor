@@ -8,11 +8,16 @@ module.exports.handleSuccessResponse = function(statusCode, data, res, format) {
     format = 'json';
   }
 
+console.log("statusCode": statusCode);
+console.log("data": data);
+
   switch (format) {
     case 'binary':
+      console.log("Inside binary")
       res.end(data, 'binary');
       break;
     default:
+      console.log("Inside default");
       res.status(statusCode).json(data);
       break;
   }

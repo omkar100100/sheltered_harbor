@@ -10,6 +10,7 @@ InstituteService.prototype.createInstitute=function(institute,app){
         var promise1 = function () {
             return new Promise(function (resolve, reject) {
                 models.Institute.create(institute).then(function(institute){
+                            console.log("Institute Introduced");
                             institute1=institute;
                             var contractService=new ContractService();
                             var contract={};
@@ -21,6 +22,7 @@ InstituteService.prototype.createInstitute=function(institute,app){
                             contract.Note=null;
                             contractService.logContractHistory(contract,app)
                             .then(function(result){
+                                console.log("Institute History Entered");
                                 resolve(institute);
                             })
                 

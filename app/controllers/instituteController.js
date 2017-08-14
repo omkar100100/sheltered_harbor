@@ -21,6 +21,15 @@ InstituteController.prototype.createInstitute = function(req, res) {
         })
 };
 
+
+InstituteController.prototype.register = function(req, res) {
+        var institute=req.body;
+        var respObj={};
+        respObj.status="Participant Registerd";
+       response.handleSuccessResponse(200, respObj, res);
+};
+
+
 InstituteController.prototype.updateInstitute = function(req, res) {
         var institute=req.body;
         var instituteService = new InstituteService();

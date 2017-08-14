@@ -1,6 +1,6 @@
 {
   "host": "Node3",
-  "port": 443,
+  "port": 8001,
   "remoting": {
     "context": false,
     "rest": {

@@ -30,4 +30,8 @@ router.put('/', function(req, res) {
       instituteController.updateInstitute(req,res);
 });
 
+router.post('/register', function(req, res) {
+      instituteController.register(req,res);
+});
+
 module.exports=router;

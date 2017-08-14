@@ -23,8 +23,8 @@ var cors = require('cors');
 
 
 
-var currentConfig=config.getCurrentConfig();
-console.log(currentConfig.app.port);
+//var currentConfig=config.getCurrentConfig();
+//console.log(currentConfig.app.port);
 
 var app = express();
 app.use(bodyParser.json());

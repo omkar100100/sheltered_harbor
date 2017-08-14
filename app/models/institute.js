@@ -17,6 +17,9 @@ module.exports = function(sequelize, DataTypes) {
           type: Sequelize.DATE ,
           allowNull:false
         },
+        Hash: {
+          type: Sequelize.STRING
+        },
         ContractTo: { 
           type: Sequelize.DATE ,
           allowNull: false
@@ -44,7 +47,8 @@ module.exports = function(sequelize, DataTypes) {
           allowNull: false,
           references: {
             model: 'QuorumNode',
-            key: 'id'
+            key: 'id',
+            deferrable: Sequelize.Deferrable.NOT
           }
         },
         IsActive:{

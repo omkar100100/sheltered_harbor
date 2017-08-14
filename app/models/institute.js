@@ -44,7 +44,7 @@ module.exports = function(sequelize, DataTypes) {
         IdType :Sequelize.STRING,
         NodeId: {
           type: Sequelize.INTEGER,
-          allowNull: false,
+          allowNull: true,
           references: {
             model: 'QuorumNode',
             key: 'id',

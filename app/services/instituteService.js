@@ -2,6 +2,8 @@ var models  = require('../models');
 var Promise = require('bluebird');
 var ContractService=require('./contractHistoryService');
 var Web3JSService=require('./web3jsService');
+var randomstring = require("randomstring");
+var md5 = require('md5');
 
 var InstituteService=function(){};
 
@@ -9,6 +11,9 @@ var InstituteService=function(){};
 InstituteService.prototype.createInstitute=function(institute,app){
         var promise1 = function () {
             return new Promise(function (resolve, reject) {
+                var rndString=randomstring.generate();
+                var hash=md5(rndString);
+                institute.Hash=hash;
                 models.Institute.create(institute).then(function(institute){
                             console.log("Institute Introduced");
                             institute1=institute;

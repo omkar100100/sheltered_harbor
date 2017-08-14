@@ -1,5 +1,5 @@
 {
-  "host": "Node3",
+  "host": "localhost",
   "port": 8001,
   "remoting": {
     "context": false,

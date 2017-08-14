@@ -8,8 +8,8 @@ module.exports.handleSuccessResponse = function(statusCode, data, res, format) {
     format = 'json';
   }
 
-console.log("statusCode": statusCode);
-console.log("data": data);
+console.log("statusCode" + statusCode);
+console.log("data" + data);
 
   switch (format) {
     case 'binary':

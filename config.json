@@ -1,5 +1,5 @@
 {
-  "host": "localhost",
+  "host": "52.170.210.64",
   "port": 8001,
   "remoting": {
     "context": false,

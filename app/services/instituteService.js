@@ -1,25 +1,98 @@
 var models  = require('../models');
 var Promise = require('bluebird');
 var ContractService=require('./contractHistoryService');
+var Web3JSService=require('./web3jsService');
 
 var InstituteService=function(){};
 
 
 InstituteService.prototype.createInstitute=function(institute,app){
-   return Promise.resolve(
+   institute1=null;
+
+   var promise1 = function () {
+    return new Promise(function (resolve, reject) {
         models.Institute.create(institute).then(function(institute){
-            var contractService=new ContractService();
-            var contract={};
-            contract.InstituteId=institute.id;
-            contract.RenewalDateFrom=institute.ContractFrom;
-            contract.RenewalDateTo=institute.ContractTo;
-            contract.OldFromDate=null;
-            contract.OldToDate=null;
-            contract.Note=null;
-            contractService.logContractHistory(contract,app);
-            return institute;
-        })
-    );
+                    institute1=institute;
+                    var contractService=new ContractService();
+                    var contract={};
+                    contract.InstituteId=institute.id;
+                    contract.RenewalDateFrom=institute.ContractFrom;
+                    contract.RenewalDateTo=institute.ContractTo;
+                    contract.OldFromDate=null;
+                    contract.OldToDate=null;
+                    contract.Note=null;
+                    contractService.logContractHistory(contract,app)
+                    .then(function(result){
+                        resolve(result);
+                    })
+          
+        });
+
+
+        // setTimeout(function () {
+        //     console.log("promise1 fulfilled");
+        //     resolve();
+        // }, 1000)
+    })
+};
+
+var promise2 = function () {
+    return new Promise(function (resolve, reject) {
+            obj={};
+            obj.orgName=institute1.LegalName;
+            obj.orgAddress=institute1.Address;
+            obj.isAgency=true;
+            obj.signature="Test Signature";
+
+            var web3js=new Web3JSService();
+            web3js.saveOrganization(obj)
+            .then(function(result){
+                resolve(result);
+            });
+        // setTimeout(function () {
+        //     console.log("promise2 fulfilled");
+        //     resolve()
+        // }, 50)
+    })
+};
+
+return Promise.map([promise1, promise2], function (promiseFn) {
+    return promiseFn(); //make sure that here You return Promise
+}, {concurrency: 1}); //it will run promises sequentially 
+
+
+
+
+     
+
+
+        
+//    return Promise.resolve(
+//           models.Institute.create(institute).then(function(institute){
+//             obj={};
+//             obj.orgName=institute.LegalName;
+//             obj.orgAddress=institute.Address;
+//             obj.isAgency=true;
+//             obj.signature="Test Signature";
+
+//             var web3js=new Web3JSService();
+//             web3js.saveOrganization(obj)
+//             .then(function(web3jsResult){
+//                     var contractService=new ContractService();
+//                     var contract={};
+//                     contract.InstituteId=institute.id;
+//                     contract.RenewalDateFrom=institute.ContractFrom;
+//                     contract.RenewalDateTo=institute.ContractTo;
+//                     contract.OldFromDate=null;
+//                     contract.OldToDate=null;
+//                     contract.Note=null;
+//                     contractService.logContractHistory(contract,app);
+//                     return web3jsResult.transactionHash;
+//             })
+
+            
+//         })
+//     );
 };
 
 InstituteService.prototype.findById=function(id,app){

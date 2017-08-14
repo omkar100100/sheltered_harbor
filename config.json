@@ -1,5 +1,5 @@
 {
-  "host": "52.170.210.64",
+  "host": "Node3",
   "port": 8001,
   "remoting": {
     "context": false,

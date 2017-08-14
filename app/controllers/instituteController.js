@@ -21,6 +21,14 @@ InstituteController.prototype.createInstitute = function(req, res) {
         })
 };
 
+InstituteController.prototype.updateInstitute = function(req, res) {
+        var institute=req.body;
+        var instituteService = new InstituteService();
+        instituteService.updateInstitute(institute,req.app).then(function(institute){
+            response.handleSuccessResponse(200, institute, res);
+        })
+};
+
 InstituteController.prototype.getAllInstitutes= function(req, res) {
         var instituteService = new InstituteService();
         instituteService.getAllInstitutes().then(function(result) {

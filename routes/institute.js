@@ -26,4 +26,8 @@ router.put('/enable', function(req, res) {
       instituteController.updateActiveStatus(req,res);
 });
 
+router.put('/', function(req, res) {
+      instituteController.updateInstitute(req,res);
+});
+
 module.exports=router;

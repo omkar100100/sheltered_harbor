@@ -5,30 +5,6 @@ var ContractService=require('./contractHistoryService');
 var InstituteService=function(){};
 
 
-// InstituteService.prototype.getInstitute=function(instituteId){
-//     return Promise.resolve(
-//         models.Institute.findById(instituteId).then(function(institutes){
-//             var instituteArr=[];
-//             institutes.forEach(institute){
-//                 var obj={};
-//                 obj.name=institute.LegalName;
-//                 obj.type=institute.Type;
-//                 obj.uniqueId=institute.UniqueId;
-//                 obj.contractEndDate=institute.ContractTo
-//                 instituteArr.push(obj);
-//             }
-//             return institute;
-//         })
-//     );
-// }
-
-
-
-// //TODO: TOGGLE STATUS
-// InstituteService.prototype.toggleStatus=function(instituteId){
-   
-// }
-
 InstituteService.prototype.createInstitute=function(institute,app){
    return Promise.resolve(
         models.Institute.create(institute).then(function(institute){
@@ -37,7 +13,6 @@ InstituteService.prototype.createInstitute=function(institute,app){
             contract.InstituteId=institute.id;
             contract.RenewalDateFrom=institute.ContractFrom;
             contract.RenewalDateTo=institute.ContractTo;
-            //TODO: calculate if old contract exists
             contract.OldFromDate=null;
             contract.OldToDate=null;
             contract.Note=null;
@@ -46,6 +21,41 @@ InstituteService.prototype.createInstitute=function(institute,app){
         })
     );
 };
+
+InstituteService.prototype.findById=function(id,app){
+    var models1 = app.get('models');
+    return Promise.resolve(
+        models1.Institute.findOne({
+            where: { 
+                IsActive: true ,
+                id: id
+            }
+        }).then(function(institute1){
+             return institute1;
+        })
+    )
+}
+
+InstituteService.prototype.updateInstitute=function(institute,app){
+   return Promise.resolve(
+        InstituteService.prototype.findById(institute.id,app)
+        .then(function(inst){
+
+                var obj={};
+                obj.Address=institute.Address,
+                obj.ContractState=institute.ContractState,
+                obj.ContactName=institute.ContactName,
+                obj.ContactEmail=institute.ContactEmail,
+                obj.ContactPhone=institute.ContactPhone
+            
+            return inst.update(obj)
+            .then(function(updatedInst){
+                return updatedInst;
+            })
+        })
+    );
+};
+
 
 InstituteService.prototype.updateContract=function(newContract,app){
     var models1 = app.get('models');
@@ -98,5 +108,7 @@ InstituteService.prototype.updateActiveStatus=function(status,app){
         })
     )
 };
+
+
 
 module.exports=InstituteService;

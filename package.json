@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "pretest": "jshint .",
-    "start": "node app",
+    "start": "node server HTTP=true",
     "test": "mocha test/*test.js"
   },
   "dependencies": {
@@ -39,6 +39,10 @@
     "solc": "^0.4.13",
     "sqlite3": "^3.0.8",
     "web3": "^0.19.0",
-    "web3-quorum": "^0.1.1"
+    "web3-quorum": "^0.1.1",
+
+    "loopback": "^3.0.0",
+    "loopback-boot": "^2.6.5",
+     "loopback-ssl": "1.0.1"
   }
 }

@@ -2,6 +2,7 @@ var models  = require('../app/models');
 var instituteController = require('../app/controllers/instituteController');
 var contractHistoryController = require('../app/controllers/contractHistoryController');
 var express = require('express');
+var response=require('../common/response');
 
 router=express.Router();
 
@@ -16,10 +17,9 @@ router.post('/', function(req, res) {
             headers["Access-Control-Allow-Origin"] = "*";
             headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, DELETE, OPTIONS";
             headers["Access-Control-Allow-Credentials"] = false;
-            headers["Access-Control-Max-Age"] = '86400'; // 24 hours
             headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept";
             res.writeHead(200, headers);
-            res.end();
+            response.handleSuccessResponse(200, null, res);
       } else {
             instituteController.createInstitute(req,res);
       }

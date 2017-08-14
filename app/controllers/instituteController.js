@@ -16,7 +16,7 @@ InstituteController.prototype.getInstitute = function(req, res) {
 InstituteController.prototype.createInstitute = function(req, res) {
         var institute=req.body;
          console.log("Creating Institute Introduction");
-         console.log("PAYLOAD"+ req.body);
+         console.log("PAYLOAD"+ JSON.stringify(req.body));
         var instituteService = new InstituteService();
         instituteService.createInstitute(institute,req.app).then(function(institute){
             response.handleSuccessResponse(200, institute, res);

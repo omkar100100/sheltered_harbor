@@ -61,7 +61,7 @@ InstituteService.prototype.register=function(institute,app){
 
         var promise1 = function () {
             return new Promise(function (resolve, reject) {
-                    InstituteService.prototype.findInstituteByHash(institute.Hash,app)
+                    InstituteService.prototype.findInstituteByHash(institute.RegistrationKey,app)
                     .then(function(institute1){
                         if(institute1){
                             obj={};

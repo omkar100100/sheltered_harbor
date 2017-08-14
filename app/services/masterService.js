@@ -5,7 +5,7 @@ MasterService=function(){}
 
 MasterService.prototype.getIdentifierTypes=function(){
     return new Promise(function(resolve,reject){
-        resolve(CONSTANTS.IDTYPES);
+        resolve(CONSTANTS);
     })
 }
 

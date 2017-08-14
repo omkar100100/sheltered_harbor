@@ -1,12 +1,16 @@
  Enum = require('enum');
 
-const IDType=new Enum(['DTCC CN','FS RSSD','ABA RTN', 'FDIC CN','NCUA CN']);
 
 
-CONSTANTS={
+CONSTANTS=[{name:"DTCC CN",id:"1"},
+            {name:"FS RSSD",id:"2"},    
+            {name:"ABA RTN",id:"3"},    
+            {name:"FDIC CN",id:"4"},    
+            {name:"NCUA CN",id:"5"}    
+            ]    
 
-    IDTYPES :   IDType
+    
 
-}
+
 
 module.exports=CONSTANTS;

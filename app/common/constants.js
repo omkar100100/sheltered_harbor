@@ -1,6 +1,6 @@
  Enum = require('enum');
 
-const IDType=new Enum(['ABA RTN','Test Type']);
+const IDType=new Enum(['DTCC CN','FS RSSD','ABA RTN', 'FDIC CN','NCUA CN']);
 
 
 CONSTANTS={

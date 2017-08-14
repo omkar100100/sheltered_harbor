@@ -26,10 +26,10 @@ Web3JSService.prototype.saveAttestation=function(shLog){
     params= [ 0, shLog.Filename,shLog.Hash, shLog.Tag, shLog.Name, shLog.AdditionalData, shLog.Signature ]
     params[1]=shLog.FileName;
 
-    contract.methods["attest"](...params)["send"]({ from })
-    .then(function(result){
-        console.log(result);
-    })
+    return  contract.methods["attest"](...params)["send"]({ from })
+    // .then(function(result){
+    //     console.log(result);
+    // })
     
 }
 

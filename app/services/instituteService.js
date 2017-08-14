@@ -7,6 +7,19 @@ var md5 = require('md5');
 
 var InstituteService=function(){};
 
+InstituteService.prototype.findInstituteByHash=function(hash,app){
+        
+            return new Promise(function (resolve, reject) {
+                var models1 = app.get('models');
+                models.Institute.findOne({
+                    where : {  Hash: hash}
+                })
+                .then(function(institute){
+                    resolve(institute);
+                })
+            })
+        
+}
 
 InstituteService.prototype.createInstitute=function(institute,app){
         var promise1 = function () {
@@ -16,7 +29,6 @@ InstituteService.prototype.createInstitute=function(institute,app){
                 institute.Hash=hash;
                 models.Institute.create(institute).then(function(institute){
                             console.log("Institute Introduced");
-                            institute1=institute;
                             var contractService=new ContractService();
                             var contract={};
                             contract.InstituteId=institute.id;
@@ -47,20 +59,30 @@ InstituteService.prototype.register=function(institute,app){
     // Validate reg key
     // Invoke smart contract
 
-    var promise2 = function () {
+        var promise1 = function () {
             return new Promise(function (resolve, reject) {
-                    obj={};
-                    obj.orgName=institute1.LegalName;
-                    obj.orgAddress=institute1.Address;
-                    obj.isAgency=true;
-                    obj.signature="Test Signature";
+                    InstituteService.prototype.findInstituteByHash(institute.Hash,app)
+                    .then(function(institute1){
+                        if(institute1){
+                            obj={};
+                            obj.orgName=institute1.LegalName;
+                            obj.orgAddress=institute1.Address;
+                            obj.isAgency=true;
+                            obj.signature="Test Signature";
 
-                    var web3js=new Web3JSService();
-                    web3js.saveOrganization(obj)
-                    .then(function(result){
-                        resolve(result);
-                    });
-            
+                            var web3js=new Web3JSService();
+                            web3js.saveOrganization(obj)
+                            .then(function(result){
+                                resolve(result);
+                            });
+                        }else{
+                            throw Error("Invalid Registration");
+                        }
+                       
+                    })
+                    .catch(function(error){
+                        reject(error);
+                    })
             })
         };
 

@@ -4,6 +4,7 @@ var jQuery = require("jquery-extend");
 var async=require('async');
 var InstitueService=require('./instituteService');
 var Moment= require('moment-timezone');
+var Web3JSService=require('./web3jsService');
 
 var SHLogService=function(){};
 
@@ -62,52 +63,84 @@ SHLogService.prototype.getSHLogs=function(instituteId){
 
 
 SHLogService.prototype.saveSHLogInstitute=function(log){
-    return new Promise(function(resolve,reject){    
-        var file={};
-        var fileParts=[];
+    var institute1=null;
+    var shLog={}
+     var promise1 = function () {
+          return new Promise(function (resolve, reject) {
+                    var file={};
+                    var fileParts=[];
+                    //var fullFileName="SH_20160620_021000021_3_10_001_00_OptionalMyStuffSuffix";
+                    var fullFileName=log.FileName;
+                    fileParts=fullFileName.split("_");
+                    console.log(fileParts);
+                    file.prefix=fileParts[0];
+                    var moment= new Moment({year: fileParts[1].substring(0,4), month: fileParts[1].substring(4,6), day: fileParts[1].substring(6,8)});
+                    file.fileDate=moment.format();
+                    file.instIdentifier=fileParts[2];
+                    file.instIdType=fileParts[3];
+                    file.fileSet=fileParts[4];
+                    file.version=fileParts[5];
+                    file.fileId=fileParts[6];
+                    file.seq=fileParts[7];
+                    var instituteService=new InstitueService();
+                    instituteService.getInstituteByIdentifier(file.instIdentifier).then(function(institute){
+                        institute1=institute;
+                        
+                        shLog.TxHash=log.TxHash;
+                        shLog.Filename=fullFileName;
+                        shLog.Tag=log.Tag;
+                        shLog.AdditionalData=log.AdditionalData;
+                        shLog.AttestationDate=file.fileDate;
+                        shLog.UploadTimestamp=file.fileDate;
+                        shLog.Status=true;
+                        shLog.InstituteId=institute.id;
+                        if(institute.ServiceProviderId){
+                            shLog.ServiceProviderId=institute.ServiceProviderId;
+                        }else{
+                            shLog.ServiceProviderId=institute.id;
+                        }
+                        
+                        SHLogService.prototype.createSHLog(shLog)
+                        .then(function(result){
+                            resolve(result);
+                        })
+                        .catch(function(error){
+                            reject(error);
+                        })
 
-        //var fullFileName="SH_20160620_021000021_3_10_001_00_OptionalMyStuffSuffix";
-        var fullFileName=log.FileName;
-   
-        fileParts=fullFileName.split("_");
-        console.log(fileParts);
-        file.prefix=fileParts[0];
-        var moment= new Moment({year: fileParts[1].substring(0,4), month: fileParts[1].substring(4,6), day: fileParts[1].substring(6,8)});
-        file.fileDate=moment.format();
-        file.instIdentifier=fileParts[2];
-        file.instIdType=fileParts[3];
-        file.fileSet=fileParts[4];
-        file.version=fileParts[5];
-        file.fileId=fileParts[6];
-        file.seq=fileParts[7];
-        var instituteService=new InstitueService();
-        instituteService.getInstituteByIdentifier(file.instIdentifier).then(function(institute){
-            var shLog={}
-            shLog.TxHash=log.TxHash;
-            shLog.Filename=fullFileName;
-            shLog.Tag=log.Tag;
-            shLog.AdditionalData=log.AdditionalData;
-            shLog.AttestationDate=file.fileDate;
-            shLog.UploadTimestamp=file.fileDate;
-            shLog.Status=true;
-            shLog.InstituteId=institute.id;
-            if(institute.ServiceProviderId){
-                shLog.ServiceProviderId=institute.ServiceProviderId;
-            }else{
-                shLog.ServiceProviderId=institute.id;
-            }
-            
-    
-            SHLogService.prototype.createSHLog(shLog)
-            .then(function(result){
-                resolve(result);
-            })
-            .catch(function(error){
-                reject(error);
-            })
+                     
 
-      })
-    })
+                })
+
+            }) //Promise
+        };// Promise function 
+
+        
+         var promise2 = function () {
+            return new Promise(function (resolve, reject) {
+                        //TODO: hit web3js part
+                        obj={};
+                        obj.Name=institute1.LegalName;
+                        obj.Tag=shLog.Tag;
+                        obj.Hash="Test Hash";
+                        obj.FileName=shLog.Filename;
+                        obj.AdditionalData=shLog.AdditionalData;
+                        obj.Signature="Test Signature";
+
+                        var web3js=new Web3JSService();
+                        web3js.saveAttestation(obj)
+                        .then(function(result){
+                            resolve(result);
+                        })
+            });
+         };
+
+
+        return Promise.map([promise1,promise2], function (promiseFn) {
+            return promiseFn();
+        }, {concurrency: 1}); 
+
+      
 }
 
 

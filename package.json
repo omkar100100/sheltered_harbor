@@ -23,6 +23,10 @@
     "install": "^0.10.1",
     "jquery-extend": "^2.0.3",
     "jsonwebtoken": "^5.7.0",
+    "loopback": "^3.0.0",
+    "loopback-boot": "^2.6.5",
+    "loopback-ssl": "1.0.1",
+    "md5": "^2.2.1",
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.13",
     "morgan": "^1.6.1",
@@ -34,17 +38,12 @@
     "pg-promise": "^5.6.4",
     "pg-transaction": "^1.0.4",
     "pug": "^2.0.0-beta11",
+    "randomstring": "^1.1.5",
     "sequelize": "^4.4.2",
     "serve-favicon": "^2.3.2",
     "solc": "^0.4.13",
     "sqlite3": "^3.0.8",
-
-    "web3-quorum": "^0.1.1",
-
-    "loopback": "^3.0.0",
-    "loopback-boot": "^2.6.5",
-     "loopback-ssl": "1.0.1",
-
-    "web3": "1.0.0-beta.15"
+    "web3": "1.0.0-beta.15",
+    "web3-quorum": "^0.1.1"
   }
 }

@@ -73,7 +73,12 @@ InstituteService.prototype.register=function(institute,app){
                             var web3js=new Web3JSService();
                             web3js.saveOrganization(obj)
                             .then(function(result){
-                                resolve(result);
+                                var response={};
+                                response['SH-Status']="On Boarding status Passed";
+                                response['SH-StatusMessage']="On Boarding Created";
+                                response['debug']=result;
+                                resolve(response);
+                            
                             });
                         }else{
                             throw Error("Invalid Registration");

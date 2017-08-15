@@ -63,14 +63,23 @@ SHLogService.prototype.getSHLogs=function(instituteId){
 
 
 SHLogService.prototype.saveSHLogInstitute=function(log){
+   // var models1 = app.get('models');
+
     var institute1=null;
     var shLog={}
+    shLogResult=null;
+
      var promise1 = function () {
           return new Promise(function (resolve, reject) {
                     var file={};
                     var fileParts=[];
                     //var fullFileName="SH_20160620_021000021_3_10_001_00_OptionalMyStuffSuffix";
-                    var fullFileName=log.FileName;
+
+
+                    var fullFileName=log['SH-filename'];
+
+                    //TODO: 
+                    //log['SH-hash']]
                     fileParts=fullFileName.split("_");
                     console.log(fileParts);
                     file.prefix=fileParts[0];
@@ -86,10 +95,13 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
                     instituteService.getInstituteByIdentifier(file.instIdentifier).then(function(institute){
                         institute1=institute;
                         
-                        shLog.TxHash=log.TxHash;
+                        //TODO:
+                        //shLog.TxHash=
+                        //log['SH-Signature']
+
                         shLog.Filename=fullFileName;
-                        shLog.Tag=log.Tag;
-                        shLog.AdditionalData=log.AdditionalData;
+                        shLog.Tag=log['SH-tag'];
+                        shLog.AdditionalData=log['SH-additional-data'];
                         shLog.AttestationDate=file.fileDate;
                         shLog.UploadTimestamp=file.fileDate;
                         shLog.Status=true;
@@ -102,6 +114,7 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
                         
                         SHLogService.prototype.createSHLog(shLog)
                         .then(function(result){
+                            shLogResult=result;                            
                             resolve(result);
                         })
                         .catch(function(error){
@@ -118,19 +131,23 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
         
          var promise2 = function () {
             return new Promise(function (resolve, reject) {
-                        //TODO: hit web3js part
                         obj={};
                         obj.Name=institute1.LegalName;
-                        obj.Tag=shLog.Tag;
-                        obj.Hash="Test Hash";
-                        obj.FileName=shLog.Filename;
-                        obj.AdditionalData=shLog.AdditionalData;
-                        obj.Signature="Test Signature";
+                        obj.Tag=log['SH-tag']
+                        obj.Hash=log['SH-hash'];
+                        obj.FileName=log['SH-filename'];
+                        obj.AdditionalData=log['SH-additional-data'];
+                        obj.Signature=log['SH-Signature'];
 
                         var web3js=new Web3JSService();
                         web3js.saveAttestation(obj)
                         .then(function(result){
-                            resolve(result);
+                            shLogResult.update({ TxHash : result.transactionHash})
+                            .then(function(inst){
+                                resolve(result);
+                            })
+                          
+                            
                         })
             });
          };

@@ -61,14 +61,14 @@ InstituteService.prototype.register=function(institute,app){
 
         var promise1 = function () {
             return new Promise(function (resolve, reject) {
-                    InstituteService.prototype.findInstituteByHash(institute.RegistrationKey,app)
+                    InstituteService.prototype.findInstituteByHash(institute['SH-RegistrationKey'],app)
                     .then(function(institute1){
                         if(institute1){
                             obj={};
                             obj.orgName=institute1.LegalName;
                             obj.orgAddress=institute1.Address;
                             obj.isAgency=true;
-                            obj.signature="Test Signature";
+                            obj.signature=institute['SH-Signature'];
 
                             var web3js=new Web3JSService();
                             web3js.saveOrganization(obj)

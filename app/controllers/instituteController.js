@@ -31,6 +31,10 @@ InstituteController.prototype.register = function(req, res) {
         instituteService.register(institute,req.app).then(function(institute){
             response.handleSuccessResponse(200, institute, res);
         })
+        .catch(function(error){
+         response.handleError(error, res); 
+          // return error;                       
+        })
 };
 
 

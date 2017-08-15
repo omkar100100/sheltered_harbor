@@ -27,6 +27,7 @@ module.exports = function(sequelize, DataTypes) {
         ContactName: Sequelize.STRING,
         ContactEmail: Sequelize.STRING,
         ContactPhone: Sequelize.STRING,
+
         Type: Sequelize.STRING,
         Identifier: {
           type:Sequelize.STRING,
@@ -55,6 +56,11 @@ module.exports = function(sequelize, DataTypes) {
           type: Sequelize.BOOLEAN,
           allowNull: false, 
           defaultValue: true
+        },
+        Registered:{
+          type: Sequelize.BOOLEAN,
+          allowNull: false, 
+          defaultValue: false
         },
         createdAt: {
           type: Sequelize.DATE,

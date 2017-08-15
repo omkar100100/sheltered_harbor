@@ -24,28 +24,34 @@ console.log("data" + data);
 };
 
 exports.handleError = function(err, res) {
-  if (err.formatError) {
-    res.logger.error(err.formatError());
-  } else {
-    res.logger.error(err.toString());
-  }
+  // if (err.formatError) {
+  //   res.logger.error(err.formatError());
+  // } else {
+  //   res.logger.error(err.toString());
+  // }
 
-  var payload = {
-    error: 'An unknown error has occurred',
-    meta: {
-      code: 999999,
-      requestId: res.id
-    }
-  };
+  // var payload = {
+  //   error: 'An unknown error has occurred',
+  //   meta: {
+  //     code: 999999,
+  //     requestId: res.id
+  //   }
+  // };
 
-  var statusCode = 500;
+  // var statusCode = 500;
 
-  if (util.isError(err) && err.meta) {
-    payload.error = err.meta.message;
-    payload.meta.code = err.meta.code;
-    payload.meta.errors = err.meta.errors;
-    statusCode = err.meta.httpStatusCode;
-  }
+  // if (util.isError(err) && err.meta) {
+  //   payload.error = err.meta.message;
+  //   payload.meta.code = err.meta.code;
+  //   payload.meta.errors = err.meta.errors;
+  //   statusCode = err.meta.httpStatusCode;
+  // }
 
-  res.status(statusCode).json(payload);
+  //res.status(500).send(err.message);
+    payload={}
+    payload.error = err.message;
+    payload.code = 10;
+    statusCode = 500;
+
+    res.status(statusCode).json(payload);
 };

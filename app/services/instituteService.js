@@ -64,24 +64,37 @@ InstituteService.prototype.register=function(institute,app){
                     InstituteService.prototype.findInstituteByHash(institute['SH-RegistrationKey'],app)
                     .then(function(institute1){
                         if(institute1){
-                            obj={};
-                            obj.orgName=institute1.LegalName;
-                            obj.orgAddress=institute1.Address;
-                            obj.isAgency=true;
-                            obj.signature=institute['SH-Signature'];
+                            //TODO:
+                            //Check if it is already registered
+                            if(institute1.Registered){
+                                 throw new Error("Institute/Service Provider already Registration");
+                            }else{
+                                obj={};
+                                obj.orgName=institute1.LegalName;
+                                obj.orgAddress=institute1.Address;
+                                obj.isAgency=true;
+                                obj.signature=institute['SH-Signature'];
 
-                            var web3js=new Web3JSService();
-                            web3js.saveOrganization(obj)
-                            .then(function(result){
-                                var response={};
-                                response['SH-Status']="On Boarding status Passed";
-                                response['SH-StatusMessage']="On Boarding Created";
-                                response['debug']=result;
-                                resolve(response);
+                                var web3js=new Web3JSService();
+                                web3js.saveOrganization(obj)
+                                .then(function(result){
+                                    var response={};
+                                    response['SH-Status']="FI/SP is registered successfully. Please use the same public/private key for attestation.";
+                                    response['SH-StatusMessage']="On Boarding Created";
+                                    response['debug']=result;
+
+                                    //TODO: update registered flag
+                                    institute1.update({Registered:true})
+                                    .then(function(inst){
+                                        resolve(response);
+                                    })
+                                    
+                                
+                                });
+                            }
                             
-                            });
                         }else{
-                            throw Error("Invalid Registration");
+                            throw new Error("Invalid Registration");
                         }
                        
                     })

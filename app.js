@@ -22,21 +22,20 @@ var cors = require('cors');
 
 
 
-
 //var currentConfig=config.getCurrentConfig();
 //console.log(currentConfig.app.port);
 
 var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(logger('dev')); 
+app.use(logger('dev'));
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
-  
+
 
 app.set('models', require('./app/models'));
 var models = app.get('models');
@@ -56,31 +55,31 @@ app.use('/master',master);
 //});
 
 
-models.Role.sync().then(function(){
-    models.User.sync().then(function(){
-        models.AccessLog.sync().then(function(){
-          models.IdType.sync().then(function(){
-            models.QuorumNode.sync().then(function(){
-                models.Institute.sync().then(function(){
-                  models.PasswordRecovery.sync().then(function(){
-                    models.SHLog.sync().then(function(){
-                        models.ServiceProviderMapping.sync().then(function(){
-                            models.UserInstitute.sync().then(function(){
-                                models.InstituteHistory.sync().then(function(){
-                                        // models.Registration.sync().then(function(){
+// models.Role.sync().then(function(){
+//     models.User.sync().then(function(){
+//         models.AccessLog.sync().then(function(){
+//           models.IdType.sync().then(function(){
+//             models.QuorumNode.sync().then(function(){
+//                 models.Institute.sync().then(function(){
+//                   models.PasswordRecovery.sync().then(function(){
+//                     models.SHLog.sync().then(function(){
+//                         models.ServiceProviderMapping.sync().then(function(){
+//                             models.UserInstitute.sync().then(function(){
+//                                 models.InstituteHistory.sync().then(function(){
+//                                         // models.Registration.sync().then(function(){
                                
-                                        // })
-                                })
-                            })
-                        })
-                    })
-                  })
-                })
-            })
-          })     
-        })  
-    })
-})
+//                                         // })
+//                                 })
+//                             })
+//                         })
+//                     })
+//                   })
+//                 })
+//             })
+//           })     
+//         })  
+//     })
+// })
 
 //app.use(cors());
 

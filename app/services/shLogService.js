@@ -144,7 +144,11 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
                         .then(function(result){
                             shLogResult.update({ TxHash : result.transactionHash})
                             .then(function(inst){
-                                resolve(result);
+                                var finalRes={};
+                                finalRes.status="Message passed to Blockchain";
+                                finalRes.message="Creation of blockchain successful";
+                                finalRes.debug=result;
+                                resolve(finalRes);
                             })
                           
                             

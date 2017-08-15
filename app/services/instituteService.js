@@ -67,7 +67,7 @@ InstituteService.prototype.register=function(institute,app){
                             //TODO:
                             //Check if it is already registered
                             if(institute1.Registered){
-                                 throw new Error("Institute/Service Provider already Registration");
+                                 throw new Error("Institute/Service Provider already Registered");
                             }else{
                                 obj={};
                                 obj.orgName=institute1.LegalName;

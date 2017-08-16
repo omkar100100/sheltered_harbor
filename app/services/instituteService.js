@@ -4,6 +4,7 @@ var ContractService=require('./contractHistoryService');
 var Web3JSService=require('./web3jsService');
 var randomstring = require("randomstring");
 var md5 = require('md5');
+const util = require('ethereumjs-util');
 
 var InstituteService=function(){};
 
@@ -72,8 +73,36 @@ InstituteService.prototype.register=function(institute,app){
                                 obj={};
                                 obj.orgName=institute1.LegalName;
                                 obj.orgAddress=institute1.Address;
-                                obj.isAgency=true;
+                                if(institute1.Type=="SP"){
+                                    obj.isAgency=true;    
+                                }else{
+                                    obj.isAgency=false; 
+                                }
+                                
                                 obj.signature=institute['SH-Signature'];
+
+
+                                //SIGNING CONTENT GOES 
+                                 const res = util.fromRpcSig(institute['SH-Signature']);
+                                
+                                //SHOULD FORWARD IT TO MURALI
+                                // const prefix = new Buffer("\x19Ethereum Signed Message:\n");
+                                // const prefixedMsg = util.sha3(
+                                // Buffer.concat([prefix, new Buffer(String(msg.length)), msg])              );
+                                
+
+                                const pubKey  = util.ecrecover(institute['SH-Signature'], res.v, res.r, res.s);
+                                const addrBuf = util.pubToAddress(pubKey);
+                                const computedAddress    = util.bufferToHex(addrBuf);
+                                
+
+                                console.log("Output from Signed Content:" + computedAddress);
+                                // addr is the one you have to check against provided public ethereum address 
+                                console.log('Actual address -'+addr);
+
+
+
+                                //
 
                                 var web3js=new Web3JSService();
                                 web3js.saveOrganization(obj)

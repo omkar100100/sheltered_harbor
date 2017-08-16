@@ -92,13 +92,14 @@ InstituteService.prototype.register=function(institute,app){
                                 
 
                                 const pubKey  = util.ecrecover(institute['SH-Signature'], res.v, res.r, res.s);
+                                console.log("Pub Key:" + pubKey);
                                 const addrBuf = util.pubToAddress(pubKey);
+                                console.log("Address Buff:" + addrBuf);
                                 const computedAddress    = util.bufferToHex(addrBuf);
-                                
-
                                 console.log("Output from Signed Content:" + computedAddress);
-                                // addr is the one you have to check against provided public ethereum address 
-                                console.log('Actual address -'+addr);
+                                
+                                // // addr is the one you have to check against provided public ethereum address 
+                                // console.log('Actual address -'+addr);
 
 
 

@@ -83,27 +83,27 @@ InstituteService.prototype.register=function(institute,app){
 
 
                                 //SIGNING CONTENT GOES 
-                                 const res = util.fromRpcSig(institute['SH-Signature']);
+                                //  const res = util.fromRpcSig(institute['SH-Signature']);
                                 
                                 //SHOULD FORWARD IT TO MURALI
                                 // const prefix = new Buffer("\x19Ethereum Signed Message:\n");
-                                // const prefixedMsg = util.sha3(
-                                // Buffer.concat([prefix, new Buffer(String(msg.length)), msg])              );
+                                // const prefixedMsg = util.sha3(Buffer.concat([prefix, new Buffer(String(msg.length)), msg]));
                                 
+                               // var buf=new Buffer(String(msg.length)), msg])
 
-                                const pubKey  = util.ecrecover(institute['SH-Signature'], res.v, res.r, res.s);
-                                console.log("Pub Key:" + pubKey);
-                                const addrBuf = util.pubToAddress(pubKey);
-                                console.log("Address Buff:" + addrBuf);
-                                const computedAddress    = util.bufferToHex(addrBuf);
-                                console.log("Output from Signed Content:" + computedAddress);
+                                // msg=institute['SH-Signature'];
+                                // var buf = new Buffer(String(msg.length));
+                                // buf.write(msg);
+
+                                // const pubKey  = util.ecrecover(buf, res.v, res.r, res.s);
+                                // console.log("Pub Key:" + pubKey);
+                                // const addrBuf = util.pubToAddress(pubKey);
+                                // console.log("Address Buff:" + addrBuf);
+                                // const computedAddress    = util.bufferToHex(addrBuf);
+                                // console.log("Output from Signed Content:" + computedAddress);
                                 
                                 // // addr is the one you have to check against provided public ethereum address 
                                 // console.log('Actual address -'+addr);
-
-
-
-                                //
 
                                 var web3js=new Web3JSService();
                                 web3js.saveOrganization(obj)
@@ -118,9 +118,10 @@ InstituteService.prototype.register=function(institute,app){
                                     .then(function(inst){
                                         resolve(response);
                                     })
-                                    
-                                
-                                });
+                                })
+                                .catch(function(error){
+                                    console.log("Error:" + error);
+                                })
                             }
                             
                         }else{

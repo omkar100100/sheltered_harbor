@@ -1,4 +1,4 @@
-var dashboardController = require('../app/controllers/DashboardController');
+var dashboardController = require('../app/controllers/dashboardController');
 var express = require('express');
 
 

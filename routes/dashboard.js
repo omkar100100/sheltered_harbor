@@ -4,7 +4,7 @@ var express = require('express');
 
 router=express.Router();
 
-router.post('/participants', function(req, res) {
+router.get('/', function(req, res) {
       dashboardController.getParticiapants(req,res);
 });
 

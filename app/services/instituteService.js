@@ -59,7 +59,7 @@ InstituteService.prototype.createInstitute=function(institute,app){
 InstituteService.prototype.register=function(institute,app){
     // Validate reg key
     // Invoke smart contract
-
+        var models=app.get("models");
         var promise1 = function () {
             return new Promise(function (resolve, reject) {
                     InstituteService.prototype.findInstituteByHash(institute['SH-RegistrationKey'],app)
@@ -114,7 +114,10 @@ InstituteService.prototype.register=function(institute,app){
                                     response['debug']=result;
 
                                     //TODO: update registered flag
-                                    institute1.update({Registered:true})
+                                    //return instance.updateAttributes({syncedAt: sequelize.fn('NOW')});
+
+                                    //institute1.update({Registered:true})
+                                    institute1.updateAttributes({Registered:true , RegisteredDate: models.sequelize.literal('CURRENT_TIMESTAMP')})
                                     .then(function(inst){
                                         resolve(response);
                                     })

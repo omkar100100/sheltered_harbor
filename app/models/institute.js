@@ -62,6 +62,10 @@ module.exports = function(sequelize, DataTypes) {
           allowNull: false, 
           defaultValue: false
         },
+        RegisteredDate:{
+          type: Sequelize.DATE,
+          allowNull: true
+        },
         createdAt: {
           type: Sequelize.DATE,
           allowNull: false,

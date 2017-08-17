@@ -18,7 +18,10 @@ var roles=require('./routes/roles');
 var nodes=require('./routes/quorumNode');
 var institute=require('./routes/institute');
 var shLog=require('./routes/shLog');
+var dashboard=require('./routes/dashboard');
+
 var cors = require('cors');
+
 
 
 
@@ -46,6 +49,7 @@ app.use('/node',nodes);
 app.use('/institute',institute);
 app.use('/shlog',shLog);
 app.use('/master',master);
+app.use('/dashboard',dashboard);
 
 //models.sequelize.sync({force:true}).then(function () {
     console.log("Models Synchronized");
@@ -80,15 +84,6 @@ app.use('/master',master);
 //         })  
 //     })
 // })
-
-//app.use(cors());
-
-// app.use(function(req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "*");
-//   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-//   next();
-// });
 
 app.use(function(err, req, res, next) {
    console.log(err);

@@ -19,8 +19,12 @@ InstituteController.prototype.createInstitute = function(req, res) {
          console.log("PAYLOAD"+ req.body);
          console.log("LEGAL Name"+ req.body.LegalName);
         var instituteService = new InstituteService();
-        instituteService.createInstitute(institute,req.app).then(function(institute){
+        instituteService.createInstitute(institute,req.app)
+        .then(function(institute){
             response.handleSuccessResponse(200, institute, res);
+        })
+        .catch(function(error){
+               response.handleError(error, res);
         })
 };
 
@@ -29,11 +33,10 @@ InstituteController.prototype.register = function(req, res) {
         var institute=req.body;
         var instituteService = new InstituteService();
         instituteService.register(institute,req.app).then(function(institute){
-            response.handleSuccessResponse(200, institute, res);
+                response.handleSuccessResponse(200, institute, res);
         })
         .catch(function(error){
-         response.handleError(error, res); 
-          // return error;                       
+                response.handleError(error, res); 
         })
 };
 

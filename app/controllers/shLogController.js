@@ -25,9 +25,9 @@ SHLogController.prototype.getSHLog = function(req, res) {
 };
 
 SHLogController.prototype.getSHLogsByInstitute = function(req, res) {
-        var instituteId=req.params.instituteId;
+        var search=req.body;
         var sHLogService = new SHLogService();
-        sHLogService.getSHLogs(instituteId).then(function(shLogs) {
+        sHLogService.getSHLogs(search).then(function(shLogs) {
             response.handleSuccessResponse(200, shLogs, res);
         })
   

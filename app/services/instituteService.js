@@ -5,6 +5,8 @@ var Web3JSService=require('./web3jsService');
 var randomstring = require("randomstring");
 var md5 = require('md5');
 const util = require('ethereumjs-util');
+var errors = require('../errors');
+var SequelizeUniqueConstraintError = require("sequelize").ValidationError;
 
 var InstituteService=function(){};
 
@@ -23,12 +25,14 @@ InstituteService.prototype.findInstituteByHash=function(hash,app){
 }
 
 InstituteService.prototype.createInstitute=function(institute,app){
+        //sequelize=app.get('models').sequelize;
         var promise1 = function () {
             return new Promise(function (resolve, reject) {
                 var rndString=randomstring.generate();
                 var hash=md5(rndString);
                 institute.Hash=hash;
-                models.Institute.create(institute).then(function(institute){
+                models.Institute.create(institute)
+                .then(function(institute){
                             console.log("Institute Introduced");
                             var contractService=new ContractService();
                             var contract={};
@@ -44,7 +48,12 @@ InstituteService.prototype.createInstitute=function(institute,app){
                                 resolve(institute);
                             })
                 
-                });
+                })
+                .catch(function(error){
+                    if(error instanceof  SequelizeUniqueConstraintError){
+                        return reject(errors.normalizeError('UNIQUE_CONSTRAINT_FAILED', error, null));
+                    }
+                })
 
             })
         };
@@ -57,8 +66,8 @@ InstituteService.prototype.createInstitute=function(institute,app){
 };
 
 InstituteService.prototype.register=function(institute,app){
-    // Validate reg key
-    // Invoke smart contract
+        // Validate reg key
+        // Invoke smart contract
         var models=app.get("models");
         var promise1 = function () {
             return new Promise(function (resolve, reject) {
@@ -68,7 +77,8 @@ InstituteService.prototype.register=function(institute,app){
                             //TODO:
                             //Check if it is already registered
                             if(institute1.Registered){
-                                 throw new Error("Institute/Service Provider already Registered");
+                                return reject(errors.normalizeError('ALREADY_REGISTERED', null,null));
+                                 //throw new Error("Institute/Service Provider already Registered");
                             }else{
                                 obj={};
                                 obj.orgName=institute1.LegalName;
@@ -81,29 +91,26 @@ InstituteService.prototype.register=function(institute,app){
                                 
                                 obj.signature=institute['SH-Signature'];
 
-
-                                //SIGNING CONTENT GOES 
-                                //  const res = util.fromRpcSig(institute['SH-Signature']);
                                 
-                                //SHOULD FORWARD IT TO MURALI
-                                // const prefix = new Buffer("\x19Ethereum Signed Message:\n");
-                                // const prefixedMsg = util.sha3(Buffer.concat([prefix, new Buffer(String(msg.length)), msg]));
-                                
-                               // var buf=new Buffer(String(msg.length)), msg])
 
-                                // msg=institute['SH-Signature'];
-                                // var buf = new Buffer(String(msg.length));
-                                // buf.write(msg);
-
-                                // const pubKey  = util.ecrecover(buf, res.v, res.r, res.s);
-                                // console.log("Pub Key:" + pubKey);
+                                // START OF WEBJS CODE
+                                //  var msgHash = util.sha3(institute['SH-RegistrationKey']);
+                                // var rpc = util.fromRpcSig(obj.signature);
+                                // const pubKey  = util.ecrecover(msgHash, rpc.v, rpc.r,rpc.s);
+                                // console.log('public key hex- '+util.bufferToHex(pubKey));
                                 // const addrBuf = util.pubToAddress(pubKey);
-                                // console.log("Address Buff:" + addrBuf);
-                                // const computedAddress    = util.bufferToHex(addrBuf);
-                                // console.log("Output from Signed Content:" + computedAddress);
-                                
+                                // const addr    = util.bufferToHex(addrBuf);
+
                                 // // addr is the one you have to check against provided public ethereum address 
                                 // console.log('Actual address -'+addr);
+                                // if(addr == givenuseraddr){
+                                // $("#registrationresult").html('<font  color="green">Onboarding Successsful</font>');
+                                // }
+                                // if(addr != givenuseraddr){
+                                // $("#registrationresult").html('<font  color="red">Onboarding Failed</font>');
+                                // }
+
+                                // END OF WEB3JS CODE 
 
                                 var web3js=new Web3JSService();
                                 web3js.saveOrganization(obj)
@@ -123,12 +130,12 @@ InstituteService.prototype.register=function(institute,app){
                                     })
                                 })
                                 .catch(function(error){
-                                    console.log("Error:" + error);
+                                    reject(error);
                                 })
                             }
                             
                         }else{
-                            throw new Error("Invalid Registration");
+                            return reject(errors.normalizeError('INVALID_REGISTRATION_KEY', null, null));
                         }
                        
                     })

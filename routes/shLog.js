@@ -17,7 +17,7 @@ router.get('/institute/latest',function(req,res){
       shLogController.getSHLogsForInstitutes(req,res);
 });
 
-router.get('/institute/:instituteId',function(req,res){
+router.post('/institute/:instituteId',function(req,res){
       shLogController.getSHLogsByInstitute(req,res);
 });
 

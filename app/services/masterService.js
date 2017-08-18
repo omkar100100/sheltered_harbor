@@ -5,7 +5,7 @@ MasterService=function(){}
 
 MasterService.prototype.getIdentifierTypes=function(){
     return new Promise(function(resolve,reject){
-        resolve(CONSTANTS);
+        resolve(CONSTANTS.IDTYPES);
     })
 }
 
@@ -34,6 +34,26 @@ MasterService.prototype.getDistinctServiceProviders=function(app){
         })
     })
     
+}
+
+
+MasterService.prototype.getParticipants=function(app){
+    var models=app.get("models");
+    return new Promise(function(resolve,reject){
+        models.Institute.findAll({
+            attributes: ['id','LegalName','ServiceProviderId'],
+            where: {
+                    $and :[
+                        {IsActive : true },
+                        {Registered : true}
+                    ]
+                }
+            })
+            .then(function(results){
+                resolve(results);
+            }) 
+    })
+     
 }
 
 

@@ -3,7 +3,11 @@ var SHLogService=require('./shLogService');
 var DashboardService=function(){};
 var Promise=require('bluebird');
 
-DashboardService.prototype.getParticiapants=function(request,app){
+
+
+
+
+DashboardService.prototype.getParticiapantsCount=function(request,app){
     var models=app.get("models");
     const whereBetwenDates={
                     RegisteredDate:{
@@ -90,7 +94,7 @@ DashboardService.prototype.getParticiapants=function(request,app){
 DashboardService.prototype.getDashboardData=function(request,app){
     dashboardData={};
     //return new Promise(function(resolve,reject){
-       particiapants= DashboardService.prototype.getParticiapants(request,app);
+       particiapants= DashboardService.prototype.getParticiapantsCount(request,app);
         // .then(function(particiapants){
         //     dashboardData.participants=particiapants;
         //     resolve(dashboardData);

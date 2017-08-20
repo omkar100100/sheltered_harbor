@@ -6,27 +6,88 @@ var response=require('../app/common/response');
 
 router=express.Router();
 
+/**
+ * @swagger
+ * definition:
+ *   Participant:
+ *     properties:
+ *       id:
+ *         type: integer
+ *       LegalName:
+ *         type: string
+ *       Address:
+ *          type: string
+ *       PhoneNumber:
+ *          type: string
+ *       ContractState:
+ *          type: string
+ *       ContractFrom:
+ *          type: date
+ *       ContractTo:
+ *          type: date
+ *       ContactName:
+ *          type: string
+ *       ContactEmail:
+ *          type: string
+ *       ContactPhone:
+ *          type: string
+ *       Type:
+ *          type: string
+ *       Identifier:
+ *          type: string
+ *       ServiceProviderId:
+ *          type: integer
+ *       IdType:
+ *          type: string
+ *       NodeId:
+ *          type: integer
+ *           
+ *       
+ *        
+ */
 
+
+
+/**
+ * @swagger
+ * /participant:
+ *   post:
+ *     tags:
+ *       - participants
+ *     description: Creates a new participant Introduction
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: participant
+ *         description: Participant object
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/Participant'
+ *     responses:
+ *       200:
+ *         description: Successfully created
+ */
 router.post('/', function(req, res) {
-
-      if (req.method === 'OPTIONS') {
-            console.log('!OPTIONS');
-            var headers = {};
-            // IE8 does not allow domains to be specified, just the *
-            // headers["Access-Control-Allow-Origin"] = req.headers.origin;
-            headers["Access-Control-Allow-Origin"] = "*";
-            headers["Access-Control-Allow-Methods"] = "POST, GET, PUT, DELETE, OPTIONS";
-            headers["Access-Control-Allow-Credentials"] = false;
-            headers["Access-Control-Allow-Headers"] = "X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept";
-            res.writeHead(200, headers);
-            response.handleSuccessResponse(200, null, res);
-      } else {
-            instituteController.createInstitute(req,res);
-      }
-
-
+      instituteController.createInstitute(req,res);
 });
 
+
+/**
+ * @swagger
+ * /participant:
+ *   get:
+ *     tags:
+ *       - participants
+ *     description: Returns all active participants ( contract expiry not included)
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: An array of Participants
+ *         schema:
+ *           $ref: '#/definitions/Participant'
+ */
 router.get('/', function(req, res) {
       instituteController.getAllInstitutes(req,res);
 });

@@ -45,11 +45,11 @@ SHLogService.prototype.getSHLogs=function(search){
         models.SHLog.findAll({
             where:{
                 $and :[
-                    {   "InstituteId":search.instituteId },     
-                    {  "AttestationDate":{
-                            $between: [search.startDate, search.endDate]
-                        } 
-                    }
+                        {   "InstituteId":search.instituteId },     
+                        {  "AttestationDate":{
+                                $between: [search.startDate, search.endDate]
+                            } 
+                        }
                 ]
             },
             order: [ [ 'AttestationDate', 'DESC' ]]

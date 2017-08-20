@@ -32,12 +32,22 @@ RoleController.prototype.getAllRoles = function(req, res) {
 };
 
 RoleController.prototype.removeRole = function(req, res) {
+    var roleId=req.params.roleId;
     var roleService = new RoleService();
-       return roleService.removeRole().then(function(result) {
+       return roleService.removeRole(roleId).then(function(result) {
          response.handleSuccessResponse(200, result, res);
     })
   
 };
 
+RoleController.prototype.updateRole = function(req, res) {
+    var roleId=req.params.roleId;
+    var role=req.body;
+    var roleService = new RoleService();
+       return roleService.updateRole(roleId,role).then(function(result) {
+         response.handleSuccessResponse(200, result, res);
+    })
+  
+};
 
 module.exports = new RoleController();

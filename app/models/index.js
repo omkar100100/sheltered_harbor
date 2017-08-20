@@ -16,19 +16,19 @@ if (process.env.DATABASE_URL) {
   var sequelize = new Sequelize(process.env.DATABASE_URL,config);
 } else {
  
- var sequelize = new Sequelize('postgres','shuser','inn0$123',{
-    host: '127.0.0.1',
+//  var sequelize = new Sequelize('postgres','shuser','inn0$123',{
+//     host: '127.0.0.1',
+//     dialect :'postgres', 
+//     port:'5432',
+//     schema:'public'
+//   });
+
+  var sequelize = new Sequelize('postgres','postgres',"admin123",{
+    host: 'localhost',
     dialect :'postgres', 
     port:'5432',
     schema:'public'
   });
-
-  // var sequelize = new Sequelize('postgres','postgres',"admin123",{
-  //   host: 'localhost',
-  //   dialect :'postgres', 
-  //   port:'5432',
-  //   schema:'public'
-  // });
 
 
 }

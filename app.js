@@ -3,15 +3,15 @@ var Sequelize = require('sequelize');
 var express = require('express');
 var http = require('http');
 var path = require('path');
-var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var pug = require('pug');
-var routes = require('./routes/index');
-var config=require('./config');
+
 var helmet=require('helmet');
 var fs=require('fs');
+
+var config=require('./config');
+var routes = require('./routes/index');
 var users  = require('./routes/users');
 var master=require('./routes/masterData');
 var roles=require('./routes/roles');
@@ -20,33 +20,55 @@ var institute=require('./routes/institute');
 var shLog=require('./routes/shLog');
 var dashboard=require('./routes/dashboard');
 
-var cors = require('cors');
 
 
+var swaggerJSDoc = require('swagger-jsdoc');
 
 
-//var currentConfig=config.getCurrentConfig();
-//console.log(currentConfig.app.port);
+var swaggerDefinition = {
+  info: {
+    title: 'Sheltered Harbor API',
+    version: '1.0.0',
+    description: "Sheltered Harbor LOG MONITORING API for Admins"
+  },
+  host: 'localhost:8001',
+  basePath: '/',
+};
+
+
+var options = {
+  swaggerDefinition: swaggerDefinition,
+  apis: ['./routes/*.js'],
+};
+
+var swaggerSpec = swaggerJSDoc(options);
 
 var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(logger('dev'));
-
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
+//app.use(express.favicon());
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 app.set('models', require('./app/models'));
 var models = app.get('models');
 
+app.get('/swagger.json', function(req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
+
+
 app.use('/role',roles);
 app.use('/user',users);
 app.use('/node',nodes);
-app.use('/institute',institute);
+app.use('/participant',institute);
 app.use('/shlog',shLog);
 app.use('/master',master);
 app.use('/dashboard',dashboard);

@@ -66,19 +66,14 @@ InstituteService.prototype.createInstitute=function(institute,app){
 };
 
 InstituteService.prototype.register=function(institute,app){
-        // Validate reg key
-        // Invoke smart contract
         var models=app.get("models");
         var promise1 = function () {
             return new Promise(function (resolve, reject) {
                     InstituteService.prototype.findInstituteByHash(institute['SH-RegistrationKey'],app)
                     .then(function(institute1){
                         if(institute1){
-                            //TODO:
-                            //Check if it is already registered
                             if(institute1.Registered){
                                 return reject(errors.normalizeError('ALREADY_REGISTERED', null,null));
-                                 //throw new Error("Institute/Service Provider already Registered");
                             }else{
                                 obj={};
                                 obj.orgName=institute1.LegalName;
@@ -90,8 +85,6 @@ InstituteService.prototype.register=function(institute,app){
                                 }
                                 
                                 obj.signature=institute['SH-Signature'];
-
-                                
 
                                 // START OF WEBJS CODE
                                 //  var msgHash = util.sha3(institute['SH-RegistrationKey']);
@@ -120,10 +113,6 @@ InstituteService.prototype.register=function(institute,app){
                                     response['SH-StatusMessage']="On Boarding Created";
                                     response['debug']=result;
 
-                                    //TODO: update registered flag
-                                    //return instance.updateAttributes({syncedAt: sequelize.fn('NOW')});
-
-                                    //institute1.update({Registered:true})
                                     institute1.updateAttributes({Registered:true , RegisteredDate: models.sequelize.literal('CURRENT_TIMESTAMP')})
                                     .then(function(inst){
                                         resolve(response);

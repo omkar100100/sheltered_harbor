@@ -40,15 +40,31 @@ RoleService.prototype.getAllRoles=function(){
     )
 };
 
-// RoleService.prototype.removeRole=function(role){
-//     return Promise.resolve(
-//         models.Role.destroy.on('success',function(u){
-//             if(u && u.deletedAt){
-//                 console.log("Role wit id:" + role.id + " deleted");
-//             }
-//         });
-//     )
-// };
+RoleService.prototype.removeRole=function(id){
+    return Promise.resolve(
+       models.Role.destroy({where :{id:id } }).then(function(){
+            return ;
+        })
+    )
+};
+
+
+RoleService.prototype.updateRole=function(roleId,role){
+    return new Promise(function(resolve,reject){
+            models.Role.findById(roleId)
+            .then(function(result){
+                if(result){
+                    result.update(role)
+                    .then(function(updated){
+                        resolve(updated)
+                    })
+                }
+            })
+
+    });
+              
+    
+};
 
 
 module.exports=RoleService;

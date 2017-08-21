@@ -4,9 +4,7 @@ var Sequelize = require('sequelize');
 var InstitueService=require('./instituteService');
 
 
-ContractHistoryService=function(){
-    console.log("Constructor");
-}
+ContractHistoryService=function(){}
 
 
 ContractHistoryService.prototype.logContractHistory=function(contract,app){
@@ -29,45 +27,40 @@ ContractHistoryService.prototype.getInstituteLatestContract=function(instituteId
                 order: [ [ 'RenewalDateTo', 'DESC' ]]
             })
             .then(function(instContract){
-                   resolve(instContract);
+                   resolve(instContract[0]);
             })
         })
 };
 
 
-ContractHistoryService.prototype.updateInstituteContract=function(contract,app){
+ContractHistoryService.prototype.updateInstituteContract=function(contract,instituteService,app){
         var models1 = app.get('models');
         
-        //TODO:FIXME - InstitueService IS NOT A CONSTRUCTOR
-        instituteService=new InstitueService();
         return new Promise(function(resolve,reject){
             
-            ContractHistoryService.prototype.getInstituteLatestContract(contract.instituteId,app)
+             ContractHistoryService.prototype.getInstituteLatestContract(contract.InstituteId,app)
             .then(function(instContract){
                         var model={};
-                        model.InstituteId=contract.instituteId;
-                      
+                        model.InstituteId=contract.InstituteId;
                         model.RenewalDateFrom=contract.RenewalDateFrom;
                         model.RenewalDateTo=contract.RenewalDateTo;
-                        model.OldFromDate=instContract[0].getDataValue('RenewalDateFrom');
-                        model.OldToDate=instContract[0].getDataValue('RenewalDateTo');
+                        model.OldFromDate=instContract.getDataValue('RenewalDateFrom');
+                        model.OldToDate=instContract.getDataValue('RenewalDateTo');
                         model.Note=contract.Note;
                     
                     var InstituteHistory=models1.InstituteHistory.build(model);
 
                     InstituteHistory.save()
                     .then(function(newContract){
-                         //Update contract details in the main table
-                        
                          newContract={};
-                         newContract.institueIdentifier=instContract.Identifier;
-                         newContract.ContractFrom=instContract.ContractFrom;
-                         newContract.ContractTo=instContract.ContractTo;
-                         instituteService.updateContract(newContract)
-                         .then(function(institute){
-                            console.log("hello")
+                         newContract.InstituteId=instContract.InstituteId;
+                         newContract.ContractFrom=contract.RenewalDateFrom;
+                         newContract.ContractTo=contract.RenewalDateTo;
+                         instituteService.updateContract(newContract,app)
+                         .then(function(result){
+                             resolve(newContract);
                          })
-                         resolve(newContract);
+                        
                     })
             })
 

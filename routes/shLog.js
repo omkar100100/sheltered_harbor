@@ -5,28 +5,216 @@ var express = require('express');
 router=express.Router();
 
 
-router.post('/', function(req, res) {
+/**
+ * @swagger
+ * definition:
+ *   SHLogSubmitRequest:
+ *     properties:
+ *       SH-filename:
+ *         type: string
+ *       SH-hash:
+ *         type: string
+ *       SH-tag:
+ *          type: string
+ *       SH-additional-data:
+ *          type: string
+ *       SH-Signature:
+ *          type: string
+ * 
+ *   SHLog:
+ *      properties:
+ *        TxHash:
+ *           type: string
+ *        Filename:
+ *           type: string
+ *        Tag:
+ *          type: string
+ *        AdditionalData:
+ *          type: string
+ *        UploadTimestamp:
+ *          type: date
+ *        AttestationDate:
+ *          type: date
+ *        Status:
+ *          type: string
+ *        InstituteId:
+ *          type: integer
+ *        ServiceProviderId:
+ *          type: integer
+ *  
+ *   SHLogInstituteSearch:
+ *      propreties:
+ *        startDate:
+ *          type: string
+ *        endDate:
+ *          type: string
+ * 
+ */
+
+
+/**
+ * @swagger
+ * /shlog/private:
+ *   post:
+ *     tags:
+ *       - shlogs
+ *     description: Creates a new log
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: shlog
+ *         description: SHLog  request object
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/SHLog'
+ *     responses:
+ *       200:
+ *         description: Successfully created
+ */
+router.post('/private', function(req, res) {
       shLogController.createSHLog(req,res);
 });
 
+
+/**
+ * @swagger
+ * /institute/{instituteId}/latest:
+ *   get:
+ *     tags:
+ *       - shlogs
+ *     description: Returns latest log submitted for Institute
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: instituteId
+ *         description: institute's id
+ *         in: path
+ *         required: true
+ *         type: integer
+ *     responses:
+ *       200:
+ *         description: Sucessfully Returned results
+ *         schema:
+ *           $ref: '#/definitions/SHLog'
+ */
 router.get('/institute/:instituteId/latest',function(req,res){
       shLogController.getSHLog(req,res);
 });
 
+
+/**
+ * @swagger
+ * /institute/latest:
+ *   get:
+ *     tags:
+ *       - shlogs
+ *     description: Returns latest logs of all active institutes
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Sucessfully Returned results
+ *         schema:
+ *           $ref: '#/definitions/SHLog'
+ */
 router.get('/institute/latest',function(req,res){
       shLogController.getSHLogsForInstitutes(req,res);
 });
 
+
+/**
+ * @swagger
+ * /shlog/institute/{instituteId}:
+ *   post:
+ *     tags:
+ *       - shlogs
+ *     description: returns logs by search criteria for an institute
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: shlogsearch
+ *         description: SHLog  search request object for an institute
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/SHLogInstituteSearch'
+ *       - name: instituteId
+ *         description: institute id
+ *         in: path
+ *         required: true
+ *         type: integer
+ *     responses:
+ *       200:
+ *         description: Successfully created
+ */
 router.post('/institute/:instituteId',function(req,res){
       shLogController.getSHLogsByInstitute(req,res);
 });
 
 
-router.post('/institute/',function(req,res){
-      shLogController.saveSHLogsForInstitute(req,res);
+/**
+ * @swagger
+ * /institute/private:
+ *   delete:
+ *     tags:
+ *       - shlogs
+ *     description: delete all logs for all institutes
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Sucessfully Returned results
+ */
+router.delete('/institute/private',function(req,res){
+      shLogController.deleteAll(req,res);
 });
 
-router.post('/institute/tx',function(req,res){
+
+/**
+ * @swagger
+ * /institute/submit:
+ *   post:
+ *     tags:
+ *       - shlogs
+ *     description: Submits logs 
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: shlogsubmit
+ *         description: Submits SHLog 
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/SHLogSubmitRequest'
+ *     responses:
+ *       200:
+ *         description: Sucessfully Returned results
+ *         schema:
+ *           $ref: '#/definitions/SHLog'
+ */
+router.post('/institute/submit',function(req,res){
+      shLogController.submitSHLogsForInstitute(req,res);
+});
+
+
+
+/**
+ * @swagger
+ * /institute/private/{tx}:
+ *   get:
+ *     tags:
+ *       - shlogs
+ *     description: get shlog by Transaction Hash ( unique through out system)
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Sucessfully Returned results
+ *         schema:
+ *           $ref: '#/definitions/SHLog'
+ */
+router.get('/institute/:tx',function(req,res){
       shLogController.getSHLogByTxHash(req,res);
 });
 

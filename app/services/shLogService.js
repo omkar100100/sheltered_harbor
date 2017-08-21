@@ -10,6 +10,8 @@ CONSTANTS=require('../common/constants')
 var SHLogService=function(){};
 
 SHLogService.prototype.createSHLog=function(shLog){
+    shLog.Status="In Progress";
+    shLog.UploadTimestamp=null;
    return Promise.resolve(
         models.SHLog.create(shLog).then(function(shLog){
             return shLog;
@@ -17,6 +19,14 @@ SHLogService.prototype.createSHLog=function(shLog){
     );
 };
 
+SHLogService.prototype.deleteAll=function(app){
+    var models1 = app.get('models');
+   return new Promise(function(resolve,reject){
+        models1.SHLog.destroy({where: {}}).then(function () {
+            resolve();
+        });
+   });
+};
 
 SHLogService.prototype.getSHLog=function(instituteId){
     return Promise.resolve(
@@ -30,10 +40,10 @@ SHLogService.prototype.getSHLog=function(instituteId){
     );
 }
 
-SHLogService.prototype.getSHLogByTxHash=function(request){
+SHLogService.prototype.getSHLogByTxHash=function(tx){
     return Promise.resolve(
         models.SHLog.findAll({
-            where:{"TxHash":request.TxHash }
+            where:{"TxHash":tx }
            }).then(function(shLog){
             return shLog;
         })
@@ -72,8 +82,6 @@ SHLogService.prototype.getSHLogs=function(search){
 
 
 SHLogService.prototype.saveSHLogInstitute=function(log){
-   // var models1 = app.get('models');
-
     var institute1=null;
     var shLog={}
     shLogResult=null;

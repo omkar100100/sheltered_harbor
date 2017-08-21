@@ -18,5 +18,22 @@
       "min": 0,
       "idle": 10000
     }
+  },
+
+  "logging": {
+    "appenders": [
+      {
+        "type": "console"
+      },
+      {
+        "type": "dateFile",
+        "filename": "logs/engine.log",
+        "pattern": "-yyyy-MM-dd",
+        "alwaysIncludePattern": false
+      }
+    ],
+    "level": "DEBUG"
   }
+
+
 }

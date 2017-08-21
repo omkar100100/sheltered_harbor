@@ -24,29 +24,28 @@ InstituteService.prototype.findInstituteByHash=function(hash,app){
         
 }
 
-InstituteService.prototype.createInstitute=function(institute,app){
-        //sequelize=app.get('models').sequelize;
-        var promise1 = function () {
-            return new Promise(function (resolve, reject) {
+
+InstituteService.prototype.createInstitute=function(institute,contractService,app){
+         var createParticipantNContract = function(){
+           return  new Promise(function (resolve, reject) {
                 var rndString=randomstring.generate();
                 var hash=md5(rndString);
                 institute.Hash=hash;
                 models.Institute.create(institute)
                 .then(function(institute){
-                            console.log("Institute Introduced");
-                            var contractService=new ContractService();
-                            var contract={};
-                            contract.InstituteId=institute.id;
-                            contract.RenewalDateFrom=institute.ContractFrom;
-                            contract.RenewalDateTo=institute.ContractTo;
-                            contract.OldFromDate=null;
-                            contract.OldToDate=null;
-                            contract.Note=null;
-                            contractService.logContractHistory(contract,app)
-                            .then(function(result){
-                                console.log("Institute History Entered");
-                                resolve(institute);
-                            })
+                        var contractService=new ContractService();
+                        var contract={};
+                        contract.InstituteId=institute.id;
+                        contract.RenewalDateFrom=institute.ContractFrom;
+                        contract.RenewalDateTo=institute.ContractTo;
+                        contract.OldFromDate=null;
+                        contract.OldToDate=null;
+                        contract.Note=null;            
+                        contractService.logContractHistory(contract,app)
+                        .then(function(contractHistory){
+                            resolve(institute);
+                        })
+                      
                 
                 })
                 .catch(function(error){
@@ -56,12 +55,14 @@ InstituteService.prototype.createInstitute=function(institute,app){
                 })
 
             })
-        };
+         } 
 
-        
-        return Promise.map([promise1], function (promiseFn) {
-            return promiseFn();
+  
+        return Promise.map([createParticipantNContract], function (createParticipantNContract) {
+            return createParticipantNContract();
         }, {concurrency: 1}); 
+
+
 
 };
 
@@ -111,8 +112,6 @@ InstituteService.prototype.register=function(institute,app){
                                     var response={};
                                     response['SH-Status']="FI/SP is registered successfully. Please use the same public/private key for attestation.";
                                     response['SH-StatusMessage']="On Boarding Created";
-                                    response['debug']=result;
-
                                     institute1.updateAttributes({Registered:true , RegisteredDate: models.sequelize.literal('CURRENT_TIMESTAMP')})
                                     .then(function(inst){
                                         resolve(response);
@@ -140,7 +139,7 @@ InstituteService.prototype.register=function(institute,app){
         
 }
 
-InstituteService.prototype.findById=function(id,app){
+InstituteService.prototype.getById=function(id,app){
     var models1 = app.get('models');
     return Promise.resolve(
         models1.Institute.findOne({
@@ -156,7 +155,7 @@ InstituteService.prototype.findById=function(id,app){
 
 InstituteService.prototype.updateInstitute=function(institute,app){
    return Promise.resolve(
-        InstituteService.prototype.findById(institute.id,app)
+        this.getById(institute.id,app)
         .then(function(inst){
 
                 var obj={};
@@ -177,18 +176,30 @@ InstituteService.prototype.updateInstitute=function(institute,app){
 
 InstituteService.prototype.updateContract=function(newContract,app){
     var models1 = app.get('models');
-   return Promise.resolve(
-       InstituteService.prototype.getInstituteByIdentifier(newContract.institueIdentifier,app)
-       .then(function(institute){
-            //TODO:
-            institute.ContractFrom=newContract.ContractFrom
-            institute.ContractTo=newContract.ContractTo;
-            models1.Institute.update(instituteModel)
-            .then(function(updatedInstitute){
-                return updatedInstitute;
-            })
-       })
-    );
+   return new Promise(function(resolve,reject){
+         InstituteService.prototype.getById(newContract.InstituteId,app)
+        .then(function(institute){
+                institute.ContractFrom=newContract.ContractFrom
+                institute.ContractTo=newContract.ContractTo;
+                institute.save()
+                .then(function(updatedInstitute){
+                    resolve();
+                })
+        })
+   });
+
+};
+
+
+
+InstituteService.prototype.deleteAllNodes=function(app){
+   var models1 = app.get('models');
+   return new Promise(function(resolve,reject){
+        models1.Institute.destroy({where: {}}).then(function () {
+            resolve();
+        });
+   });
+
 };
 
 InstituteService.prototype.getAllInstitutes=function(){
@@ -212,19 +223,19 @@ InstituteService.prototype.getInstituteByIdentifier=function(identifier){
     )
 };
 
-InstituteService.prototype.updateActiveStatus=function(status,app){
+InstituteService.prototype.updateActiveStatus=function(identifier,app){
     var models1 = app.get('models');
 
-    return Promise.resolve(
+    return new Promise(function(resolve,reject){
         models1.Institute.findOne({
-            where: { Identifier: status.identifier }
+            where: { Identifier: identifier }
         }).then(function(institute){
-             institute.IsActive=status.active;
+             institute.IsActive=!institute.IsActive;
              institute.save().then(function(result){
-                 return result;
+                 resolve(result);
              })
         })
-    )
+    })
 };
 
 

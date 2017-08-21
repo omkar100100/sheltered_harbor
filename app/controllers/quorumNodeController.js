@@ -27,6 +27,21 @@ QuorumNodeController.prototype.createNode = function(req, res) {
       
 };
 
+
+QuorumNodeController.prototype.deleteAllNodes = function(req, res) {
+        var quorumNodeService = new QuorumNodeService();
+        quorumNodeService.deleteAllNodes()
+        .then(function(node){
+                response.handleSuccessResponse(200, node, res);
+        })
+        .error(function(e){
+                console.log("Error handler " + e)
+        })
+
+      
+};
+
+
 QuorumNodeController.prototype.getAllNodes = function(req, res) {
         var quorumNodeService = new QuorumNodeService();
         quorumNodeService.getAllNodes().then(function(result) {

@@ -1,7 +1,9 @@
 var SHLogService=require('./shLogService');
+var Promise=require('bluebird');
+
 
 var DashboardService=function(){};
-var Promise=require('bluebird');
+
 
 
 

@@ -2,6 +2,7 @@ var path = require('path');
 
 var config=null;
 this.isInitialized = false;
+
 var Configuration=function(){
      this.configFile=null;
      this.isInitialized=false;
@@ -20,10 +21,12 @@ Configuration.prototype.getCurrentConfig=function(){
 };
 
 Configuration.prototype.getEnv=function(){
-    if(!process.env.NODE_ENV){
+  //   if(!process.env.NODE_ENV){
+  //   return 'dev';
+  // }
+  // return process.env.NODE_ENV;
+
     return 'dev';
-  }
-  return process.env.NODE_ENV;
 };
 
 module.exports=(function(){

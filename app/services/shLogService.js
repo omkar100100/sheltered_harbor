@@ -6,6 +6,7 @@ var InstitueService=require('./instituteService');
 var Moment= require('moment-timezone');
 var Web3JSService=require('./web3jsService');
 CONSTANTS=require('../common/constants')
+var randomstring = require("randomstring");
 
 var SHLogService=function(){};
 
@@ -34,8 +35,15 @@ SHLogService.prototype.submitSHLogOffline=function(log){
                         shLog.Tag=log['SH-tag'];
                         shLog.AdditionalData=log['SH-additional-data'];
                         shLog.AttestationDate=file.fileDate;
-                        shLog.UploadTimestamp=null;
-                        shLog.Status="In Progress";
+
+                        //TODO: REMOVE THESE FAKE VALUES
+                        shLog.UploadTimestamp=new Moment().format();
+                        shLog.Status="Submitted";
+                        shLog.TxHash=randomstring.generate();
+
+                        // shLog.UploadTimestamp=null;
+                        // shLog.Status="In Progress";
+                        
                         shLog.InstituteId=institute.id;
                         if(institute.ServiceProviderId){
                             shLog.ServiceProviderId=institute.ServiceProviderId;
@@ -133,6 +141,7 @@ SHLogService.prototype.getSHLogs=function(search){
                 obj.Hash=shLog.TxHash;
                 shLogArr.push(obj);
             })
+            
             
             return shLogArr;
         })

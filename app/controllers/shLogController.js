@@ -6,10 +6,10 @@ var SHLogController = function() {
 
 
 
-SHLogController.prototype.createSHLog = function(req, res) {
-        var shLog=req.body;
+SHLogController.prototype.submitSHLogOffline = function(req, res) {
+        var shLogRequest=req.body;
         var sHLogService = new SHLogService();
-        sHLogService.createSHLog(shLog).then(function(shLog){
+        sHLogService.submitSHLogOffline(shLogRequest).then(function(shLog){
            response.handleSuccessResponse(200, shLog, res);
         })
 };

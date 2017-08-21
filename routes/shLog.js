@@ -54,32 +54,32 @@ router=express.Router();
 
 /**
  * @swagger
- * /shlog/private:
+ * /shlog/private/submit/offline:
  *   post:
  *     tags:
  *       - shlogs
- *     description: Creates a new log
+ *     description: Creates a new log offline ( saves to database and later submitted to quorum) .This is helpful when quorum is not reachable such as timeout, maintainance, relocation.
  *     produces:
  *       - application/json
  *     parameters:
  *       - name: shlog
- *         description: SHLog  request object
+ *         description: attestation log 
  *         in: body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/SHLog'
+ *           $ref: '#/definitions/SHLogRequest'
  *     responses:
  *       200:
  *         description: Successfully created
  */
-router.post('/private', function(req, res) {
-      shLogController.createSHLog(req,res);
+router.post('/private/submit/offline', function(req, res) {
+      shLogController.submitSHLogOffline(req,res);
 });
 
 
 /**
  * @swagger
- * /institute/{instituteId}/latest:
+ * /shlog/institute/{instituteId}/latest:
  *   get:
  *     tags:
  *       - shlogs
@@ -105,7 +105,7 @@ router.get('/institute/:instituteId/latest',function(req,res){
 
 /**
  * @swagger
- * /institute/latest:
+ * /shlog/institute/latest:
  *   get:
  *     tags:
  *       - shlogs
@@ -155,7 +155,7 @@ router.post('/institute/:instituteId',function(req,res){
 
 /**
  * @swagger
- * /institute/private:
+ * /shlog/institute/private:
  *   delete:
  *     tags:
  *       - shlogs
@@ -173,10 +173,10 @@ router.delete('/institute/private',function(req,res){
 
 /**
  * @swagger
- * /institute/submit:
+ * /shlog/institute/submit:
  *   post:
  *     tags:
- *       - shlogs
+ *       - quorum
  *     description: Submits logs 
  *     produces:
  *       - application/json
@@ -201,7 +201,7 @@ router.post('/institute/submit',function(req,res){
 
 /**
  * @swagger
- * /institute/private/{tx}:
+ * /shlog/institute/private/{tx}:
  *   get:
  *     tags:
  *       - shlogs

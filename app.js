@@ -32,7 +32,7 @@ var swaggerDefinition = {
     version: '1.0.0',
     description: "Sheltered Harbor LOG MONITORING API for Admins"
   },
-  host: 'localhost:8001',
+  host: 'shapp1.eastus.cloudapp.azure.com',
   basePath: '/',
 };
 

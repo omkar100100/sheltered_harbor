@@ -54,7 +54,7 @@ router=express.Router();
 
 /**
  * @swagger
- * /shlog/private/submit/offline:
+ * /shlog/private/institute/submitoffline:
  *   post:
  *     tags:
  *       - shlogs
@@ -72,7 +72,7 @@ router=express.Router();
  *       200:
  *         description: Successfully created
  */
-router.post('/private/submit/offline', function(req, res) {
+router.post('/private/institute/submitoffline', function(req, res) {
       shLogController.submitSHLogOffline(req,res);
 });
 
@@ -173,7 +173,7 @@ router.delete('/institute/private',function(req,res){
 
 /**
  * @swagger
- * /shlog/institute/submit:
+ * /shlog/institute/attestation/submit:
  *   post:
  *     tags:
  *       - quorum
@@ -193,7 +193,7 @@ router.delete('/institute/private',function(req,res){
  *         schema:
  *           $ref: '#/definitions/SHLog'
  */
-router.post('/institute/submit',function(req,res){
+router.post('/institute/attestation/submit',function(req,res){
       shLogController.submitSHLogsForInstitute(req,res);
 });
 

@@ -10,13 +10,6 @@ CONSTANTS=require('../common/constants')
 var SHLogService=function(){};
 
 SHLogService.prototype.submitSHLogOffline=function(log){
-//     shLog.Status="In Progress";
-//     shLog.UploadTimestamp=null;
-//    return Promise.resolve(
-//         models.SHLog.create(shLog).then(function(shLog){
-//             return shLog;
-//         })
-//     );
         var shLog={}
        // var saveLogToDB = function () {
           return new Promise(function (resolve, reject) {
@@ -202,6 +195,9 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
                                     finalRes.quorum=result;
                                     resolve(finalRes);
                                 })
+                            })
+                            .catch(function(error){
+                                console.log("Quroum Error:" + error);
                             })
                             
 

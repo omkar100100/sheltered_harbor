@@ -82,8 +82,8 @@ InstituteController.prototype.getAllInstitutes= function(req, res) {
 
 InstituteController.prototype.updateActiveStatus= function(req, res) {
         var instituteService = new InstituteService();
-        var identifier=req.params.identifier;
-        instituteService.updateActiveStatus(identifier,req.app).then(function(result) {
+        var id=req.params.id;
+        instituteService.updateActiveStatus(id,req.app).then(function(result) {
            response.handleSuccessResponse(200, result, res);
         })
   

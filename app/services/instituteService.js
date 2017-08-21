@@ -223,13 +223,11 @@ InstituteService.prototype.getInstituteByIdentifier=function(identifier){
     )
 };
 
-InstituteService.prototype.updateActiveStatus=function(identifier,app){
+InstituteService.prototype.updateActiveStatus=function(id,app){
     var models1 = app.get('models');
 
     return new Promise(function(resolve,reject){
-        models1.Institute.findOne({
-            where: { Identifier: identifier }
-        }).then(function(institute){
+        models1.Institute.findById(id).then(function(institute){
              institute.IsActive=!institute.IsActive;
              institute.save().then(function(result){
                  resolve(result);

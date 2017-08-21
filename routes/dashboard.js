@@ -24,7 +24,7 @@ router=express.Router();
  * /dashboard/:
  *   post:
  *     tags:
- *       - Dashboard
+ *       - dashboard
  *     description: Returns dashboard data for the given request
  *     produces:
  *       - application/json

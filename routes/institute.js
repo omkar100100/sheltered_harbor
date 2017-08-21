@@ -238,7 +238,7 @@ router.put('/contract', function(req, res) {
 
 /**
  * @swagger
- * /participant/private/toggleStatus/{identifier}:
+ * /participant/toggleStatus/{id}:
  *   put:
  *     tags:
  *       - participants
@@ -246,8 +246,8 @@ router.put('/contract', function(req, res) {
  *     produces:
  *       - application/json
  *     parameters:
- *       - name: identifier
- *         description: identifier object
+ *       - name: id
+ *         description: institute id
  *         in: path
  *         required: true
  *         type: string
@@ -257,7 +257,7 @@ router.put('/contract', function(req, res) {
  *         schema:
  *           $ref: '#/definitions/Participant'
  */
-router.put('/private/toggleStatus/:identifier', function(req, res) {
+router.put('/toggleStatus/:id', function(req, res) {
       instituteController.updateActiveStatus(req,res);
 });
 

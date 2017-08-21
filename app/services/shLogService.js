@@ -99,6 +99,17 @@ SHLogService.prototype.getSHLogByTxHash=function(tx){
     );
 }
 
+
+
+SHLogService.prototype.getLogById=function(logId){
+     return Promise.resolve(
+        models.SHLog.findById(logId).then(function(shLog){
+            return shLog;
+        })
+    );
+}
+
+
 SHLogService.prototype.getSHLogs=function(search){
     return Promise.resolve(
         models.SHLog.findAll({

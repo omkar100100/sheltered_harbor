@@ -71,4 +71,15 @@ SHLogController.prototype.getSHLogsForInstitutes = function(req, res) {
         })
 };
 
+
+
+SHLogController.prototype.getLogById= function(req, res) {
+        var sHLogService = new SHLogService();
+        var logId=req.params.logId;
+       sHLogService.getLogById(logId)
+        .then(function(shLog) {
+            response.handleSuccessResponse(200, shLog, res);
+        })
+};
+
 module.exports = new SHLogController();

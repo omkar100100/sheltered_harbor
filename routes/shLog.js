@@ -155,7 +155,7 @@ router.post('/institute/:instituteId',function(req,res){
 
 /**
  * @swagger
- * /shlog/institute/private:
+ * /shlog/private/institute:
  *   delete:
  *     tags:
  *       - shlogs
@@ -166,7 +166,7 @@ router.post('/institute/:instituteId',function(req,res){
  *       200:
  *         description: Sucessfully Returned results
  */
-router.delete('/institute/private',function(req,res){
+router.delete('/private/institute',function(req,res){
       shLogController.deleteAll(req,res);
 });
 
@@ -201,20 +201,54 @@ router.post('/institute/attestation/submit',function(req,res){
 
 /**
  * @swagger
- * /shlog/institute/private/{tx}:
- *   get:
+ * /shlog/private/institute/{logId}:
+ *   post:
  *     tags:
  *       - shlogs
- *     description: get shlog by Transaction Hash ( unique through out system)
+ *     description: Returns log by logId
  *     produces:
  *       - application/json
+ *     parameters:
+ *       - name: logId
+ *         description: Log Id
+ *         in: path
+ *         required: true
+ *         type: integer
  *     responses:
  *       200:
  *         description: Sucessfully Returned results
  *         schema:
  *           $ref: '#/definitions/SHLog'
  */
-router.get('/institute/:tx',function(req,res){
+router.post('/private/institute/:logId',function(req,res){
+      shLogController.getLogById(req,res);
+});
+
+
+
+
+/**
+ * @swagger
+ * /shlog/private/institute/{tx}:
+ *   get:
+ *     tags:
+ *       - shlogs
+ *     description: get shlog by Transaction Hash ( unique through out system)
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: tx
+ *         description: Transaction Id (Hash) returned by Quorum
+ *         in: path
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: Sucessfully Returned results
+ *         schema:
+ *           $ref: '#/definitions/SHLog'
+ */
+router.get('/private/institute/:tx',function(req,res){
       shLogController.getSHLogByTxHash(req,res);
 });
 

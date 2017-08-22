@@ -118,6 +118,7 @@ InstituteService.prototype.register=function(institute,app){
                                     })
                                 })
                                 .catch(function(error){
+                                    console.log(error);
                                     reject(error);
                                 })
                             }

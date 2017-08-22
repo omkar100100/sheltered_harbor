@@ -7,6 +7,7 @@ var Moment= require('moment-timezone');
 var Web3JSService=require('./web3jsService');
 CONSTANTS=require('../common/constants')
 var randomstring = require("randomstring");
+var errors = require('../errors');
 
 var SHLogService=function(){};
 
@@ -37,12 +38,12 @@ SHLogService.prototype.submitSHLogOffline=function(log){
                         shLog.AttestationDate=file.fileDate;
 
                         //TODO: REMOVE THESE FAKE VALUES
-                        shLog.UploadTimestamp=new Moment().format();
-                        shLog.Status="Submitted";
-                        shLog.TxHash=randomstring.generate();
+                        // shLog.UploadTimestamp=new Moment().format();
+                        // shLog.Status="Submitted";
+                        // shLog.TxHash=randomstring.generate();
 
-                        // shLog.UploadTimestamp=null;
-                        // shLog.Status="In Progress";
+
+                        shLog.Status="In Progress";
                         
                         shLog.InstituteId=institute.id;
                         if(institute.ServiceProviderId){
@@ -106,6 +107,7 @@ SHLogService.prototype.getSHLogByTxHash=function(tx){
         })
     );
 }
+
 
 
 
@@ -174,58 +176,75 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
                     file.seq=fileParts[7];
                     var instituteService=new InstitueService();
                     instituteService.getInstituteByIdentifier(file.instIdentifier).then(function(institute){
-                        institute1=institute;
-                        shLog.Filename=fullFileName;
-                        shLog.Tag=log['SH-tag'];
-                        shLog.AdditionalData=log['SH-additional-data'];
-                        shLog.AttestationDate=file.fileDate;
-                        shLog.UploadTimestamp=file.fileDate;
-                        shLog.Status="In Progress";
-                        shLog.InstituteId=institute.id;
-                        if(institute.ServiceProviderId){
-                            shLog.ServiceProviderId=institute.ServiceProviderId;
-                        }else{
-                            shLog.ServiceProviderId=institute.id;
-                        }
-                        
-                        SHLogService.prototype.createSHLog(shLog)
-                        .then(function(result){
-                            shLogResult=result; 
+                        if(institute.IsActive && institute.Registered){
+                                institute1=institute;
+                                shLog.Filename=fullFileName;
+                                shLog.Tag=log['SH-tag'];
+                                shLog.AdditionalData=log['SH-additional-data'];
+                                shLog.AttestationDate=file.fileDate;
+                                shLog.Status="In Progress";
+                                shLog.InstituteId=institute.id;
+                                if(institute.ServiceProviderId){
+                                    shLog.ServiceProviderId=institute.ServiceProviderId;
+                                }else{
+                                    shLog.ServiceProviderId=institute.id;
+                                }
+                                
+                                SHLogService.prototype.createSHLog(shLog)
+                                .then(function(result){
+                                    shLogResult=result; 
 
-                            //WEB3JS
-                            obj={};
-                            obj.Name=institute1.LegalName;
-                            obj.Tag=log['SH-tag']
-                            obj.Hash=log['SH-hash'];
-                            obj.FileName=log['SH-filename'];
-                            obj.AdditionalData=log['SH-additional-data'];
-                            obj.Signature=log['SH-Signature'];
+                                    //WEB3JS
+                                    obj={};
+                                    obj.Name=institute1.LegalName;
+                                    obj.Tag=log['SH-tag']
+                                    obj.Hash=log['SH-hash'];
+                                    obj.FileName=log['SH-filename'];
+                                    obj.AdditionalData=log['SH-additional-data'];
+                                    obj.Signature=log['SH-Signature'];
 
-                            var web3js=new Web3JSService();
-                            web3js.saveAttestation(obj)
-                            .then(function(result){
-                                shLogResult.update(
-                                    { TxHash : result.transactionHash},
-                                    { Status:  "Submitted"}
-                                )
-                                .then(function(inst){
-                                    var finalRes={};
-                                    finalRes.status="Message passed to Blockchain";
-                                    finalRes.message="Creation of blockchain successful";
-                                    finalRes.quorum=result;
-                                    resolve(finalRes);
+                                    var web3js=new Web3JSService();
+                                    web3js.saveAttestation(obj)
+                                    .then(function(result){
+                                        var now=new Moment().format();
+                                        shLogResult.TxHash=result.transactionHash;
+                                        shLogResult.Status="Submitted";
+                                        shLogResult.UploadTimestamp=now;
+                                        shLogResult.save()
+                                        // shLogResult.update(
+                                        //     { TxHash : result.transactionHash},
+                                        //     { Status:  "Submitted"},
+                                        //     { UploadTimestamp: now }
+                                        // )
+                                        .then(function(inst){
+                                            var finalRes={};
+                                            finalRes.status="Message passed to Blockchain";
+                                            finalRes.message="Creation of blockchain successful";
+                                            finalRes.quorum=result;
+                                            resolve(finalRes);
+                                        })
+                                    })
+                                    .catch(function(error){
+                                        console.log("Quroum Error:" + error);
+                                        shLogResult.update(
+                                            { Status:  "Failed"}
+                                        ).then(function(result){
+                                            return reject(errors.normalizeError('UNKNOWN_ERROR_FROM_QUORUM', null, null));
+                                        })
+
+                                        
+                                    })
+                                    
+                                    resolve(shLogResult);
+
                                 })
-                            })
-                            .catch(function(error){
-                                console.log("Quroum Error:" + error);
-                            })
-                            
+                                .catch(function(error){
+                                    reject(error);
+                                })
 
-                            resolve(shLogResult);
-                        })
-                        .catch(function(error){
-                            reject(error);
-                        })
+                        }else{
+                            return reject(errors.normalizeError('INSTITUTE_NOT_ELIGIBLE_FOR_ATTESTATION', null, null));
+                        }
 
                 })
 

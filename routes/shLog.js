@@ -177,7 +177,7 @@ router.delete('/private/institute',function(req,res){
  *   post:
  *     tags:
  *       - quorum
- *     description: Submits logs 
+ *     description: Submit logs. Inorder to submit attestation log an institute should be registered ,active and  (TODO:)contract not expired with a grace period 
  *     produces:
  *       - application/json
  *     parameters:

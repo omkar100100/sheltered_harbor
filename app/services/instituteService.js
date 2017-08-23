@@ -240,8 +240,7 @@ InstituteService.prototype.getAllParticipants=function(){
         models.Institute.findAll({
             where: { 
                 $and:[
-                    {"IsActive":true },
-                    { "Registered": true}
+                    {"IsActive":true }
                 ]
              }
         }).then(function(institutes){

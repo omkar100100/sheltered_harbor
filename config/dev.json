@@ -7,6 +7,9 @@
       "maxCPUs": 1
     }
   },
+  "swagger":{
+    "host": "localhost"
+  },
 
   "dialect" : "postgres",
   "postgres": {

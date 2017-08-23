@@ -7,7 +7,9 @@
       "maxCPUs": 1
     }
   },
-
+  "swagger":{
+    "host": "shapp1.eastus.cloudapp.azure.com"
+  },
   "dialect" : "postgres",
   "postgres": {
     "host": "localhost",

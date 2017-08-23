@@ -33,7 +33,7 @@ var swaggerDefinition = {
     version: '1.0.0',
     description: "Sheltered Harbor LOG MONITORING API for Admins"
   },
-  host:swaggerHost,
+  host:currentConfig.swagger.host,
   basePath: '/',
 };
 

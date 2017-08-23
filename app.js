@@ -26,14 +26,14 @@ var currentConfig = config.getCurrentConfig();
 
 var swaggerJSDoc = require('swagger-jsdoc');
 
-var swaggerHost= currentConfig.app.server.host + ':' + currentConfig.app.server.port;
+var swaggerHost= currentConfig.swagger.host + ':' + currentConfig.swagger.port;
 var swaggerDefinition = {
   info: {
     title: 'Sheltered Harbor API',
     version: '1.0.0',
     description: "Sheltered Harbor LOG MONITORING API for Admins"
   },
-  host:currentConfig.swagger.host,
+  host:swaggerHost,
   basePath: '/',
 };
 

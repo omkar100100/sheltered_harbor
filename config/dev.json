@@ -8,7 +8,8 @@
     }
   },
   "swagger":{
-    "host": "localhost"
+    "host": "localhost",
+    "port": "8001"
   },
 
   "dialect" : "postgres",

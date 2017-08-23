@@ -8,7 +8,8 @@
     }
   },
   "swagger":{
-    "host": "shapp1.eastus.cloudapp.azure.com"
+    "host": "shapp1.eastus.cloudapp.azure.com",
+    "port": "8001"
   },
   "dialect" : "postgres",
   "postgres": {

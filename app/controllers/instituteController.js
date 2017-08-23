@@ -10,6 +10,8 @@ InstituteController.prototype.getInstitute = function(req, res) {
         var instituteService = new InstituteService();
         instituteService.getById(participantId,req.app).then(function(result) {
             response.handleSuccessResponse(200, result, res);
+        }).catch(function(error){
+           response.handleError(error, res); 
         })
   
 };
@@ -20,6 +22,8 @@ InstituteController.prototype.getByIdentifier= function(req, res) {
         var instituteService = new InstituteService();
         instituteService.getInstituteByIdentifier(identifierId,req.app).then(function(result) {
             response.handleSuccessResponse(200, result, res);
+        }).catch(function(error){
+           response.handleError(error, res); 
         })
   
 };
@@ -31,8 +35,7 @@ InstituteController.prototype.createInstitute = function(req, res) {
         instituteService.createInstitute(institute,contractService,req.app)
         .then(function(institute){
             response.handleSuccessResponse(200, institute, res);
-        })
-        .catch(function(error){
+        }).catch(function(error){
                response.handleError(error, res);
         })
 };
@@ -69,13 +72,17 @@ InstituteController.prototype.updateInstitute = function(req, res) {
         var instituteService = new InstituteService();
         instituteService.updateInstitute(institute,req.app).then(function(institute){
             response.handleSuccessResponse(200, institute, res);
+        }).catch(function(error){
+           response.handleError(error, res); 
         })
 };
 
-InstituteController.prototype.getAllInstitutes= function(req, res) {
+InstituteController.prototype.getAllParticipants= function(req, res) {
         var instituteService = new InstituteService();
-        instituteService.getAllInstitutes().then(function(result) {
+        instituteService.getAllParticipants().then(function(result) {
            response.handleSuccessResponse(200, result, res);
+        }).catch(function(error){
+           response.handleError(error, res); 
         })
   
 };
@@ -85,11 +92,22 @@ InstituteController.prototype.updateActiveStatus= function(req, res) {
         var id=req.params.id;
         instituteService.updateActiveStatus(id,req.app).then(function(result) {
            response.handleSuccessResponse(200, result, res);
+        }).catch(function(error){
+           response.handleError(error, res); 
         })
   
 };
 
-
+InstituteController.prototype.getSHLogs = function(req, res) {
+        var search=req.body;
+        var instituteService = new InstituteService();
+        instituteService.getSHLogs(search).then(function(shLogs) {
+            response.handleSuccessResponse(200, shLogs, res);
+        }).catch(function(error){
+           response.handleError(error, res); 
+        })
+  
+};
 
 
 

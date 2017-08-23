@@ -171,9 +171,9 @@
     "message": "Communication failed from Quorum.Some of the reasons couble be connectivity,contract address..",
     "code": 100033
   },
-  "PROPERTY_DUPLICATED": {
+  "FOREIGN_KEY_CONSTRAINT_FAILED": {
     "httpStatusCode": 400,
-    "message": "A %s already exists with the same value '%s'",
+    "message": "Constraint failed.",
     "code": 100034
   },
   "PROPERTY_MUST_BE_EMPTY": {

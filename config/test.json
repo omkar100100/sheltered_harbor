@@ -14,8 +14,8 @@
     "port": 5432,
     "database": "postgres",
     "schema": "public",
-    "username": "postgres",
-    "password": "admin123",
+    "username": "shuser",
+    "password": "inn0$123",
     "pool": {
       "max": 5,
       "min": 0,

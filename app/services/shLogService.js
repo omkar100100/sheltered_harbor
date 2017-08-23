@@ -5,20 +5,19 @@ var async=require('async');
 var InstitueService=require('./instituteService');
 var Moment= require('moment-timezone');
 var Web3JSService=require('./web3jsService');
-CONSTANTS=require('../common/constants')
 var randomstring = require("randomstring");
 var errors = require('../errors');
+var CONSTANTS=require('../common/constants')
 
 var SHLogService=function(){};
 
 SHLogService.prototype.submitSHLogOffline=function(log){
         var shLog={}
-       // var saveLogToDB = function () {
           return new Promise(function (resolve, reject) {
                     var file={};
                     var fileParts=[];
                     //var fullFileName="SH_20160620_021000021_3_10_001_00_OptionalMyStuffSuffix";
-                    var fullFileName=log['SH-filename'];
+                    var fullFileName=log[PARAMETER_LABELS.SH_FILENAME];
                     fileParts=fullFileName.split("_");
                     console.log(fileParts);
                     file.prefix=fileParts[0];
@@ -33,17 +32,10 @@ SHLogService.prototype.submitSHLogOffline=function(log){
                     var instituteService=new InstitueService();
                     instituteService.getInstituteByIdentifier(file.instIdentifier).then(function(institute){
                         shLog.Filename=fullFileName;
-                        shLog.Tag=log['SH-tag'];
-                        shLog.AdditionalData=log['SH-additional-data'];
-                        shLog.AttestationDate=file.fileDate;
-
-                        //TODO: REMOVE THESE FAKE VALUES
-                        // shLog.UploadTimestamp=new Moment().format();
-                        // shLog.Status="Submitted";
-                        // shLog.TxHash=randomstring.generate();
-
-
-                        shLog.Status="In Progress";
+                        shLog.Tag=log[PARAMETER_LABELS.SH_TAG];
+                        shLog.AdditionalData=log[PARAMETER_LABELS.SH_ADDITIONAL_DATA];
+                        shLog.FileDate=file.fileDate;
+                        shLog.Status=LOG_SUBMISSION_STATUS.IN_PROGRESS.label;
                         
                         shLog.InstituteId=institute.id;
                         if(institute.ServiceProviderId){
@@ -63,10 +55,9 @@ SHLogService.prototype.submitSHLogOffline=function(log){
                 })
 
             }) //Promise
-      //  };// Promise function 
 };
 
-
+//DIRECT CREATION OF LOG ENTRY INSIDE DATABASE
 SHLogService.prototype.createSHLog=function(shLog){
    return new Promise(function(resolve,reject){
         models.SHLog.create(shLog).then(function(result){
@@ -86,12 +77,12 @@ SHLogService.prototype.deleteAll=function(app){
    });
 };
 
-SHLogService.prototype.getSHLog=function(instituteId){
+SHLogService.prototype.getLatestSHLog=function(instituteId){
     return Promise.resolve(
         models.SHLog.findAll({
             limit : 1,
             where:{"InstituteId":instituteId },
-            order: [ [ 'UploadTimestamp', 'DESC' ]]
+            order: [ [ 'createdAt', 'DESC' ]]
         }).then(function(shLog){
             return shLog;
         })
@@ -120,27 +111,29 @@ SHLogService.prototype.getLogById=function(logId){
 }
 
 
-SHLogService.prototype.getSHLogs=function(search){
+
+SHLogService.prototype.getSHLogsForInstitute=function(search){
     return Promise.resolve(
         models.SHLog.findAll({
             where:{
                 $and :[
-                        {   "InstituteId":search.instituteId },     
-                        {  "AttestationDate":{
+                        {  "InstituteId":search.instituteId },     
+                        {  "createdAt":{
                                 $between: [search.startDate, search.endDate]
                             } 
                         }
                 ]
             },
-            order: [ [ 'AttestationDate', 'DESC' ]]
+            order: [ [ 'createdAt', 'DESC' ]]
         }).then(function(shLogs){
             shLogArr=[];
             shLogs.forEach(function(shLog){
                 var obj={};
                 obj.Filename=shLog.Filename;
                 obj.DateTime=shLog.AttestationDate;
-                obj.FileDate=shLog.UploadTimestamp;
+                obj.FileDate=shLog.FileDate;
                 obj.Hash=shLog.TxHash;
+                obj.Status=shLog.Status;
                 shLogArr.push(obj);
             })
             
@@ -157,12 +150,11 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
     var shLog={}
     shLogResult=null;
 
-    // var saveLogToDB = function () {
           return new Promise(function (resolve, reject) {
                     var file={};
                     var fileParts=[];
                     //var fullFileName="SH_20160620_021000021_3_10_001_00_OptionalMyStuffSuffix";
-                    var fullFileName=log['SH-filename'];
+                    var fullFileName=log[PARAMETER_LABELS.SH_FILENAME];
                     fileParts=fullFileName.split("_");
                     console.log(fileParts);
                     file.prefix=fileParts[0];
@@ -176,13 +168,14 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
                     file.seq=fileParts[7];
                     var instituteService=new InstitueService();
                     instituteService.getInstituteByIdentifier(file.instIdentifier).then(function(institute){
+                        //TODO: Consider Contract Expiry
                         if(institute.IsActive && institute.Registered){
                                 institute1=institute;
                                 shLog.Filename=fullFileName;
-                                shLog.Tag=log['SH-tag'];
-                                shLog.AdditionalData=log['SH-additional-data'];
-                                shLog.AttestationDate=file.fileDate;
-                                shLog.Status="In Progress";
+                                shLog.Tag=log[PARAMETER_LABELS.SH_TAG];
+                                shLog.AdditionalData=log[PARAMETER_LABELS.SH_ADDITIONAL_DATA];
+                                shLog.FileDate=file.fileDate;
+                                shLog.Status=LOG_SUBMISSION_STATUS.IN_PROGRESS.label;
                                 shLog.InstituteId=institute.id;
                                 if(institute.ServiceProviderId){
                                     shLog.ServiceProviderId=institute.ServiceProviderId;
@@ -190,44 +183,35 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
                                     shLog.ServiceProviderId=institute.id;
                                 }
                                 
-                                SHLogService.prototype.createSHLog(shLog)
-                                .then(function(result){
+                                SHLogService.prototype.createSHLog(shLog).then(function(result){
                                     shLogResult=result; 
 
                                     //WEB3JS
                                     obj={};
                                     obj.Name=institute1.LegalName;
-                                    obj.Tag=log['SH-tag']
-                                    obj.Hash=log['SH-hash'];
-                                    obj.FileName=log['SH-filename'];
-                                    obj.AdditionalData=log['SH-additional-data'];
-                                    obj.Signature=log['SH-Signature'];
+                                    obj.Tag=log[PARAMETER_LABELS.SH_TAG]
+                                    obj.Hash=log[PARAMETER_LABELS.SH_HASH];
+                                    obj.FileName=log[PARAMETER_LABELS.SH_FILENAME];
+                                    obj.AdditionalData=log[PARAMETER_LABELS.SH_ADDITIONAL_DATA];
+                                    obj.Signature=log[PARAMETER_LABELS.SH_SIGNATURE];
 
                                     var web3js=new Web3JSService();
                                     web3js.saveAttestation(obj)
                                     .then(function(result){
                                         var now=new Moment().format();
                                         shLogResult.TxHash=result.transactionHash;
-                                        shLogResult.Status="Submitted";
-                                        shLogResult.UploadTimestamp=now;
-                                        shLogResult.save()
-                                        // shLogResult.update(
-                                        //     { TxHash : result.transactionHash},
-                                        //     { Status:  "Submitted"},
-                                        //     { UploadTimestamp: now }
-                                        // )
-                                        .then(function(inst){
+                                        shLogResult.Status=LOG_SUBMISSION_STATUS.SUBMITTED.label;
+                                        shLogResult.AttestationDate=now;
+                                        shLogResult.save().then(function(inst){
                                             var finalRes={};
-                                            finalRes.status="Message passed to Blockchain";
-                                            finalRes.message="Creation of blockchain successful";
+                                            finalRes.message=SUCCESS_MESSAGES.ATTESTATION_SUCCESS_MESSAGE;
                                             finalRes.quorum=result;
                                             resolve(finalRes);
                                         })
-                                    })
-                                    .catch(function(error){
+                                    }).catch(function(error){
                                         console.log("Quroum Error:" + error);
                                         shLogResult.update(
-                                            { Status:  "Failed"}
+                                            { Status: LOG_SUBMISSION_STATUS.FAILED.label}
                                         ).then(function(result){
                                             return reject(errors.normalizeError('UNKNOWN_ERROR_FROM_QUORUM', null, null));
                                         })
@@ -237,8 +221,7 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
                                     
                                     resolve(shLogResult);
 
-                                })
-                                .catch(function(error){
+                                }).catch(function(error){
                                     reject(error);
                                 })
 
@@ -249,37 +232,31 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
                 })
 
             }) //Promise
-      //  };// Promise function 
-
-     //    return saveLogToDB;
-        // return Promise.map([saveLogToDB,promise2], function (promiseFn) {
-        //     return promiseFn();
-        // }, {concurrency: 1}); 
 
       
 }
 
 
-SHLogService.prototype.getSHLogsForInstitutes=function(){
+SHLogService.prototype.getLatestSHLogsForInstitutes=function(){
     return Promise.resolve(
             models.Institute.findAll({
                 where: { IsActive : true }
             }).then(function(institutes){
                     var shLogsArr=[]
                     var fn = function generate(institute){
-                                    return SHLogService.prototype.getSHLog(institute.id).then(function(shLogs){
+                                    return SHLogService.prototype.getLatestSHLog(institute.id).then(function(shLogs){
                                         var obj={};
                                         var tempSHLog=shLogs[0];
                                         if(tempSHLog){
                                             obj.logId=tempSHLog.id;
                                             obj.instituteName=institute.LegalName;
                                             if(!institute.ServiceProviderId){
-                                                obj.submittedBy="Institution"
+                                                obj.submittedBy=DATA_LABELS.INSTITUTION;
                                             }else{
-                                                obj.submittedBy="Service Provider"
+                                                obj.submittedBy=DATA_LABELS.SERVICE_PROVIDER;
                                             }
                                             
-                                            obj.lastSubmittedOn=tempSHLog.UploadTimestamp;
+                                            obj.lastSubmittedOn=tempSHLog.AttestationDate;
 
                                             var since= new Moment(tempSHLog.AttestationDate).fromNow();
                                             obj.daysSinceLastSubmission=since;

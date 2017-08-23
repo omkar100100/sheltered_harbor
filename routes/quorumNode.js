@@ -88,6 +88,31 @@ router.delete('/private', function(req, res) {
 });
 
 
+/**
+ * @swagger
+ * /node/private:
+ *   put:
+ *     tags:
+ *       - nodes
+ *     description: Updates a node informmation
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: node
+ *         description: Node object
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/Node'
+ *     responses:
+ *       200:
+ *         description: Node information updated
+ */
+router.put('/private', function(req, res) {
+      quorumNodeController.updateNode(req,res);
+});
+
+
 
 /**
  * @swagger

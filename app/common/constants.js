@@ -1,28 +1,41 @@
- Enum = require('enum');
 
-
-
-CONSTANTS={
-
-    IDTYPES: [  {name:"DTCC CN",id:"1"},
+ ID_TYPES =[   {name:"DTCC CN",id:"1"},
                 {name:"FS RSSD",id:"2"},    
                 {name:"ABA RTN",id:"3"},    
                 {name:"FDIC CN",id:"4"},    
                 {name:"NCUA CN",id:"5"}    
-    ],
-    
-    LOG_SAVE_QUORUM_STATUS : [
-                {"IN_PROGRSSS": "In Progress"},
-                {"SUBMITTED": "Submitted"} ,
-                {"NOT_SUBMITTED": "Not Submitted"}
-    ] 
+    ]
+
+ LOG_SUBMISSION_STATUS ={
+      IN_PROGRESS: { label: "In Progress"},
+      SUBMITTED:   {label : "Submitted"} ,
+      FAILED:{ label:"Failed"}
+ }
+
+ SUCCESS_MESSAGES={
+     ATTESTATION_SUCCESS_MESSAGE:"Message passed to Blockchain.Creation of blockchain successful",
+ }
+
+PARAMETER_LABELS={
+    SH_FILENAME: "SH-filename",
+    SH_ADDITIONAL_DATA:"SH-additional-data",
+    SH_TAG:"SH-tag",
+    SH_HASH:"SH-hash",
+    SH_SIGNATURE:"SH-Signature",
+    SH_REGISTRATION_KEY:"SH-RegistrationKey",
+
 }
 
-
-
-
+DATA_LABELS={
+    INSTITUTION:"FI",
+    SERVICE_PROVIDER:"SP" 
+}
     
 
 
 
-module.exports=CONSTANTS;
+module.exports=ID_TYPES;
+module.exports=LOG_SUBMISSION_STATUS;
+module.exports=SUCCESS_MESSAGES;
+module.exports=PARAMETER_LABELS;
+module.exports=DATA_LABELS;

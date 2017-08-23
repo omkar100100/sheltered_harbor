@@ -13,6 +13,18 @@ NodeService.prototype.deleteAllNodes=function(){
 }
 
 
+NodeService.prototype.updateNode=function(node){
+    return new Promise(function(resolve,reject){
+        models.QuorumNode.findById(node.id).then(function(result){
+          return  result.update(node)
+            .then(function(updated){
+                resolve(updated)
+            })
+        })
+    });
+}
+
+
 NodeService.prototype.getNode=function(nodeId){
     return Promise.resolve(
         models.QuorumNode.findById(nodeId).then(function(node){

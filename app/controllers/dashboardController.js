@@ -7,8 +7,11 @@ var DashboardController = function() {
 DashboardController.prototype.getParticiapants = function(req, res) {
         var request=req.body;
         var dashboardService = new DashboardService();
-        dashboardService.getDashboardData(request,req.app).then(function(result) {
+        dashboardService.getDashboardData(request,req.app)
+        .then(function(result) {
             response.handleSuccessResponse(200, result, res);
+        }).catch(function(error){
+           response.handleError(error, res); 
         })
   
 };

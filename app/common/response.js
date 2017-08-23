@@ -44,7 +44,7 @@ exports.handleError = function(err, res) {
     payload.error = err.meta.message;
     payload.meta.code = err.meta.code;
     payload.meta.errors = err.meta.errors;
-    statusCode = err.meta.httpStatusCode;
+    statusCode = err.meta.httpStatusCode ;
   }
 
 

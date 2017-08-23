@@ -1,5 +1,6 @@
-var SHLogService=require('./shLogService');
+var InstituteService=require('./instituteService');
 var Promise=require('bluebird');
+
 
 
 var DashboardService=function(){};
@@ -94,24 +95,17 @@ DashboardService.prototype.getParticiapantsCount=function(request,app){
 
 
 DashboardService.prototype.getDashboardData=function(request,app){
-    dashboardData={};
-    //return new Promise(function(resolve,reject){
-       particiapants= DashboardService.prototype.getParticiapantsCount(request,app);
-        // .then(function(particiapants){
-        //     dashboardData.participants=particiapants;
-        //     resolve(dashboardData);
-        // })
-        
-        logs=latestLogsByInstitutes=new SHLogService().getSHLogsForInstitutes();
+        dashboardData={};
+        particiapants= DashboardService.prototype.getParticiapantsCount(request,app);
+        logs=new InstituteService().getSHLogs(request);
+
         return Promise.join(particiapants,logs,function(particiapants,logs){
             return {
                 particiapants   :   particiapants,
                 logs            :   logs
             }
         })
-        
 
-    //})
 }   
 
 

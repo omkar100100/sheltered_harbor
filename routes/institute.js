@@ -91,6 +91,15 @@ router=express.Router();
  *           type: string
  *         SH-PublicKey:
  *           type: string     
+ * 
+ *   SHLogSearch:
+ *      properties:
+ *        startDate:
+ *          type: string
+ *        endDate:
+ *          type: string
+ * 
+ *  
  */
 
 
@@ -126,7 +135,7 @@ router.post('/', function(req, res) {
  *   get:
  *     tags:
  *       - participants
- *     description: Returns all active participants ( contract expiry not included)
+ *     description: Returns all active and registered participants ( contract expiry not included)
  *     produces:
  *       - application/json
  *     responses:
@@ -134,9 +143,9 @@ router.post('/', function(req, res) {
  *         description: An array of Participants
  *         schema:
  *           $ref: '#/definitions/Participant'
- */
+ */   
 router.get('/', function(req, res) {
-      instituteController.getAllInstitutes(req,res);
+      instituteController.getAllParticipants(req,res);
 });
 
 
@@ -315,6 +324,34 @@ router.put('/', function(req, res) {
  */
 router.put('/register', function(req, res) {
       instituteController.register(req,res);
+});
+
+
+
+/**
+ * @swagger
+ * /institute/shlogs:
+ *   post:
+ *     tags:
+ *       - participants
+ *     description: Returns logs of all active institutes for a search criteria (TODO: contract expiry not considered)
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: SHLogSearch
+ *         description: Log Search Criteria Object
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/SHLogSearch'
+ *     responses:
+ *       200:
+ *         description: Sucessfully Returned results
+ *         schema:
+ *           $ref: '#/definitions/Participant'
+ */
+router.post('/institute/',function(req,res){
+      instituteController.getSHLogs(req,res);
 });
 
 module.exports=router;

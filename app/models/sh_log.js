@@ -16,12 +16,9 @@ module.exports = function(sequelize, DataTypes) {
         Filename: { 
           type:Sequelize.STRING
         },
-
+        FileDate: Sequelize.DATE,
         Tag: Sequelize.STRING,
         AdditionalData: Sequelize.STRING,
-        UploadTimestamp: {
-          type:Sequelize.DATE
-        },
         AttestationDate: Sequelize.DATE,
         Status:Sequelize.STRING,
         InstituteId :{

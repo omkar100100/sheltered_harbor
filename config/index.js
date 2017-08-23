@@ -21,12 +21,17 @@ Configuration.prototype.getCurrentConfig=function(){
 };
 
 Configuration.prototype.getEnv=function(){
-  //   if(!process.env.NODE_ENV){
-  //   return 'dev';
-  // }
-  // return process.env.NODE_ENV;
+    // if(process.env.NODE_ENV){
+    //   return 'dev';
+    // }
+    // return 'test';
 
-    return 'dev';
+    if(process.argv.length>2){
+      return 'dev';
+    }
+
+    return 'test';
+
 };
 
 module.exports=(function(){

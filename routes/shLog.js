@@ -42,8 +42,8 @@ router=express.Router();
  *        ServiceProviderId:
  *          type: integer
  *  
- *   SHLogInstituteSearch:
- *      propreties:
+ *   SHLogSearch:
+ *      properties:
  *        startDate:
  *          type: string
  *        endDate:
@@ -99,7 +99,7 @@ router.post('/private/institute/submitoffline', function(req, res) {
  *           $ref: '#/definitions/SHLog'
  */
 router.get('/institute/:instituteId/latest',function(req,res){
-      shLogController.getSHLog(req,res);
+      shLogController.getLatestSHLog(req,res);
 });
 
 
@@ -109,7 +109,7 @@ router.get('/institute/:instituteId/latest',function(req,res){
  *   get:
  *     tags:
  *       - shlogs
- *     description: Returns latest logs of all active institutes
+ *     description: Returns last submitted logs of all active institutes
  *     produces:
  *       - application/json
  *     responses:
@@ -119,7 +119,7 @@ router.get('/institute/:instituteId/latest',function(req,res){
  *           $ref: '#/definitions/SHLog'
  */
 router.get('/institute/latest',function(req,res){
-      shLogController.getSHLogsForInstitutes(req,res);
+      shLogController.getLatestSHLogsForInstitutes(req,res);
 });
 
 
@@ -138,7 +138,7 @@ router.get('/institute/latest',function(req,res){
  *         in: body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/SHLogInstituteSearch'
+ *           $ref: '#/definitions/SHLogSearch'
  *       - name: instituteId
  *         description: institute id
  *         in: path
@@ -149,13 +149,13 @@ router.get('/institute/latest',function(req,res){
  *         description: Successfully created
  */
 router.post('/institute/:instituteId',function(req,res){
-      shLogController.getSHLogsByInstitute(req,res);
+      shLogController.getSHLogsByInstituteId(req,res);
 });
 
 
 /**
  * @swagger
- * /shlog/private/institute:
+ * /shlog/private:
  *   delete:
  *     tags:
  *       - shlogs
@@ -166,18 +166,18 @@ router.post('/institute/:instituteId',function(req,res){
  *       200:
  *         description: Sucessfully Returned results
  */
-router.delete('/private/institute',function(req,res){
+router.delete('/private/',function(req,res){
       shLogController.deleteAll(req,res);
 });
 
 
 /**
  * @swagger
- * /shlog/institute/attestation/submit:
+ * /shlog/submit:
  *   post:
  *     tags:
  *       - quorum
- *     description: Submit logs. Inorder to submit attestation log an institute should be registered ,active and  (TODO:)contract not expired with a grace period 
+ *     description: Submit logs. Inorder to submit attestation log an institute should be registered ,active and  (TODO:)contract not expired with a grace period .\n Test Log FileName:SH_20190815_021000021_3_10_001_00_OptionalMyStuffSuffix
  *     produces:
  *       - application/json
  *     parameters:
@@ -193,7 +193,7 @@ router.delete('/private/institute',function(req,res){
  *         schema:
  *           $ref: '#/definitions/SHLog'
  */
-router.post('/institute/attestation/submit',function(req,res){
+router.post('/submit',function(req,res){
       shLogController.submitSHLogsForInstitute(req,res);
 });
 
@@ -201,8 +201,8 @@ router.post('/institute/attestation/submit',function(req,res){
 
 /**
  * @swagger
- * /shlog/private/institute/{logId}:
- *   post:
+ * /shlog/private/{logId}:
+ *   get:
  *     tags:
  *       - shlogs
  *     description: Returns log by logId
@@ -220,7 +220,7 @@ router.post('/institute/attestation/submit',function(req,res){
  *         schema:
  *           $ref: '#/definitions/SHLog'
  */
-router.post('/private/institute/:logId',function(req,res){
+router.get('/private/:logId',function(req,res){
       shLogController.getLogById(req,res);
 });
 
@@ -229,7 +229,7 @@ router.post('/private/institute/:logId',function(req,res){
 
 /**
  * @swagger
- * /shlog/private/institute/{tx}:
+ * /shlog/private/{tx}:
  *   get:
  *     tags:
  *       - shlogs
@@ -248,7 +248,7 @@ router.post('/private/institute/:logId',function(req,res){
  *         schema:
  *           $ref: '#/definitions/SHLog'
  */
-router.get('/private/institute/:tx',function(req,res){
+router.get('/institute/private/:tx',function(req,res){
       shLogController.getSHLogByTxHash(req,res);
 });
 

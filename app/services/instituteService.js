@@ -7,6 +7,8 @@ var md5 = require('md5');
 const util = require('ethereumjs-util');
 var errors = require('../errors');
 var SequelizeUniqueConstraintError = require("sequelize").ValidationError;
+var SequelizeForeignKeyConstraintError = require("sequelize").ForeignKeyConstraintError;
+var CONSTANTS=require('../common/constants')
 
 var InstituteService=function(){};
 
@@ -25,12 +27,30 @@ InstituteService.prototype.findInstituteByHash=function(hash,app){
 }
 
 
+InstituteService.prototype.getSHLogs=function(search){
+     return new Promise(function(resolve,reject){
+            models.Institute.findAll({
+                where: { "IsActive": true },
+                include: [{ model: models.Institute, 
+                                where:{
+                                         "createdAt":{
+                                                $between: [search.startDate, search.endDate]
+                                            } 
+                                },order: [ [ 'createdAt', 'DESC' ]]
+                        }]
+            }).then(function(logs){
+                resolve(logs);
+            })
+     })
+}
+
 InstituteService.prototype.createInstitute=function(institute,contractService,app){
          var createParticipantNContract = function(){
            return  new Promise(function (resolve, reject) {
                 var rndString=randomstring.generate();
                 var hash=md5(rndString);
                 institute.Hash=hash;
+                //TODO: check if the adding service provider is registered and active
                 models.Institute.create(institute)
                 .then(function(institute){
                         var contractService=new ContractService();
@@ -51,6 +71,11 @@ InstituteService.prototype.createInstitute=function(institute,contractService,ap
                 .catch(function(error){
                     if(error instanceof  SequelizeUniqueConstraintError){
                         return reject(errors.normalizeError('UNIQUE_CONSTRAINT_FAILED', error, null));
+                    }else if(error instanceof  SequelizeForeignKeyConstraintError){
+                        return reject(errors.normalizeError('FOREIGN_KEY_CONSTRAINT_FAILED', error, null));
+                    }else{
+                        console.log("Error:" + error);
+                        return reject(errors.normalizeError(null, error, null));
                     }
                 })
 
@@ -70,7 +95,7 @@ InstituteService.prototype.register=function(institute,app){
         var models=app.get("models");
         var promise1 = function () {
             return new Promise(function (resolve, reject) {
-                    InstituteService.prototype.findInstituteByHash(institute['SH-RegistrationKey'],app)
+                    InstituteService.prototype.findInstituteByHash(institute[PARAMETER_LABELS.SH_REGISTRATION_KEY],app)
                     .then(function(institute1){
                         if(institute1){
                             if(institute1.Registered){
@@ -79,13 +104,13 @@ InstituteService.prototype.register=function(institute,app){
                                 obj={};
                                 obj.orgName=institute1.LegalName;
                                 obj.orgAddress=institute1.Address;
-                                if(institute1.Type=="SP"){
+                                if(institute1.Type==DATA_LABELS.SERVICE_PROVIDER){
                                     obj.isAgency=true;    
                                 }else{
                                     obj.isAgency=false; 
                                 }
                                 
-                                obj.signature=institute['SH-Signature'];
+                                obj.signature=institute[PARAMETER_LABELS.SH_SIGNATURE];
 
                                 // START OF WEBJS CODE
                                 //  var msgHash = util.sha3(institute['SH-RegistrationKey']);
@@ -164,7 +189,14 @@ InstituteService.prototype.updateInstitute=function(institute,app){
                 obj.ContractState=institute.ContractState,
                 obj.ContactName=institute.ContactName,
                 obj.ContactEmail=institute.ContactEmail,
-                obj.ContactPhone=institute.ContactPhone
+                obj.ContactPhone=institute.ContactPhone,
+                obj.LegalName=institute.LegalName,
+                obj.PhoneNumber=institute.PhoneNumber,
+                obj.Type=institute.Type,
+                obj.Identifier=institute.Identifier,
+                obj.ServiceProviderId=institute.ServiceProviderId,
+                obj.IdType=institute.IdType,
+                obj.NodeId=institute.NodeId
             
             return inst.update(obj)
             .then(function(updatedInst){
@@ -203,10 +235,15 @@ InstituteService.prototype.deleteAllNodes=function(app){
 
 };
 
-InstituteService.prototype.getAllInstitutes=function(){
+InstituteService.prototype.getAllParticipants=function(){
     return Promise.resolve(
         models.Institute.findAll({
-            where: { "IsActive":true }
+            where: { 
+                $and:[
+                    {"IsActive":true },
+                    { "Registered": true}
+                ]
+             }
         }).then(function(institutes){
             return institutes;
         })

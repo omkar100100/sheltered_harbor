@@ -24,16 +24,24 @@ module.exports.normalizeError = function(errorCodeName, err, args, errors) {
     return err;
   }
 
-  var errData = errorcodes[errorCodeName];
+  var errData  = errorcodes[errorCodeName];
 
   if (err) {
     switch (err.name) {
       case 'SequelizeUniqueConstraintError':
-        errData = errorcodes['UNIQUE_CONSTRAINT_FAILED'];
-       // errData.message = err.message;
-        args=Object.getOwnPropertyNames(err.fields);
+          errData = errorcodes['UNIQUE_CONSTRAINT_FAILED'];
+          args=Object.getOwnPropertyNames(err.fields);
+          break;
+      case 'SequelizeForeignKeyConstraintError':
+          errData = errorcodes['FOREIGN_KEY_CONSTRAINT_FAILED'];
         break;
     }
+
+    if(!errData){
+      errData={};
+      errData.message = err.message;
+    }
+
   }
 
   if (!err) {
@@ -47,7 +55,7 @@ module.exports.normalizeError = function(errorCodeName, err, args, errors) {
 
   err.meta = {};
   err.meta.code = errData.code;
-  err.meta.httpStatusCode = errData.httpStatusCode;
+  err.meta.httpStatusCode = errData.httpStatusCode || 400;
   err.meta.errors = errData.errors || errors;
   if (args) {
     err.meta.message = errData.message;

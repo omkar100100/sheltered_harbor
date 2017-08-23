@@ -9,6 +9,8 @@ MasterDataController.prototype.getIdentifierTypes=function(req,res){
     masterService.getIdentifierTypes()
     .then(function(result){
         response.handleSuccessResponse(200, result, res);
+    }).catch(function(error){
+        response.handleError(error, res); 
     })
 }
 
@@ -18,14 +20,18 @@ MasterDataController.prototype.getDistinctServiceProviders=function(req,res){
     masterService.getDistinctServiceProviders(req.app)
     .then(function(result){
         response.handleSuccessResponse(200, result, res);
+    }).catch(function(error){
+        response.handleError(error, res); 
     })
 }
 
-MasterDataController.prototype.getParticipants=function(req,res){
+MasterDataController.prototype.getOnBoardedInstitutes=function(req,res){
     masterService=new MasterService();
-    masterService.getParticipants(req.app)
+    masterService.getOnBoardedInstitutes(req.app)
     .then(function(result){
         response.handleSuccessResponse(200, result, res);
+    }).catch(function(error){
+        response.handleError(error, res); 
     })
 }
 

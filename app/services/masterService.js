@@ -1,11 +1,10 @@
-CONSTANTS=require('../common/constants')
 var Promise = require('bluebird');
-
+var CONSTANTS=require('../common/constants')
 MasterService=function(){}
 
 MasterService.prototype.getIdentifierTypes=function(){
     return new Promise(function(resolve,reject){
-        resolve(CONSTANTS.IDTYPES);
+        resolve(ID_TYPES);
     })
 }
 
@@ -16,8 +15,10 @@ MasterService.prototype.getDistinctServiceProviders=function(app){
         models.Institute.findAll({
             distinct: 'LegalName',
             where :{
-                IsActive:true,
-                Type:'SP'
+                $and:[
+                    {Type:'SP'}
+                ]
+                
             }
         })
         .then(function(sps){
@@ -27,6 +28,7 @@ MasterService.prototype.getDistinctServiceProviders=function(app){
                obj.LegalName=sp.LegalName;
                obj.id=sp.id;
                obj.Identifier=sp.Identifier;
+               obj.active=sp.IsActive;
                spArr.push(obj);
            })
 
@@ -37,15 +39,14 @@ MasterService.prototype.getDistinctServiceProviders=function(app){
 }
 
 
-MasterService.prototype.getParticipants=function(app){
+MasterService.prototype.getOnBoardedInstitutes=function(app){
     var models=app.get("models");
     return new Promise(function(resolve,reject){
         models.Institute.findAll({
-            attributes: ['id','LegalName','ServiceProviderId'],
+            attributes: ['id','LegalName','ServiceProviderId','IsActive','Registered','Hash'],
             where: {
                     $and :[
-                        {IsActive : true },
-                        {Registered : true}
+                        {Type:'FI' }
                     ]
                 }
             })

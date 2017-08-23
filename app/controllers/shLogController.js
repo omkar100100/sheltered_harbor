@@ -11,15 +11,19 @@ SHLogController.prototype.submitSHLogOffline = function(req, res) {
         var sHLogService = new SHLogService();
         sHLogService.submitSHLogOffline(shLogRequest).then(function(shLog){
            response.handleSuccessResponse(200, shLog, res);
+        }).catch(function(error){
+           response.handleError(error, res); 
         })
 };
 
 
-SHLogController.prototype.getSHLog = function(req, res) {
+SHLogController.prototype.getLatestSHLog = function(req, res) {
         var instituteId=req.params.instituteId;
         var sHLogService = new SHLogService();
-        sHLogService.getSHLog(instituteId).then(function(shLog) {
+        sHLogService.getLatestSHLog(instituteId).then(function(shLog) {
            response.handleSuccessResponse(200, shLog, res);
+        }).catch(function(error){
+           response.handleError(error, res); 
         })
   
 };
@@ -29,17 +33,21 @@ SHLogController.prototype.deleteAll = function(req, res) {
         var sHLogService = new SHLogService();
         sHLogService.deleteAll(req.app).then(function(result) {
            response.handleSuccessResponse(200, result, res);
+        }).catch(function(error){
+           response.handleError(error, res); 
         })
   
 };
 
-SHLogController.prototype.getSHLogsByInstitute = function(req, res) {
+SHLogController.prototype.getSHLogsByInstituteId = function(req, res) {
         instituteId=req.params.instituteId;
         var search=req.body;
         search.instituteId=instituteId;
         var sHLogService = new SHLogService();
-        sHLogService.getSHLogs(search).then(function(shLogs) {
+        sHLogService.getSHLogsForInstitute(search).then(function(shLogs) {
             response.handleSuccessResponse(200, shLogs, res);
+        }).catch(function(error){
+           response.handleError(error, res); 
         })
   
 };
@@ -49,6 +57,8 @@ SHLogController.prototype.getSHLogByTxHash = function(req, res) {
         var sHLogService = new SHLogService();
         sHLogService.getSHLogByTxHash(tx).then(function(shLog) {
             response.handleSuccessResponse(200, shLog, res);
+        }).catch(function(error){
+           response.handleError(error, res); 
         })
   
 };
@@ -61,13 +71,18 @@ SHLogController.prototype.submitSHLogsForInstitute= function(req, res) {
         .then(function(shLog) {
             response.handleSuccessResponse(200, shLog, res);
         })
+        .catch(function(error){
+             response.handleError(error, res);    
+        })
 };
 
-SHLogController.prototype.getSHLogsForInstitutes = function(req, res) {
+SHLogController.prototype.getLatestSHLogsForInstitutes = function(req, res) {
         var sHLogService = new SHLogService();
-       sHLogService.getSHLogsForInstitutes()
+       sHLogService.getLatestSHLogsForInstitutes()
         .then(function(shLogs) {
             response.handleSuccessResponse(200, shLogs, res);
+        }).catch(function(error){
+           response.handleError(error, res); 
         })
 };
 
@@ -79,7 +94,11 @@ SHLogController.prototype.getLogById= function(req, res) {
        sHLogService.getLogById(logId)
         .then(function(shLog) {
             response.handleSuccessResponse(200, shLog, res);
+        }).catch(function(error){
+           response.handleError(error, res); 
         })
 };
+
+
 
 module.exports = new SHLogController();

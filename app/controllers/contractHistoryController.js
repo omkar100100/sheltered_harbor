@@ -9,9 +9,13 @@ ContractHistoryController.prototype.updateInstituteContract = function(req, res)
     var newContract=req.body;
     var contractHistoryService = new ContractHistoryService();
     var instituteService = new InstituteService();
-       return contractHistoryService.updateInstituteContract(newContract,instituteService,req.app).then(function(result) {
-        response.handleSuccessResponse(200, result, res);
-    })
+       return contractHistoryService.updateInstituteContract(newContract,instituteService,req.app)
+       .then(function(result) {
+            response.handleSuccessResponse(200, result, res);
+        })
+        .catch(function(error){
+           response.handleError(error, res); 
+        })
   
 };
 

@@ -163,7 +163,7 @@
   },
   "INSTITUTE_NOT_ELIGIBLE_FOR_ATTESTATION": {
     "httpStatusCode": 400,
-    "message": "Institute is not eligible for attestation because some validations are not met",
+    "message": "Institute is not eligible for attestation because some conditions are not met",
     "code": 100032
   },
   "UNKNOWN_ERROR_FROM_QUORUM": {

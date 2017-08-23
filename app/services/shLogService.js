@@ -134,6 +134,8 @@ SHLogService.prototype.getSHLogsForInstitute=function(search){
                 obj.FileDate=shLog.FileDate;
                 obj.Hash=shLog.TxHash;
                 obj.Status=shLog.Status;
+                obj.AttestationDate=shLog.AttestationDate;
+                obj.submittedDate=shLog.createdAt;
                 shLogArr.push(obj);
             })
             

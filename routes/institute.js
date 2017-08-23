@@ -334,7 +334,7 @@ router.put('/register', function(req, res) {
  *   post:
  *     tags:
  *       - participants
- *     description: Returns logs of all active institutes for a search criteria (TODO: contract expiry not considered)
+ *     description: Returns logs of all active institutes for a search criteria .
  *     produces:
  *       - application/json
  *     parameters:

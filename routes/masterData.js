@@ -46,7 +46,7 @@ router.get('/serviceprovider',function(req,res){
  *   get:
  *     tags:
  *       - master
- *     description: Gives all active on-boarded Institutes (TODO: contract expiry not considered)
+ *     description: Gives all active on-boarded Institutes.
  *     produces:
  *       - application/json
  *     responses:

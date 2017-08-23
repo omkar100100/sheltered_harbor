@@ -8,6 +8,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var env=require('./environment')
 var webSocket = require('websocket');
+var swaggerJSDoc = require('swagger-jsdoc');
 
 var helmet=require('helmet');
 var fs=require('fs');
@@ -24,7 +25,7 @@ var config = require('./config');
 var currentConfig = config.getCurrentConfig();
 
 
-var swaggerJSDoc = require('swagger-jsdoc');
+
 
 var swaggerHost= currentConfig.swagger.host + ':' + currentConfig.swagger.port;
 var swaggerDefinition = {
@@ -33,7 +34,7 @@ var swaggerDefinition = {
     version: '1.0.0',
     description: "Sheltered Harbor LOG MONITORING API for Admins"
   },
-  host:swaggerHost,
+  host:'shapp1.eastus.cloudapp.azure.com',
   basePath: '/',
 };
 
@@ -118,31 +119,28 @@ app.use('/dashboard',dashboard);
 
 
 
-models.Role.sync().then(function(){
-    models.User.sync().then(function(){
-        models.AccessLog.sync().then(function(){
-          models.IdType.sync().then(function(){
-            models.QuorumNode.sync().then(function(){
-                models.Institute.sync().then(function(){
-                  models.PasswordRecovery.sync().then(function(){
-                    models.SHLog.sync().then(function(){
-                        models.ServiceProviderMapping.sync().then(function(){
-                            models.UserInstitute.sync().then(function(){
-                                models.InstituteHistory.sync().then(function(){
-                                        // models.Registration.sync().then(function(){
-                               
-                                        // })
-                                })
-                            })
-                        })
-                    })
-                  })
-                })
-            })
-          })     
-        })  
-    })
-})
+// models.Role.sync().then(function(){
+//     models.User.sync().then(function(){
+//         models.AccessLog.sync().then(function(){
+//           models.IdType.sync().then(function(){
+//             models.QuorumNode.sync().then(function(){
+//                 models.Institute.sync().then(function(){
+//                   models.PasswordRecovery.sync().then(function(){
+//                     models.SHLog.sync().then(function(){
+//                         models.ServiceProviderMapping.sync().then(function(){
+//                             models.UserInstitute.sync().then(function(){
+//                                 models.InstituteHistory.sync().then(function(){
+//                                 })
+//                             })
+//                         })
+//                     })
+//                   })
+//                 })
+//             })
+//           })     
+//         })  
+//     })
+// })
 
 app.use(function(err, req, res, next) {
    console.log(err);

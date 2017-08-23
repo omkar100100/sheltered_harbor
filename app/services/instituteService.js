@@ -230,7 +230,9 @@ InstituteService.prototype.deleteAllNodes=function(app){
    return new Promise(function(resolve,reject){
         models1.Institute.destroy({where: {}}).then(function () {
             resolve();
-        });
+        }).catch(function(error){
+            reject(error);
+        })
    });
 
 };

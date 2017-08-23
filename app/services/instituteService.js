@@ -31,7 +31,7 @@ InstituteService.prototype.getSHLogs=function(search){
      return new Promise(function(resolve,reject){
             models.Institute.findAll({
                 where: { "IsActive": true },
-                include: [{ model: models.Institute, 
+                include: [{ model: models.SHLog, 
                                 where:{
                                          "createdAt":{
                                                 $between: [search.startDate, search.endDate]

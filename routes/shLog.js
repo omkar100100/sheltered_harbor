@@ -1,7 +1,7 @@
 var models  = require('../app/models');
 var shLogController = require('../app/controllers/shLogController');
 var express = require('express');
-
+authenticate=require('../app/common/authenticate');
 router=express.Router();
 
 
@@ -72,7 +72,7 @@ router=express.Router();
  *       200:
  *         description: Successfully created
  */
-router.post('/private/institute/submitoffline', function(req, res) {
+router.post('/private/institute/submitoffline', authenticate.isAuthenticated,function(req, res) {
       shLogController.submitSHLogOffline(req,res);
 });
 
@@ -98,7 +98,7 @@ router.post('/private/institute/submitoffline', function(req, res) {
  *         schema:
  *           $ref: '#/definitions/SHLog'
  */
-router.get('/institute/:instituteId/latest',function(req,res){
+router.get('/institute/:instituteId/latest',authenticate.isAuthenticated,function(req,res){
       shLogController.getLatestSHLog(req,res);
 });
 
@@ -118,7 +118,7 @@ router.get('/institute/:instituteId/latest',function(req,res){
  *         schema:
  *           $ref: '#/definitions/SHLog'
  */
-router.get('/institute/latest',function(req,res){
+router.get('/institute/latest',authenticate.isAuthenticated,function(req,res){
       shLogController.getLatestSHLogsForInstitutes(req,res);
 });
 
@@ -148,7 +148,7 @@ router.get('/institute/latest',function(req,res){
  *       200:
  *         description: Successfully created
  */
-router.post('/institute/:instituteId',function(req,res){
+router.post('/institute/:instituteId',authenticate.isAuthenticated,function(req,res){
       shLogController.getSHLogsByInstituteId(req,res);
 });
 
@@ -166,7 +166,7 @@ router.post('/institute/:instituteId',function(req,res){
  *       200:
  *         description: Sucessfully Returned results
  */
-router.delete('/private/',function(req,res){
+router.delete('/private/',authenticate.isAuthenticated,function(req,res){
       shLogController.deleteAll(req,res);
 });
 
@@ -193,7 +193,7 @@ router.delete('/private/',function(req,res){
  *         schema:
  *           $ref: '#/definitions/SHLog'
  */
-router.post('/submit',function(req,res){
+router.post('/submit',authenticate.isAuthenticated,function(req,res){
       shLogController.submitSHLogsForInstitute(req,res);
 });
 
@@ -220,7 +220,7 @@ router.post('/submit',function(req,res){
  *         schema:
  *           $ref: '#/definitions/SHLog'
  */
-router.get('/private/:logId',function(req,res){
+router.get('/private/:logId',authenticate.isAuthenticated,function(req,res){
       shLogController.getLogById(req,res);
 });
 
@@ -248,7 +248,7 @@ router.get('/private/:logId',function(req,res){
  *         schema:
  *           $ref: '#/definitions/SHLog'
  */
-router.get('/institute/private/:tx',function(req,res){
+router.get('/institute/private/:tx',authenticate.isAuthenticated,function(req,res){
       shLogController.getSHLogByTxHash(req,res);
 });
 

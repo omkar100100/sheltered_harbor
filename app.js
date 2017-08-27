@@ -12,7 +12,7 @@ var swaggerJSDoc = require('swagger-jsdoc');
 
 var helmet=require('helmet');
 var fs=require('fs');
-
+const jwt = require('express-jwt');
 var routes = require('./routes/index');
 var users  = require('./routes/users');
 var master=require('./routes/masterData');
@@ -24,27 +24,9 @@ var dashboard=require('./routes/dashboard');
 var config = require('./config');
 var currentConfig = config.getCurrentConfig();
 
+const swaggerUi = require('swagger-ui-express');
 
 
-
-var swaggerHost= currentConfig.swagger.host + ':' + currentConfig.swagger.port;
-var swaggerDefinition = {
-  info: {
-    title: 'Sheltered Harbor API',
-    version: '1.0.0',
-    description: "Sheltered Harbor LOG MONITORING API for Admins"
-  },
-  host:'shapp1.eastus.cloudapp.azure.com',
-  basePath: '/',
-};
-
-
-var options = {
-  swaggerDefinition: swaggerDefinition,
-  apis: ['./routes/*.js'],
-};
-
-var swaggerSpec = swaggerJSDoc(options);
 
 var app = express();
 
@@ -59,16 +41,68 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
+var swaggerHost= currentConfig.swagger.host + ':' + currentConfig.swagger.port;
+var swaggerDefinition = {
+  info: {
+    title: 'Sheltered Harbor API',
+    version: '1.0.0',
+    description: "Sheltered Harbor LOG MONITORING API for Admins"
+  },
+  host:'shapp1.eastus.cloudapp.azure.com',
+  basePath: '/',
+  securityDefinitions: {
+      jwt: {
+        type: 'apiKey',
+        name: 'Authorization',
+        in: 'header'
+      }
+    },
+  security: [
+      { jwt: [] }
+    ]
+  
+};
+
+var showExplorer = true;
+var options = {
+  swaggerDefinition: swaggerDefinition,
+  apis: ['./routes/*.js'],
+  validatorUrl : null
+};
+
+const swaggerSpec = swaggerJSDoc(options);
+const docsJsonPath = '/swagger.json';
+const swaggerUiHandler = swaggerUi.setup(swaggerSpec);
+
+
+app.get(docsJsonPath, (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(swaggerSpec);
+});
+
+app.use('/docs', swaggerUi.serve, (req, res, next) => {
+  if (!req.query.url) {
+    res.redirect("/docs?url=http://localhost:8001/swagger.json");
+  } else {
+    swaggerUiHandler(req, res, next);
+  }
+});
+
+
+
+app.use(express.static(path.join(__dirname, 'swagger')));
 
 
 app.set('models', require('./app/models'));
 var models = app.get('models');
 
-app.get('/swagger.json', function(req, res) {
-  res.setHeader('Content-Type', 'application/json');
-  res.send(swaggerSpec);
-});
+app.use(jwt({ secret: process.env.AUTHENTICATION_SECRET }).unless({
+  path: ['/user/authenticate']
+}));
+
+
+
+
 
 
 app.use('/role',roles);
@@ -78,6 +112,8 @@ app.use('/participant',institute);
 app.use('/shlog',shLog);
 app.use('/master',master);
 app.use('/dashboard',dashboard);
+
+
 
 //models.sequelize.sync({force:true}).then(function () {
     console.log("Models Synchronized");

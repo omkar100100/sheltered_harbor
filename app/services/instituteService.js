@@ -9,7 +9,8 @@ var errors = require('../errors');
 var SequelizeUniqueConstraintError = require("sequelize").ValidationError;
 var SequelizeForeignKeyConstraintError = require("sequelize").ForeignKeyConstraintError;
 var CONSTANTS=require('../common/constants')
-
+var MAIL_TEMPLATES=require('../common/mailtemplates')
+var env=require('../../environment')
 var InstituteService=function(){};
 
 InstituteService.prototype.findInstituteByHash=function(hash,app){
@@ -53,6 +54,13 @@ InstituteService.prototype.createInstitute=function(institute,contractService,ap
                 //TODO: check if the adding service provider is registered and active
                 models.Institute.create(institute)
                 .then(function(institute){
+                        env.getMailTransporter().sendMail(MAIL_TEMPLATES.ON_BOARD_TEMPLATE, (error, info) => {
+                            if (error) {
+                                return console.log(error);
+                            }
+                            console.log('Message %s sent: %s', info.messageId, info.response);
+                        });
+
                         var contractService=new ContractService();
                         var contract={};
                         contract.InstituteId=institute.id;
@@ -252,10 +260,15 @@ InstituteService.prototype.getAllParticipants=function(){
 };
 
 
-InstituteService.prototype.getInstituteByIdentifier=function(identifier){
+InstituteService.prototype.getInstituteByIdentifier=function(identifierObj){
     return Promise.resolve(
         models.Institute.findOne({
-            where: { Identifier: identifier }
+            where: {
+                $and:[
+                    { Identifier: identifierObj.Identifier },
+                    { IdType: identifierObj.IDType }
+                ] 
+            }
         }).then(function(institute){
             return institute;
         })

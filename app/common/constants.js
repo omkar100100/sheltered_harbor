@@ -9,7 +9,7 @@
  LOG_SUBMISSION_STATUS ={
       IN_PROGRESS: { label: "In Progress"},
       SUBMITTED:   {label : "Submitted"} ,
-      FAILED:{ label:"Failed"}
+      FAILED:      { label:"Failed"}
  }
 
  SUCCESS_MESSAGES={
@@ -39,3 +39,14 @@ module.exports=LOG_SUBMISSION_STATUS;
 module.exports=SUCCESS_MESSAGES;
 module.exports=PARAMETER_LABELS;
 module.exports=DATA_LABELS;
+module.exports.getIDTypeById=  function(id){
+    idtype=null;
+    ID_TYPES.forEach(function(type){
+        if(type.id==id){
+            idtype= type.name;
+            return;
+        }
+    })
+
+    return idtype;
+}

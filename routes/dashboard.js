@@ -1,6 +1,6 @@
 var dashboardController = require('../app/controllers/dashboardController');
 var express = require('express');
-
+authenticate=require('../app/common/authenticate');
 
 router=express.Router();
 
@@ -39,7 +39,7 @@ router=express.Router();
  *       200:
  *         description: Dashboard Data successfully returned
  */
-router.post('/', function(req, res) {
+router.post('/', authenticate.isAuthenticated,function(req, res) {
       dashboardController.getParticiapants(req,res);
 });
 

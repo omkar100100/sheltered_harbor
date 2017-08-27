@@ -1,7 +1,7 @@
 var models  = require('../app/models');
 var roleController = require('../app/controllers/roleController');
 var express = require('express');
-
+authenticate=require('../app/common/authenticate');
 router=express.Router();
 
 /**
@@ -40,9 +40,11 @@ router=express.Router();
  *       200:
  *         description: Successfully created
  */
-router.post('/private', function(req, res) {
+router.post('/private', authenticate.isAuthenticated,function(req, res) {
       roleController.createRole(req,res);
 });
+
+
 
 /**
  * @swagger
@@ -59,9 +61,12 @@ router.post('/private', function(req, res) {
  *         schema:
  *           $ref: '#/definitions/Role'
  */
-router.get('/', function(req, res) {
+router.get('/',authenticate.isAuthenticated,function(req, res) {
       roleController.getAllRoles(req,res);
 });
+
+
+
 
 /**
  * @swagger
@@ -84,7 +89,7 @@ router.get('/', function(req, res) {
  *         schema:
  *           $ref: '#/definitions/Role'
  */
-router.get('/:roleId', function(req, res) {
+router.get('/:roleId',authenticate.isAuthenticated, function(req, res) {
       roleController.getRole(req,res);
 });
 
@@ -108,7 +113,7 @@ router.get('/:roleId', function(req, res) {
  *       200:
  *         description: Successfully deleted
  */
-router.delete('/private/:roleId', function(req, res) {
+router.delete('/private/:roleId', authenticate.isAuthenticated,function(req, res) {
       roleController.removeRole(req,res);
 });
 
@@ -139,7 +144,7 @@ router.delete('/private/:roleId', function(req, res) {
  *         schema:
  *           $ref: '#/definitions/Role'
  */
-router.put('/private/:roleId', function(req, res) {
+router.put('/private/:roleId',authenticate.isAuthenticated, function(req, res) {
       roleController.updateRole(req,res);
 });
 

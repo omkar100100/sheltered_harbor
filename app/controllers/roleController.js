@@ -27,7 +27,10 @@ RoleController.prototype.createRole = function(req, res) {
         })
 };
 
+
+
 RoleController.prototype.getAllRoles = function(req, res) {
+
         var roleService = new RoleService();
         roleService.getAllRoles().then(function(result) {
           response.handleSuccessResponse(200, result, res);

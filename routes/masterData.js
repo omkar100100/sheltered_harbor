@@ -1,6 +1,6 @@
 var masterDataController = require('../app/controllers/masterDataController');
 var express = require('express');
-
+authenticate=require('../app/common/authenticate');
 router=express.Router();
 
 
@@ -17,7 +17,7 @@ router=express.Router();
  *       200:
  *         description: Successfully created
  */
-router.get('/institute/idtypes',function(req,res){
+router.get('/institute/idtypes',authenticate.isAuthenticated,function(req,res){
     masterDataController.getIdentifierTypes(req,res)
 })
 
@@ -35,7 +35,7 @@ router.get('/institute/idtypes',function(req,res){
  *       200:
  *         description: Successfully created
  */
-router.get('/serviceprovider',function(req,res){
+router.get('/serviceprovider',authenticate.isAuthenticated,function(req,res){
     masterDataController.getDistinctServiceProviders(req,res)
 })
 
@@ -53,7 +53,7 @@ router.get('/serviceprovider',function(req,res){
  *       200:
  *         description: Successfully created
  */
-router.get('/private/onboard',function(req,res){
+router.get('/private/onboard',authenticate.isAuthenticated,function(req,res){
     masterDataController.getOnBoardedInstitutes(req,res)
 })
 

@@ -1,7 +1,7 @@
 var models  = require('../app/models');
 var quorumNodeController = require('../app/controllers/quorumNodeController');
 var express = require('express');
-
+authenticate=require('../app/common/authenticate');
 router=express.Router();
 
 /**
@@ -43,7 +43,7 @@ router=express.Router();
  *       200:
  *         description: Successfully created
  */
-router.post('/private', function(req, res) {
+router.post('/private', authenticate.isAuthenticated,function(req, res) {
       quorumNodeController.createNode(req,res);
 });
 
@@ -64,7 +64,7 @@ router.post('/private', function(req, res) {
  *         schema:
  *           $ref: '#/definitions/Node'
  */
-router.get('/', function(req, res) {
+router.get('/', authenticate.isAuthenticated,function(req, res) {
       quorumNodeController.getAllNodes(req,res);
 });
 
@@ -83,7 +83,7 @@ router.get('/', function(req, res) {
  *       200:
  *         description: Deletes all nodes
  */
-router.delete('/private', function(req, res) {
+router.delete('/private',authenticate.isAuthenticated, function(req, res) {
       quorumNodeController.deleteAllNodes(req,res);
 });
 
@@ -108,7 +108,7 @@ router.delete('/private', function(req, res) {
  *       200:
  *         description: Node information updated
  */
-router.put('/private', function(req, res) {
+router.put('/private',authenticate.isAuthenticated, function(req, res) {
       quorumNodeController.updateNode(req,res);
 });
 
@@ -135,7 +135,7 @@ router.put('/private', function(req, res) {
  *         schema:
  *           $ref: '#/definitions/Node'
  */
-router.get('/:nodeId', function(req, res) {
+router.get('/:nodeId', authenticate.isAuthenticated,function(req, res) {
       quorumNodeController.getNode(req,res);
 });
 

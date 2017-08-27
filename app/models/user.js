@@ -21,7 +21,10 @@ module.exports = function(sequelize, DataTypes) {
             key: 'id'
           }
         },
-        Username: Sequelize.STRING,
+        Username: { 
+          type:Sequelize.STRING,
+          unique: true
+        },
         Password: Sequelize.STRING,
         IsActive:{
           type: Sequelize.BOOLEAN,

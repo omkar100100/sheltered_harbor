@@ -30,7 +30,11 @@ SHLogService.prototype.submitSHLogOffline=function(log){
                     file.fileId=fileParts[6];
                     file.seq=fileParts[7];
                     var instituteService=new InstitueService();
-                    instituteService.getInstituteByIdentifier(file.instIdentifier).then(function(institute){
+                    instIdentifierObj.IDType=CONSTANTS.getIDTypeById(fileParts[3]);
+                    instIdentifierObj.Identifier=fileParts[2];
+                    file.instIdentifierObj=instIdentifierObj;
+
+                    instituteService.getInstituteByIdentifier(instIdentifierObj).then(function(institute){
                         shLog.Filename=fullFileName;
                         shLog.Tag=log[PARAMETER_LABELS.SH_TAG];
                         shLog.AdditionalData=log[PARAMETER_LABELS.SH_ADDITIONAL_DATA];
@@ -162,14 +166,20 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
                     file.prefix=fileParts[0];
                     var moment= new Moment({year: fileParts[1].substring(0,4), month: fileParts[1].substring(4,6), day: fileParts[1].substring(6,8)});
                     file.fileDate=moment.format();
-                    file.instIdentifier=fileParts[2];
+
+                    var instIdentifierObj={};
+                    instIdentifierObj.IDType=CONSTANTS.getIDTypeById(fileParts[3]);
+                    
+                    instIdentifierObj.Identifier=fileParts[2];
+
+                    file.instIdentifier=instIdentifierObj;
                     file.instIdType=fileParts[3];
                     file.fileSet=fileParts[4];
                     file.version=fileParts[5];
                     file.fileId=fileParts[6];
                     file.seq=fileParts[7];
                     var instituteService=new InstitueService();
-                    instituteService.getInstituteByIdentifier(file.instIdentifier).then(function(institute){
+                    instituteService.getInstituteByIdentifier(instIdentifierObj).then(function(institute){
                         //TODO: Consider Contract Expiry
                         if(institute.IsActive && institute.Registered){
                                 institute1=institute;

@@ -3,6 +3,7 @@ var instituteController = require('../app/controllers/instituteController');
 var contractHistoryController = require('../app/controllers/contractHistoryController');
 var express = require('express');
 var response=require('../app/common/response');
+authenticate=require('../app/common/authenticate');
 
 router=express.Router();
 
@@ -99,6 +100,14 @@ router=express.Router();
  *        endDate:
  *          type: string
  * 
+ *   IdentifierObj:
+ *      properties:
+ *        IDType:
+ *          type: string
+ *        Identifier:
+ *          type: string
+ *        
+ * 
  *  
  */
 
@@ -124,7 +133,7 @@ router=express.Router();
  *       200:
  *         description: Successfully created
  */
-router.post('/', function(req, res) {
+router.post('/', authenticate.isAuthenticated,function(req, res) {
       instituteController.createInstitute(req,res);
 });
 
@@ -144,7 +153,7 @@ router.post('/', function(req, res) {
  *         schema:
  *           $ref: '#/definitions/Participant'
  */   
-router.get('/', function(req, res) {
+router.get('/', authenticate.isAuthenticated,function(req, res) {
       instituteController.getAllParticipants(req,res);
 });
 
@@ -170,7 +179,7 @@ router.get('/', function(req, res) {
  *         schema:
  *           $ref: '#/definitions/Participant'
  */
-router.get('/:participantId', function(req, res) {
+router.get('/:participantId',authenticate.isAuthenticated, function(req, res) {
       instituteController.getInstitute(req,res);
 });
 
@@ -178,26 +187,27 @@ router.get('/:participantId', function(req, res) {
 
 /**
  * @swagger
- * /participant/identifier/{id}:
- *   get:
+ * /participant/identifier/:
+ *   post:
  *     tags:
  *       - participants
  *     description: Returns a single Participant by identifer id
  *     produces:
  *       - application/json
  *     parameters:
- *       - name: id
+ *       - name: identifier
  *         description: identifier 
- *         in: path
+ *         in: body 
  *         required: true
- *         type: string
+ *         schema:
+ *           $ref: '#/definitions/IdentifierObj'
  *     responses:
  *       200:
  *         description: A single participant
  *         schema:
  *           $ref: '#/definitions/Participant'
  */
-router.get('/identifier/:id', function(req, res) {
+router.post('/identifier',authenticate.isAuthenticated, function(req, res) {
       instituteController.getByIdentifier(req,res);
 });
 
@@ -214,7 +224,7 @@ router.get('/identifier/:id', function(req, res) {
  *       200:
  *         description: deletes all participants
  */
-router.delete('/private', function(req, res) {
+router.delete('/private', authenticate.isAuthenticated,function(req, res) {
       instituteController.deleteAll(req,res);
 });
 
@@ -240,7 +250,7 @@ router.delete('/private', function(req, res) {
  *         schema:
  *           $ref: '#/definitions/Participant'
  */
-router.put('/contract', function(req, res) {
+router.put('/contract',authenticate.isAuthenticated, function(req, res) {
       contractHistoryController.updateInstituteContract(req,res);
 });
 
@@ -266,7 +276,7 @@ router.put('/contract', function(req, res) {
  *         schema:
  *           $ref: '#/definitions/Participant'
  */
-router.put('/toggleStatus/:id', function(req, res) {
+router.put('/toggleStatus/:id',authenticate.isAuthenticated, function(req, res) {
       instituteController.updateActiveStatus(req,res);
 });
 
@@ -294,7 +304,7 @@ router.put('/toggleStatus/:id', function(req, res) {
  *         schema:
  *           $ref: '#/definitions/Participant'
  */
-router.put('/', function(req, res) {
+router.put('/',authenticate.isAuthenticated, function(req, res) {
       instituteController.updateInstitute(req,res);
 });
 
@@ -322,7 +332,7 @@ router.put('/', function(req, res) {
  *         schema:
  *           $ref: '#/definitions/Participant'
  */
-router.put('/register', function(req, res) {
+router.put('/register', authenticate.isAuthenticated,function(req, res) {
       instituteController.register(req,res);
 });
 
@@ -350,7 +360,7 @@ router.put('/register', function(req, res) {
  *         schema:
  *           $ref: '#/definitions/Participant'
  */
-router.post('/institute/',function(req,res){
+router.post('/institute/',authenticate.isAuthenticated,function(req,res){
       instituteController.getSHLogs(req,res);
 });
 

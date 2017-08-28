@@ -107,7 +107,7 @@ app.set('models', require('./app/models'));
 var models = app.get('models');
 
 app.use(jwt({ secret: process.env.AUTHENTICATION_SECRET }).unless({
-  path: ['/user/authenticate']
+  path: ['/user/authenticate','/user']
 }));
 
 

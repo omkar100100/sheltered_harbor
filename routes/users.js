@@ -66,7 +66,7 @@ const router=express.Router();
  *         schema:
  *           $ref: '#/definitions/User'
  */
-router.post('/', authenticate.isAuthenticated,function(req, res) {
+router.post('/',function(req, res) {
       userController.createUser(req,res);
 });
 

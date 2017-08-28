@@ -34,7 +34,7 @@ const router=express.Router();
  *           type: integer
  *           format: int64
  * 
- *   AuthenticateRequest
+ *   AuthenticateRequest:
  *     properties:
  *       username:
  *          type: string

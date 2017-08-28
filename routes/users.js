@@ -20,7 +20,14 @@ const router=express.Router();
  *         type: string
  *       RoleId:
  *         type: integer
- *       
+ *  
+ *   Authenticate:
+ *     properties
+ *       username:
+ *         type: string
+ *       password:
+ *         type: password
+ *      
  *  
  *   User:
  *    allOf:
@@ -32,12 +39,7 @@ const router=express.Router();
  *           type: integer
  *           format: int64
  * 
- *   Authenticate:
- *     properties
- *       username1:
- *         type: string
- *       password:
- *         type: password
+ *   
  *       
  */
 

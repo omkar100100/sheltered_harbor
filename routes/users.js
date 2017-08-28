@@ -34,7 +34,12 @@ const router=express.Router();
  *           type: integer
  *           format: int64
  * 
- *   
+ *   AuthenticateRequest
+ *     properties:
+ *       username:
+ *          type: string
+ *       password:
+ *          type: string 
  *       
  */
 
@@ -112,7 +117,8 @@ router.get('/:userId', authenticate.isAuthenticated,function(req, res) {
  *         description: Authentication details
  *         in: body
  *         required: true
- *         type: object
+ *         schema:
+ *           $ref: '#/definitions/AuthenticateRequest'
  *     responses:
  *       200:
  *         description: User details

@@ -21,12 +21,7 @@ const router=express.Router();
  *       RoleId:
  *         type: integer
  *  
- *   Authenticate:
- *     properties
- *       user:
- *         type: string
- *       password:
- *         type: password
+ *  
  *      
  *  
  *   User:
@@ -117,8 +112,7 @@ router.get('/:userId', authenticate.isAuthenticated,function(req, res) {
  *         description: Authentication details
  *         in: body
  *         required: true
- *         schema:
- *           $ref: '#/definitions/Authenticate'
+ *         type: object
  *     responses:
  *       200:
  *         description: User details

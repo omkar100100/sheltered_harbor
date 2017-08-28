@@ -47,7 +47,7 @@ UserService.prototype.findByUsername=function(username){
 }
 
 UserService.prototype.authenticate=function (userObj) {
-    return this.findByUsername(userObj.user).then(function(user){
+    return this.findByUsername(userObj.username).then(function(user){
         return new Promise((resolve, reject) => {
             jwt.sign(
             {

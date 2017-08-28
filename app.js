@@ -47,7 +47,7 @@ app.use(function(req, res, next) {
 
 if(process.env.NODE_ENV=='test'){
   swaggerHost='shapp1.eastus.cloudapp.azure.com';
-}else if(process.env.NODE_ENV=='dev'){{
+}else if(process.env.NODE_ENV=='dev'){
   swaggerHost= currentConfig.swagger.host + ':' + currentConfig.swagger.port;
 }else{
   swaggerHost='shapp1.eastus.cloudapp.azure.com';

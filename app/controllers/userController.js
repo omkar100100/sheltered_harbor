@@ -26,6 +26,17 @@ UserController.prototype.authenticateUser = function(req, res) {
         })
 }
 
+
+UserController.prototype.getUsers = function(req, res) {
+        var userService=new UserService();
+        userService.getUsers().then(function(result){
+                response.handleSuccessResponse(200, result, res);
+        }).catch(function(error){
+           response.handleError(error, res); 
+        })
+}
+
+
 UserController.prototype.createUser = function(req, res) {
         var user=req.body;
         var userService = new UserService();

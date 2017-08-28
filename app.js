@@ -181,6 +181,9 @@ models.Role.sync().then(function(){
                         models.ServiceProviderMapping.sync().then(function(){
                             models.UserInstitute.sync().then(function(){
                                 models.InstituteHistory.sync().then(function(){
+                                  models.RegisterContract.sync().then(function(){
+                                  })
+
                                 })
                             })
                         })

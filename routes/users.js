@@ -102,6 +102,26 @@ router.get('/:userId', authenticate.isAuthenticated,function(req, res) {
 });
 
 
+/**
+ * @swagger
+ * /user/:
+ *   get:
+ *     tags:
+ *       - user
+ *     description: Gets all user details
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: List of Users
+ *         schema:
+ *           $ref: '#/definitions/User'
+ */
+router.get('/', authenticate.isAuthenticated,function(req, res) {
+      userController.getUsers(req,res);
+});
+
+
 
 /**
  * @swagger

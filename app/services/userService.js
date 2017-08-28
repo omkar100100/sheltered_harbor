@@ -47,6 +47,19 @@ UserService.prototype.findByUsername=function(username){
         
 }
 
+
+
+UserService.prototype.getUsers=function(username){
+    return new Promise(function(resolve,reject){
+        models.User.findAll().then(function(users){
+            resolve(users);
+        })
+
+    })
+        
+}
+
+
 UserService.prototype.authenticate=function (userObj) {
     return this.findByUsername(userObj.username).then(function(user){
         if(user==null){

@@ -143,6 +143,10 @@ InstituteService.prototype.register=function(institute,app){
                                 var web3js=new Web3JSService();
                                 web3js.saveOrganization(obj)
                                 .then(function(result){
+                                    // models.RegisterContract.save(result)
+                                    // .then(function(registerContractRes){
+                                        
+                                    // })
                                     var response={};
                                     response['SH-Status']="FI/SP is registered successfully. Please use the same public/private key for attestation.";
                                     response['SH-StatusMessage']="On Boarding Created";

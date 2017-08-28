@@ -81,7 +81,7 @@ router=express.Router();
  *         in: body
  *         required: true
  *         schema:
- *           $ref: '#/definitions/SHLogRequest'
+ *           $ref: '#/definitions/SHLog'
  *     responses:
  *       200:
  *         description: Successfully created

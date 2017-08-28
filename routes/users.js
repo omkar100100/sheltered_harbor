@@ -34,7 +34,7 @@ const router=express.Router();
  * 
  *   Authenticate:
  *     properties
- *       username:
+ *       username1:
  *         type: string
  *       password:
  *         type: password

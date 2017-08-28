@@ -248,6 +248,16 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
       
 }
 
+SHLogService.prototype.generateSignature=function(request){
+    return new Promise(function(resolve,reject){
+        var web3js=new Web3JSService();
+        var response=web3js.Util_SignContent(request);
+        resolve(response);
+        
+    })
+     
+}
+
 
 SHLogService.prototype.getLatestSHLogsForInstitutes=function(){
     return Promise.resolve(

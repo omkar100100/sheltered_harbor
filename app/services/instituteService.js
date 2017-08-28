@@ -51,9 +51,10 @@ InstituteService.prototype.createInstitute=function(institute,contractService,ap
                 var rndString=randomstring.generate();
                 var hash=md5(rndString);
                 institute.Hash=hash;
-                //TODO: check if the adding service provider is registered and active
                 models.Institute.create(institute)
                 .then(function(institute){
+                        MAIL_TEMPLATES.ON_BOARD_TEMPLATE.to=institute.ContactEmail;
+                         MAIL_TEMPLATES.ON_BOARD_TEMPLATE.html=MAIL_TEMPLATES.ON_BOARD_TEMPLATE.html.replace("${REG_KEY}",institute.Hash);
                         env.getMailTransporter().sendMail(MAIL_TEMPLATES.ON_BOARD_TEMPLATE, (error, info) => {
                             if (error) {
                                 return console.log(error);

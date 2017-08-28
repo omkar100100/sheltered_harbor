@@ -49,6 +49,20 @@ router=express.Router();
  *        endDate:
  *          type: string
  * 
+ * 
+ *   SignRequest:
+ *      properties:
+ *         regKey:
+ *           type: string
+ * 
+ *   SignResponse:
+ *      properties:
+ *         registrationKey:
+ *            type: string
+ *         signature:
+ *           type: string
+ *         publicKey:
+ *           type: string
  */
 
 
@@ -195,6 +209,35 @@ router.delete('/private/',authenticate.isAuthenticated,function(req,res){
  */
 router.post('/submit',authenticate.isAuthenticated,function(req,res){
       shLogController.submitSHLogsForInstitute(req,res);
+});
+
+
+
+
+/**
+ * @swagger
+ * /shlog/util/sign:
+ *   post:
+ *     tags:
+ *       - quorum
+ *     description: An end point to sign the payload
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: SignRequest
+ *         description: Sends Payload to Sign
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/SignRequest'
+ *     responses:
+ *       200:
+ *         description: Sucessfully Returned results
+ *         schema:
+ *           $ref: '#/definitions/SignResponse'
+ */
+router.post('/util/sign',authenticate.isAuthenticated,function(req,res){
+      shLogController.generateSignature(req,res);
 });
 
 

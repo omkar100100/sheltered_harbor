@@ -87,6 +87,19 @@ SHLogController.prototype.getLatestSHLogsForInstitutes = function(req, res) {
 };
 
 
+SHLogController.prototype.generateSignature = function(req, res) {
+        request=req.body;
+        var sHLogService = new SHLogService();
+        sHLogService.generateSignature(request)
+        .then(function(result) {
+            response.handleSuccessResponse(200, result, res);
+        }).catch(function(error){
+           response.handleError(error, res); 
+        })
+};
+
+
+
 
 SHLogController.prototype.getLogById= function(req, res) {
         var sHLogService = new SHLogService();

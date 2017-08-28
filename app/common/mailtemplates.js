@@ -3,10 +3,10 @@
 MAIL_TEMPLATES ={
     ON_BOARD_TEMPLATE : {
             from: 'avula.chandrdasekhar@gmail.com',
-            to: 'cavula@innominds.com;svenkateswaran@innominds.com;dlulla@innominds.com',
+            to: 'cavula@innominds.com',
             subject: "Registraton Key with VPN details to request for Registration",
             body: "Welcome to Sheltered Harbor",
-            html: '<p><b>Welcome to Sheltered Harbor</b></p>'
+            html: '<p><b>Welcome to Sheltered Harbor</b>.You have been Introduced to the System.Use the attached VPN details to open a secure connection. Register yourself with this Registration Key : ${REG_KEY} to Shelterd Harbor. </p>'
             
             // plaintext body
     // text: 'Hello to myself!',

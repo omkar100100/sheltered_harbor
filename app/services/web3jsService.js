@@ -1,6 +1,7 @@
 const Web3 = require('web3')
 var Promise = require('bluebird');
 var fs=require('fs');
+var CONSTANTS=require('../common/constants')
 
 //const web3 = new Web3(require('../middleware/nodeAddress'))
 //const web3 = new Web3('http://10.11.11.4:8545');
@@ -45,6 +46,8 @@ Web3JSService.prototype.saveAttestation=function(shLog){
 
     
 }
+
+
 
 
 Web3JSService.prototype.saveOrganization=function(org){
@@ -111,5 +114,18 @@ Web3JSService.prototype.saveOrganization=function(org){
    // params= [ org.orgName, '0x0AcE2fe8b189d069020b06DF341998FAc33e94Bb',false,obj.signature ]
    // return contract.methods["register_org"](...params)["send"]({ from: from})
 }
+
+
+Web3JSService.prototype.Util_SignContent=function(request){
+    var msg = web3.sha3(request.regKey) ;
+    var sig = web3.eth.sign('0xca843569e3427144cead5e4d5999a3d0ccf92b8e', msg);
+
+    var response={};
+    response[PARAMETER_LABELS.SH_REGISTRATION_KEY]=request.regKey;
+    response[PARAMETER_LABELS.SH_SIGNATURE]=sig;
+    response[PARAMETER_LABELS.SH_PUBLIC_KEY]=from;
+    return response;
+}
+
 
 module.exports=Web3JSService;

@@ -33,11 +33,11 @@ const router=express.Router();
  *           format: int64
  * 
  *   Authenticate:
- *       - properties
- *           username:
- *               type: string
- *           password:
- *               type: password
+ *     properties
+ *       username:
+ *         type: string
+ *       password:
+ *         type: password
  *       
  */
 

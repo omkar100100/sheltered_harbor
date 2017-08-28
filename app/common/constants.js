@@ -23,6 +23,7 @@ PARAMETER_LABELS={
     SH_HASH:"SH-hash",
     SH_SIGNATURE:"SH-Signature",
     SH_REGISTRATION_KEY:"SH-RegistrationKey",
+    SH_PUBLIC_KEY:"SH-PublicKey"
 
 }
 

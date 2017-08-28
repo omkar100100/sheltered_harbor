@@ -112,12 +112,13 @@ InstituteService.prototype.register=function(institute,app){
                                 obj={};
                                 obj.orgName=institute1.LegalName;
                                 obj.orgAddress=institute1.Address;
+                                obj.RegKey=institute1.Hash;
                                 if(institute1.Type==DATA_LABELS.SERVICE_PROVIDER){
                                     obj.isAgency=true;    
                                 }else{
                                     obj.isAgency=false; 
                                 }
-                                
+                                obj.ethereumAddress=institute[PARAMETER_LABELS.SH_PUBLIC_KEY];
                                 obj.signature=institute[PARAMETER_LABELS.SH_SIGNATURE];
 
                                 // START OF WEBJS CODE

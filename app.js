@@ -48,7 +48,7 @@ var swaggerDefinition = {
     version: '1.0.0',
     description: "Sheltered Harbor LOG MONITORING API for Admins"
   },
-  host:'shapp1.eastus.cloudapp.azure.com',
+  host:'localhost:8001',
   basePath: '/',
   securityDefinitions: {
       jwt: {
@@ -99,10 +99,6 @@ var models = app.get('models');
 app.use(jwt({ secret: process.env.AUTHENTICATION_SECRET }).unless({
   path: ['/user/authenticate']
 }));
-
-
-
-
 
 
 app.use('/role',roles);

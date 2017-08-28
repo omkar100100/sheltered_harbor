@@ -2,7 +2,8 @@ var models  = require('../models');
 var Promise = require('bluebird');
 const jwt = require('jsonwebtoken');
 var errors = require('../errors');
-
+var SequelizeUniqueConstraintError = require("sequelize").ValidationError;
+var SequelizeForeignKeyConstraintError = require("sequelize").ForeignKeyConstraintError;
 var UserService=function(){};
 
 
@@ -23,12 +24,20 @@ UserService.prototype.createUser=function(user,app){
    return models1.sequelize.transaction({isolationLevel: models1.Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED}, t1 => {
             return new Promise(function(resolve, reject){
                 //TODO: Adding Username, password requires different workflow
-                user.Username="admin";
+               // user.Username="admin";
                 //TODO: Encrypt the password
-                user.Password="admin";
+              //  user.Password="admin";
                 models1.User.create(user,{transaction:t1})
                 .then(function(user){
                     resolve(user);
+                })
+                .catch(function(error){
+                    if(error instanceof  SequelizeUniqueConstraintError){
+                         reject(errors.normalizeError('UNIQUE_CONSTRAINT_FAILED', error, null));
+                    }else{
+                        console.log("Error:" + error);
+                        reject(errors.normalizeError(null, error, null));
+                    }
                 })
             })
 

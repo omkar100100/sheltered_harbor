@@ -11,7 +11,10 @@ module.exports = function(sequelize, DataTypes) {
         },
         FirstName: Sequelize.STRING,
         LastName: Sequelize.STRING,
-        Email: Sequelize.STRING,
+        Email: {
+          type:Sequelize.STRING,
+          unique: true
+        },
         Mobile: Sequelize.STRING,
         RoleId: {
           type: Sequelize.INTEGER,

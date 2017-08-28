@@ -2,11 +2,18 @@
 
 MAIL_TEMPLATES ={
     ON_BOARD_TEMPLATE : {
-            from: 'avula.chandrdasekhar@gmail.com',
+            from: 'cavula@innominds.com',
             to: 'cavula@innominds.com',
             subject: "Registraton Key with VPN details to request for Registration",
             body: "Welcome to Sheltered Harbor",
-            html: '<p><b>Welcome to Sheltered Harbor</b>.You have been Introduced to the System.Use the attached VPN details to open a secure connection. Register yourself with this Registration Key : ${REG_KEY} to Shelterd Harbor. </p>'
+            html: "<pre><b><%PARTICIPANT_NAME%></b>"+
+                              "Welcome to Sheltered Harbor, we have successfully introduced <b><%PARTICIPANT_NAME%></b> into our Sheltered Harbor monitoring log distributed ledger. Please verify your details below, and use the included registration key to complete the on-borading process as described in the attached 'On-Boarding Procedure' pdf." +
+                    "Details:"+
+                    "Registration key for On-Boarding:  <b><%PARTICIPANT_REG_KEY%></b>"+
+                    "Thank you for choosing to be a part of the Sheltered Harbor community." +
+                    "<Attach OnBoard.pdf> <Attache ovpn.config> <Attach vpnHelp.pdf>"+
+                    "</pre>"
+            
             
             // plaintext body
     // text: 'Hello to myself!',

@@ -54,7 +54,8 @@ InstituteService.prototype.createInstitute=function(institute,contractService,ap
                 models.Institute.create(institute)
                 .then(function(institute){
                         MAIL_TEMPLATES.ON_BOARD_TEMPLATE.to=institute.ContactEmail;
-                         MAIL_TEMPLATES.ON_BOARD_TEMPLATE.html=MAIL_TEMPLATES.ON_BOARD_TEMPLATE.html.replace("${REG_KEY}",institute.Hash);
+                         MAIL_TEMPLATES.ON_BOARD_TEMPLATE.html=MAIL_TEMPLATES.ON_BOARD_TEMPLATE.html.replace(new RegExp('<%PARTICIPANT_REG_KEY%>', 'g'),institute.Hash);
+                         MAIL_TEMPLATES.ON_BOARD_TEMPLATE.html=MAIL_TEMPLATES.ON_BOARD_TEMPLATE.html.replace(new RegExp('<%PARTICIPANT_NAME%>', 'g'),institute.LegalName);
                         env.getMailTransporter().sendMail(MAIL_TEMPLATES.ON_BOARD_TEMPLATE, (error, info) => {
                             if (error) {
                                 return console.log(error);

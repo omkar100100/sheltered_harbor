@@ -8,7 +8,14 @@
         "type": "node",
         "request": "launch",
         "name": "Launch Program1",
-        "program": "${workspaceRoot}/app.js"
+        "program": "${workspaceRoot}/app.js",
+        "args": [
+            "dev"
+        ],
+        "env": {
+                "NODE_ENV": "dev",
+                "AUTHENTICATION_SECRET": "this is my book"
+        }
     },
         {
             "type": "node",

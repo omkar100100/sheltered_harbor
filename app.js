@@ -41,14 +41,24 @@ app.use(function(req, res, next) {
   next();
 });
 
-var swaggerHost= currentConfig.swagger.host + ':' + currentConfig.swagger.port;
+
+ 
+ var swaggerHost=null;
+
+if(process.env.NODE_ENV=='test'){
+  swaggerHost='shapp1.eastus.cloudapp.azure.com';
+}else if(process.env.NODE_ENV=='dev'){{
+  swaggerHost= currentConfig.swagger.host + ':' + currentConfig.swagger.port;
+}else{
+  swaggerHost='shapp1.eastus.cloudapp.azure.com';
+}
 var swaggerDefinition = {
   info: {
     title: 'Sheltered Harbor API',
     version: '1.0.0',
     description: "Sheltered Harbor LOG MONITORING API for Admins"
   },
-  host:'shapp1.eastus.cloudapp.azure.com',
+  host: swaggerHost,
   basePath: '/',
   securityDefinitions: {
       jwt: {
@@ -82,7 +92,7 @@ app.get(docsJsonPath, (req, res) => {
 
 app.use('/docs', swaggerUi.serve, (req, res, next) => {
   if (!req.query.url) {
-    res.redirect("/docs?url=http://localhost:8001/swagger.json");
+    res.redirect("/docs?url=http://"+ swaggerHost + "/swagger.json");
   } else {
     swaggerUiHandler(req, res, next);
   }

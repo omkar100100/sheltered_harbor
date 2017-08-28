@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 var env=require('./environment')
 var webSocket = require('websocket');
 var swaggerJSDoc = require('swagger-jsdoc');
+var unless = require('express-unless');
 
 var helmet=require('helmet');
 var fs=require('fs');
@@ -106,9 +107,17 @@ app.use(express.static(path.join(__dirname, 'swagger')));
 app.set('models', require('./app/models'));
 var models = app.get('models');
 
+// app.use(jwt({ secret: process.env.AUTHENTICATION_SECRET }).unless({
+//   path: ['/user/authenticate','/user']
+// }));
+
 app.use(jwt({ secret: process.env.AUTHENTICATION_SECRET }).unless({
-  path: ['/user/authenticate','/user']
+  path: [
+    { url: '/user/authenticate', methods: [ 'POST']  },
+    { url: '/user', methods: ['POST']  }
+  ]
 }));
+
 
 
 app.use('/role',roles);

@@ -176,9 +176,9 @@
     "message": "Constraint failed.",
     "code": 100034
   },
-  "PROPERTY_MUST_BE_EMPTY": {
+  "USERNAME_PASSWORD_INVALID": {
     "httpStatusCode": 400,
-    "message": "The property %s must be empty",
+    "message": "Invalid Username/Password",
     "code": 100035
   },
   "FIELD_MAX_SIZE": {

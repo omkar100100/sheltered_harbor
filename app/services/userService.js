@@ -1,6 +1,7 @@
 var models  = require('../models');
 var Promise = require('bluebird');
 const jwt = require('jsonwebtoken');
+var errors = require('../errors');
 
 var UserService=function(){};
 
@@ -48,33 +49,38 @@ UserService.prototype.findByUsername=function(username){
 
 UserService.prototype.authenticate=function (userObj) {
     return this.findByUsername(userObj.username).then(function(user){
-        return new Promise((resolve, reject) => {
-            jwt.sign(
-            {
-                id: user.id,
-                username: user.Username,
-                role: user.RoleId
-            },
-            process.env.AUTHENTICATION_SECRET,
-            { expiresIn: '7d' },
-            (token, err) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(token);
-                }
-            }
-            );
-        });
-    });
+        if(user==null){
+           return errors.normalizeError('USERNAME_PASSWORD_INVALID', null, null); 
+        }
 
-//   if (!user || !user.passwordMatches(user.password)) {
-//     // We use the same error either if the user is not found or if the password doesn't match.
-//     // This way, if someone is trying to list users by bruteforcing the authentication endpoint,
-//     // they won't know whether they found an existing username or not.
-//     throw new Error('User not found');
-//   }
-
+        if (user!=null && user.Password==userObj.password){
+                return new Promise((resolve, reject) => {
+                    jwt.sign(
+                    {
+                        id: user.id,
+                        username: user.Username,
+                        role: user.RoleId
+                    },
+                    process.env.AUTHENTICATION_SECRET,
+                    { expiresIn: '7d' },
+                    (token, err) => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve(token);
+                        }
+                    }
+                    );
+                });
+           
+        }else{
+            return reject(errors.normalizeError('USERNAME_PASSWORD_INVALID', null, null));
+        }
+        
+   })
+   .catch(function(error){
+       return errors.normalizeError('USERNAME_PASSWORD_INVALID', error, null);
+   })
   
 }
 

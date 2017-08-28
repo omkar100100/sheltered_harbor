@@ -11,6 +11,15 @@
     "host": "shapp1.eastus.cloudapp.azure.com",
     "port": "8001"
   },
+
+  "mail":{
+    "host":"smtp.gmail.com",
+    "port":"465",
+    "secure":true,
+    "user":"avula.chandrasekhar@gmail.com",
+    "pwd":"Balu20091229"
+  },
+  
   "dialect" : "postgres",
   "postgres": {
     "host": "localhost",

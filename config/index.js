@@ -22,8 +22,12 @@ Configuration.prototype.getCurrentConfig=function(){
 
 Configuration.prototype.getEnv=function(){
     if(process.env.NODE_ENV=='dev'){
-      return 'dev';
+        return 'dev';
     }else if(process.env.NODE_ENV=='test'){
+        return 'test';
+    }else if(process.env.NODE_ENV=='swagger'){
+        return 'swagger';
+    }else{
         return 'test';
     }
 

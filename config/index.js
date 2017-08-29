@@ -27,6 +27,8 @@ Configuration.prototype.getEnv=function(){
         return 'test';
     }else if(process.env.NODE_ENV=='swagger'){
         return 'swagger';
+    }else if(process.env.NODE_ENV=='swagger_dev'){
+        return 'swagger_dev';
     }else{
         return 'test';
     }

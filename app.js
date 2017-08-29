@@ -50,7 +50,7 @@ app.use(function(req, res, next) {
 
 if(process.env.NODE_ENV=='test'){
   swaggerHost='shapp1.eastus.cloudapp.azure.com';
-}else if(process.env.NODE_ENV=='dev' ){
+}else if(process.env.NODE_ENV=='dev' || process.env.NODE_ENV=='swagger_dev' ){
   swaggerHost= currentConfig.swagger.host + ':' + currentConfig.swagger.port;
 }else{
   swaggerHost='shapp1.eastus.cloudapp.azure.com';
@@ -100,18 +100,19 @@ app.use('/docs', swaggerUi.serve, (req, res, next) => {
     swaggerUiHandler(req, res, next);
   }
 });
-
-
-
-app.use(express.static(path.join(__dirname, 'swagger')));
-
-
+  
 app.set('models', require('./app/models'));
 var models = app.get('models');
 
-// app.use(jwt({ secret: process.env.AUTHENTICATION_SECRET }).unless({
-//   path: ['/user/authenticate','/user']
-// }));
+//app.set('base', '/sh');
+app.use('/', express.static(path.join(__dirname, 'frontend')));
+//app.use(express.static(path.join(__dirname, 'public')));
+//app.use(express.static(path.join(__dirname, 'swagger')));
+
+
+// var static = express.static(__dirname + '/fronend');
+// static.unless = unless;
+// app.use(static.unless({ method: ['OPTIONS','GET'] }));
 
 app.use(jwt({ secret: process.env.AUTHENTICATION_SECRET }).unless({
   path: [

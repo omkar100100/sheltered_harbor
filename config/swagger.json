@@ -8,27 +8,26 @@
     }
   },
   "swagger":{
-    "host": "localhost",
+    "host": "shapp1.eastus.cloudapp.azure.com",
     "port": "8002"
   },
 
- "mail":{
+  "mail":{
     "host":"smtp.gmail.com",
     "port":"465",
     "secure":true,
     "user":"avula.chandrasekhar@gmail.com",
     "pwd":"Balu20091229"
   },
-
-
+  
   "dialect" : "postgres",
   "postgres": {
     "host": "localhost",
     "port": 5432,
     "database": "postgres",
     "schema": "public",
-    "username": "postgres",
-    "password": "admin123",
+    "username": "shuser",
+    "password": "inn0$123",
     "pool": {
       "max": 5,
       "min": 0,

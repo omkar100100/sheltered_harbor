@@ -1,0 +1,56 @@
+{
+
+  "app": {
+    "server":{
+      "host": "localhost",
+      "port": 8002,
+      "maxCPUs": 1
+    }
+  },
+  "swagger":{
+    "host": "localhost",
+    "port": "8002"
+  },
+
+ "mail":{
+    "host":"smtp.gmail.com",
+    "port":"465",
+    "secure":true,
+    "user":"avula.chandrasekhar@gmail.com",
+    "pwd":"Balu20091229"
+  },
+
+
+  "dialect" : "postgres",
+  "postgres": {
+    "host": "localhost",
+    "port": 5432,
+    "database": "postgres",
+    "schema": "public",
+    "username": "postgres",
+    "password": "admin123",
+    "pool": {
+      "max": 5,
+      "min": 0,
+      "idle": 10000
+    }
+  },
+
+  "logging": {
+    "appenders": [
+      {
+        "type": "console"
+      },
+      {
+        "type": "dateFile",
+        "filename": "logs/activity.log",
+        "pattern": "-yyyy-MM-dd",
+        "alwaysIncludePattern": false
+      }
+    ],
+    "level": "DEBUG"
+  }
+
+
+
+}

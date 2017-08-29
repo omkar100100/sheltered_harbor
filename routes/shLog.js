@@ -212,7 +212,7 @@ router.delete('/private/',authenticate.isAuthenticated,function(req,res){
  *       - application/json
  *     parameters:
  *       - name: shlogsubmit
- *         description: Submits SHLog 
+ *         description: Submits SHLog ; SH-hash - Account Address ; SH-Signature - Signed message(SH-filename)
  *         in: body
  *         required: true
  *         schema:

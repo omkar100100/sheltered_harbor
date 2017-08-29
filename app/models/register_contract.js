@@ -24,9 +24,6 @@ module.exports = function(sequelize, DataTypes) {
         AccountAddress:{
             type: Sequelize.STRING
         },
-        TxHash:{
-            type: Sequelize.STRING
-        },
         createdAt: {
           type: Sequelize.DATE,
           allowNull: false,

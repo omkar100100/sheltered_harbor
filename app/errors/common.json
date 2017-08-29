@@ -46,16 +46,12 @@
     "message": "Registration Failed because Institute/Service Provider is already Registered",
     "code": 100008
   },
-   "TYPED_SAVE_ERROR": {
+   "UN_AUTHORIZED_ACCESS": {
     "httpStatusCode": 500,
-    "message": "An error occurred while trying to save %s",
-    "code": 100008
-  },
-  "TYPED_REMOVE_ERROR": {
-    "httpStatusCode": 500,
-    "message": "An error occurred while trying to remove %s",
+    "message": "Un Authorized Access",
     "code": 100009
   },
+
   "REQUEST_FAILED": {
     "httpStatusCode": 502,
     "message": "The request to %s failed",

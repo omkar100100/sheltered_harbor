@@ -211,47 +211,57 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
                                     shLog.ServiceProviderId=institute.id;
                                 }
                                 
-                                SHLogService.prototype.createSHLog(shLog).then(function(result){
-                                    shLogResult=result; 
+                                //VALIDATE WHETHER TO HIT QUORUM CALL FOR ATTESTATIONS
+                                models.RegisterContract.findOne({
+                                        where :{ AccountAddress: log[PARAMETER_LABELS.SH_HASH] }
+                                }).then(function(registerContract){
+                                    if(registerContract!=null){
+                                                SHLogService.prototype.createSHLog(shLog).then(function(result){
+                                                shLogResult=result; 
 
-                                    //WEB3JS
-                                    obj={};
-                                    obj.Name=institute1.LegalName;
-                                    obj.Tag=log[PARAMETER_LABELS.SH_TAG]
-                                    obj.Hash=log[PARAMETER_LABELS.SH_HASH];
-                                    obj.FileName=log[PARAMETER_LABELS.SH_FILENAME];
-                                    obj.AdditionalData=log[PARAMETER_LABELS.SH_ADDITIONAL_DATA];
-                                    obj.Signature=log[PARAMETER_LABELS.SH_SIGNATURE];
+                                                //WEB3JS
+                                                obj={};
+                                                obj.Name=institute1.LegalName;
+                                                obj[PARAMETER_LABELS.SH_TAG]=log[PARAMETER_LABELS.SH_TAG]
+                                                obj[PARAMETER_LABELS.SH_HASH]=log[PARAMETER_LABELS.SH_HASH];
+                                                obj[PARAMETER_LABELS.SH_FILENAME]=log[PARAMETER_LABELS.SH_FILENAME];
+                                                obj[PARAMETER_LABELS.SH_ADDITIONAL_DATA]=log[PARAMETER_LABELS.SH_ADDITIONAL_DATA];
+                                                obj[PARAMETER_LABELS.SH_SIGNATURE]=log[PARAMETER_LABELS.SH_SIGNATURE];
+                                                obj.ContractAddress=registerContract.ContractAddress;
+                                                obj.AccountAddress=registerContract.AccountAddress;
+                                                var web3js=new Web3JSService();
+                                                web3js.saveAttestation(obj)
+                                                .then(function(result){
+                                                    var now=new Moment().format();
+                                                    shLogResult.TxHash=result.transactionHash;
+                                                    shLogResult.Status=LOG_SUBMISSION_STATUS.SUBMITTED.label;
+                                                    shLogResult.AttestationDate=now;
+                                                    shLogResult.save().then(function(inst){
+                                                        var finalRes={};
+                                                        finalRes.message=SUCCESS_MESSAGES.ATTESTATION_SUCCESS_MESSAGE;
+                                                        finalRes.quorum=result;
+                                                        resolve(finalRes);
+                                                    })
+                                                }).catch(function(error){
+                                                    console.log("Quroum Error:" + error);
+                                                    shLogResult.update(
+                                                        { Status: LOG_SUBMISSION_STATUS.FAILED.label}
+                                                    ).then(function(result){
+                                                        return reject(errors.normalizeError('UNKNOWN_ERROR_FROM_QUORUM', null, null));
+                                                    })
 
-                                    var web3js=new Web3JSService();
-                                    web3js.saveAttestation(obj)
-                                    .then(function(result){
-                                        var now=new Moment().format();
-                                        shLogResult.TxHash=result.transactionHash;
-                                        shLogResult.Status=LOG_SUBMISSION_STATUS.SUBMITTED.label;
-                                        shLogResult.AttestationDate=now;
-                                        shLogResult.save().then(function(inst){
-                                            var finalRes={};
-                                            finalRes.message=SUCCESS_MESSAGES.ATTESTATION_SUCCESS_MESSAGE;
-                                            finalRes.quorum=result;
-                                            resolve(finalRes);
-                                        })
-                                    }).catch(function(error){
-                                        console.log("Quroum Error:" + error);
-                                        shLogResult.update(
-                                            { Status: LOG_SUBMISSION_STATUS.FAILED.label}
-                                        ).then(function(result){
-                                            return reject(errors.normalizeError('UNKNOWN_ERROR_FROM_QUORUM', null, null));
-                                        })
+                                                    
+                                                })
+                                                
+                                                resolve(shLogResult);
 
-                                        
-                                    })
-                                    
-                                    resolve(shLogResult);
+                                            }).catch(function(error){
+                                                reject(error);
+                                            })
+                                    }
+                                });
 
-                                }).catch(function(error){
-                                    reject(error);
-                                })
+                                
 
                         }else{
                             return reject(errors.normalizeError('INSTITUTE_NOT_ELIGIBLE_FOR_ATTESTATION', null, null));
@@ -267,13 +277,23 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
 SHLogService.prototype.generateSignature=function(request){
     return new Promise(function(resolve,reject){
         var web3js=new Web3JSService();
-        var response=web3js.Util_SignContent(request);
+        var response=web3js.Util_SignContent_Registration(request);
         resolve(response);
         
     })
      
 }
 
+
+SHLogService.prototype.Util_SignContent_Attestation=function(request){
+    return new Promise(function(resolve,reject){
+        var web3js=new Web3JSService();
+        var response=web3js.Util_SignContent_Attestation(request);
+        resolve(response);
+        
+    })
+     
+}
 
 SHLogService.prototype.getLatestSHLogsForInstitutes=function(search){
     return Promise.resolve(

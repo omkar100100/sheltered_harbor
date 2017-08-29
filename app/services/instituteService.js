@@ -123,39 +123,23 @@ InstituteService.prototype.register=function(institute,app){
                                 obj.ethereumAddress=institute[PARAMETER_LABELS.SH_PUBLIC_KEY];
                                 obj.signature=institute[PARAMETER_LABELS.SH_SIGNATURE];
 
-                                // START OF WEBJS CODE
-                                //  var msgHash = util.sha3(institute['SH-RegistrationKey']);
-                                // var rpc = util.fromRpcSig(obj.signature);
-                                // const pubKey  = util.ecrecover(msgHash, rpc.v, rpc.r,rpc.s);
-                                // console.log('public key hex- '+util.bufferToHex(pubKey));
-                                // const addrBuf = util.pubToAddress(pubKey);
-                                // const addr    = util.bufferToHex(addrBuf);
-
-                                // // addr is the one you have to check against provided public ethereum address 
-                                // console.log('Actual address -'+addr);
-                                // if(addr == givenuseraddr){
-                                // $("#registrationresult").html('<font  color="green">Onboarding Successsful</font>');
-                                // }
-                                // if(addr != givenuseraddr){
-                                // $("#registrationresult").html('<font  color="red">Onboarding Failed</font>');
-                                // }
-
-                                // END OF WEB3JS CODE 
-
+                               
+                                //WEB3JS CODE
                                 var web3js=new Web3JSService();
                                 web3js.saveOrganization(obj)
                                 .then(function(result){
-                                    // models.RegisterContract.save(result)
-                                    // .then(function(registerContractRes){
-                                        
-                                    // })
-                                    var response={};
-                                    response['SH-Status']="FI/SP is registered successfully. Please use the same public/private key for attestation.";
-                                    response['SH-StatusMessage']="On Boarding Created";
-                                    institute1.updateAttributes({Registered:true , RegisteredDate: models.sequelize.literal('CURRENT_TIMESTAMP')})
-                                    .then(function(inst){
-                                        resolve(response);
+                                    result.InstituteId=institute1.id;
+                                    models.RegisterContract.create(result)
+                                    .then(function(registerContractRes){
+                                             var response={};
+                                            response['SH-Status']="FI/SP is registered successfully. Please use the same public/private key for attestation.";
+                                            response['SH-StatusMessage']="On Boarding Created";
+                                            institute1.updateAttributes({Registered:true , RegisteredDate: models.sequelize.literal('CURRENT_TIMESTAMP')})
+                                            .then(function(inst){
+                                                resolve(response);
+                                            })
                                     })
+                                    
                                 })
                                 .catch(function(error){
                                     console.log(error);

@@ -54,6 +54,15 @@ router=express.Router();
  *      properties:
  *         regKey:
  *           type: string
+ *         account:
+ *           type: string
+ * 
+ *   SignAttestationRequest:
+ *      properties:
+ *         fileName:
+ *           type: string
+ *         account:
+ *           type: string
  * 
  *   SignResponse:
  *      properties:
@@ -223,7 +232,7 @@ router.post('/submit',authenticate.isAuthenticated,function(req,res){
 
 /**
  * @swagger
- * /shlog/util/sign:
+ * /shlog/util/sign/register:
  *   post:
  *     tags:
  *       - quorum
@@ -243,8 +252,35 @@ router.post('/submit',authenticate.isAuthenticated,function(req,res){
  *         schema:
  *           $ref: '#/definitions/SignResponse'
  */
-router.post('/util/sign',authenticate.isAuthenticated,function(req,res){
+router.post('/util/sign/register',authenticate.isAuthenticated,function(req,res){
       shLogController.generateSignature(req,res);
+});
+
+
+
+/**
+ * @swagger
+ * /shlog/util/sign/attest:
+ *   post:
+ *     tags:
+ *       - quorum
+ *     description: An end point to sign the payload for Attestation
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: SignAttestationRequest
+ *         description: Sends Payload to Sign
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/SignAttestationRequest'
+ *     responses:
+ *       200:
+ *         description: Sucessfully Returned results
+ *         type: object
+ */
+router.post('/util/sign/attest',authenticate.isAuthenticated,function(req,res){
+      shLogController.UtilSignContentAttestation(req,res);
 });
 
 

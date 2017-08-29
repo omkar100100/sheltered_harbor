@@ -100,6 +100,17 @@ SHLogController.prototype.generateSignature = function(req, res) {
 };
 
 
+SHLogController.prototype.UtilSignContentAttestation = function(req, res) {
+        request=req.body;
+        var sHLogService = new SHLogService();
+        sHLogService.Util_SignContent_Attestation(request)
+        .then(function(result) {
+            response.handleSuccessResponse(200, result, res);
+        }).catch(function(error){
+           response.handleError(error, res); 
+        })
+};
+
 
 
 SHLogController.prototype.getLogById= function(req, res) {

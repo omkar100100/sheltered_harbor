@@ -30,6 +30,7 @@ SHLogService.prototype.submitSHLogOffline=function(log){
                     file.fileId=fileParts[6];
                     file.seq=fileParts[7];
                     var instituteService=new InstitueService();
+                    instIdentifierObj={}
                     instIdentifierObj.IDType=CONSTANTS.getIDTypeById(fileParts[3]);
                     instIdentifierObj.Identifier=fileParts[2];
                     file.instIdentifierObj=instIdentifierObj;

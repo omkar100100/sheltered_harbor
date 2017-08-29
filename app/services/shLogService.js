@@ -279,9 +279,9 @@ SHLogService.prototype.getLatestSHLogsForInstitutes=function(){
                                                 obj.submittedBy=DATA_LABELS.SERVICE_PROVIDER;
                                             }
                                             
-                                            obj.lastSubmittedOn=tempSHLog.AttestationDate;
+                                            obj.lastSubmittedOn=tempSHLog.updatedAt;
 
-                                            var since= new Moment(tempSHLog.AttestationDate).fromNow();
+                                            var since= new Moment(tempSHLog.updatedAt).fromNow();
                                             obj.daysSinceLastSubmission=since;
                                             obj.instituteId=institute.id;
 

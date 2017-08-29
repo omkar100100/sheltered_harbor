@@ -120,19 +120,26 @@ router.get('/institute/:instituteId/latest',authenticate.isAuthenticated,functio
 /**
  * @swagger
  * /shlog/institute/latest:
- *   get:
+ *   post:
  *     tags:
  *       - shlogs
- *     description: Returns last submitted logs of all active institutes
+ *     description: Returns last submitted logs of all active institutes . Search between dates if given in the request
  *     produces:
  *       - application/json
+ *     parameters:
+ *       - name: search
+ *         description: Search Request Object
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/SHLogSearch'
  *     responses:
  *       200:
  *         description: Sucessfully Returned results
  *         schema:
  *           $ref: '#/definitions/SHLog'
  */
-router.get('/institute/latest',authenticate.isAuthenticated,function(req,res){
+router.post('/institute/latest',authenticate.isAuthenticated,function(req,res){
       shLogController.getLatestSHLogsForInstitutes(req,res);
 });
 

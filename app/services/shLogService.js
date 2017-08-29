@@ -82,12 +82,27 @@ SHLogService.prototype.deleteAll=function(app){
    });
 };
 
-SHLogService.prototype.getLatestSHLog=function(instituteId){
+SHLogService.prototype.getLatestSHLog=function(search){
+    var whereClause=null;
+    if(search.startDate && search.endDate){
+        whereClause={
+             $and :[
+                        {  "InstituteId":search.instituteId },     
+                        {  "updatedAt":{
+                                $between: [search.startDate, search.endDate]
+                            } 
+                        }
+                ]
+        }
+    }else{
+        whereClause={"InstituteId":search.instituteId }
+    }
+
     return Promise.resolve(
         models.SHLog.findAll({
             limit : 1,
-            where:{"InstituteId":instituteId },
-            order: [ [ 'createdAt', 'DESC' ]]
+            where:whereClause,
+            order: [ [ 'updatedAt', 'DESC' ]]
         }).then(function(shLog){
             return shLog;
         })
@@ -260,14 +275,15 @@ SHLogService.prototype.generateSignature=function(request){
 }
 
 
-SHLogService.prototype.getLatestSHLogsForInstitutes=function(){
+SHLogService.prototype.getLatestSHLogsForInstitutes=function(search){
     return Promise.resolve(
             models.Institute.findAll({
                 where: { IsActive : true }
             }).then(function(institutes){
                     var shLogsArr=[]
                     var fn = function generate(institute){
-                                    return SHLogService.prototype.getLatestSHLog(institute.id).then(function(shLogs){
+                                    search.instituteId=institute.id;
+                                    return SHLogService.prototype.getLatestSHLog(search).then(function(shLogs){
                                         var obj={};
                                         var tempSHLog=shLogs[0];
                                         if(tempSHLog){

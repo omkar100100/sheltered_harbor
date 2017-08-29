@@ -78,7 +78,8 @@ SHLogController.prototype.submitSHLogsForInstitute= function(req, res) {
 
 SHLogController.prototype.getLatestSHLogsForInstitutes = function(req, res) {
         var sHLogService = new SHLogService();
-       sHLogService.getLatestSHLogsForInstitutes()
+        search=req.body;
+       sHLogService.getLatestSHLogsForInstitutes(search)
         .then(function(shLogs) {
             response.handleSuccessResponse(200, shLogs, res);
         }).catch(function(error){

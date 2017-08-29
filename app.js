@@ -115,7 +115,7 @@ var models = app.get('models');
 
 app.use(jwt({ secret: process.env.AUTHENTICATION_SECRET }).unless({
   path: [
-    { url: '/user/authenticate', methods: [ 'POST']  },
+    { url: '/user/authenticate', methods: [ 'POST','OPTIONS']  },
     { url: '/user', methods: ['POST']  }
   ]
 }));

@@ -130,7 +130,7 @@ router.get('/institute/:instituteId/latest',authenticate.isAuthenticated,functio
  *       - name: search
  *         description: Search Request Object
  *         in: body
- *         required: true
+ *         required: false
  *         schema:
  *           $ref: '#/definitions/SHLogSearch'
  *     responses:

@@ -94,11 +94,13 @@ app.get(docsJsonPath, (req, res) => {
 });
 
 app.use('/docs', swaggerUi.serve, (req, res, next) => {
-  if (!req.query.url) {
-    res.redirect("/docs?url=http://"+ swaggerHost + "/swagger.json");
-  } else {
-    swaggerUiHandler(req, res, next);
-  }
+   swaggerUiHandler(req, res, next);
+
+  // if (!req.query.url) {
+  //   res.redirect("/docs?url=http://"+ swaggerHost + "/swagger.json");
+  // } else {
+  //   swaggerUiHandler(req, res, next);
+  // }
 });
   
 app.set('models', require('./app/models'));

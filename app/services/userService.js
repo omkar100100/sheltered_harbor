@@ -60,7 +60,7 @@ UserService.prototype.findByUsername=function(username){
 
 
 
-UserService.prototype.getUsers=function(username){
+UserService.prototype.getAllUsers=function(){
     return new Promise(function(resolve,reject){
         models.User.findAll().then(function(users){
             resolve(users);

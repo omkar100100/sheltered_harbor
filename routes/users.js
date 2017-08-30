@@ -102,6 +102,33 @@ router.get('/:userId', authenticate.isAuthenticated,function(req, res) {
 });
 
 
+
+/**
+ * @swagger
+ * /user/toggleStatus/{userId}:
+ *   get:
+ *     tags:
+ *       - user
+ *     description: Toggles to  active/inactive  state of the user
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: userId
+ *         description: User Id
+ *         in: path
+ *         required: true
+ *         type: integer
+ *     responses:
+ *       200:
+ *         description: A Single User
+ *         type: string
+ */
+router.get('/toggleStatus/:userId', authenticate.isAuthenticated,function(req, res) {
+      userController.toggleUser(req,res);
+});
+
+
+
 /**
  * @swagger
  * /user/:

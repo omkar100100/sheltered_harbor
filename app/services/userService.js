@@ -99,12 +99,12 @@ UserService.prototype.authenticate=function (userObj) {
                                     resolve(userObj);
                                 }
                             }
-                            );
+                            ); // sign
 
-                    })
+                    })// then
 
                     
-                });
+                }); // promise
            
         }else{
             return reject(errors.normalizeError('USERNAME_PASSWORD_INVALID', null, null));
@@ -117,10 +117,14 @@ UserService.prototype.authenticate=function (userObj) {
   
 }
 
-UserService.prototype.getAllUsers=function(){
+UserService.prototype.toggleUser=function(userId){
     return Promise.resolve(
-        models.User.findAll().then(function(users){
-            return users;
+        models.User.findById(userId)
+        .then(function(user){
+            user.update({ IsActive: !user.IsActive})
+            .then(function(result){
+                return "OK";
+            })
         })
     )
 };

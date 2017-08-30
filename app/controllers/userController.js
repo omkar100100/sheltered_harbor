@@ -47,6 +47,18 @@ UserController.prototype.createUser = function(req, res) {
         })
 };
 
+UserController.prototype.toggleUser = function(req, res) {
+        userId=req.params.userId;
+        var userService = new UserService();
+        userService.toggleUser(userId).then(function(result){
+            response.handleSuccessResponse(200, result, res);
+        }).catch(function(error){
+           response.handleError(error, res); 
+        })
+};
+
+
+
 UserController.prototype.getAllUsers = function(req, res) {
         var userService = new UserService();
         userService.getAllUsers().then(function(result) {

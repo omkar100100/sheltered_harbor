@@ -77,22 +77,33 @@ UserService.prototype.authenticate=function (userObj) {
 
         if (user!=null && user.Password==userObj.password){
                 return new Promise((resolve, reject) => {
-                    jwt.sign(
-                    {
-                        id: user.id,
-                        username: user.Username,
-                        role: user.RoleId
-                    },
-                    process.env.AUTHENTICATION_SECRET,
-                    { expiresIn: '7d' },
-                    (token, err) => {
-                        if (err) {
-                            reject(err);
-                        } else {
-                            resolve(token);
-                        }
-                    }
-                    );
+                    models.Role.findById(user.RoleId)
+                    .then(function(role){
+                            useObj={};
+                            jwt.sign(
+                            {
+                                id: user.id,
+                                username: user.Username,
+                                role: role.name
+                            },
+                            process.env.AUTHENTICATION_SECRET,
+                            { expiresIn: '7d' },
+                            (token, err) => {
+                                if (err) {
+                                    reject(err);
+                                } else {
+                                    useObj.id=user.id;
+                                    userObj.username=user.Username;
+                                    userObj.role=role.name;
+                                    userObj.token=token;
+                                    resolve(userObj);
+                                }
+                            }
+                            );
+
+                    })
+
+                    
                 });
            
         }else{

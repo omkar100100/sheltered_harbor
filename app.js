@@ -106,8 +106,9 @@ app.use('/docs', swaggerUi.serve, (req, res, next) => {
 app.set('models', require('./app/models'));
 var models = app.get('models');
 
-//app.set('base', '/sh');
-app.use('/', express.static(path.join(__dirname, 'frontend')));
+
+//app.use('/', express.static(path.join(__dirname, 'frontend')));
+
 //app.use(express.static(path.join(__dirname, 'public')));
 //app.use(express.static(path.join(__dirname, 'swagger')));
 

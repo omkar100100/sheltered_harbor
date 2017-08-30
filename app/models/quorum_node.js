@@ -9,7 +9,10 @@ module.exports = function(sequelize, DataTypes) {
           autoIncrement: true,
           allowNull: false
         },
-        name: Sequelize.STRING,
+        name: { 
+          type:Sequelize.STRING,
+          unique: true
+        },
         EthereumHash : { 
           type:Sequelize.STRING,
           unique: true

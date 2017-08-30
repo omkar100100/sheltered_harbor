@@ -17,6 +17,11 @@ router=express.Router();
  *         type: string
  *       IpAddress:
  *         type: string
+ * 
+ *   HealthRequest:
+ *     properties:
+ *       nodeNames:
+ *           type: object
  *       
  *        
  */
@@ -138,5 +143,33 @@ router.put('/private',authenticate.isAuthenticated, function(req, res) {
 router.get('/:nodeId', authenticate.isAuthenticated,function(req, res) {
       quorumNodeController.getNode(req,res);
 });
+
+
+
+/**
+ * @swagger
+ * /node/health:
+ *   post:
+ *     tags:
+ *       - nodes
+ *     description: Test Node Connectivity/Communication by sending/receiving echo
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: HealthRequest
+ *         description: Request for nodes health
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/HealthRequest'
+ *     responses:
+ *       200:
+ *         description: 
+ *         
+ */
+router.post('/health', authenticate.isAuthenticated,function(req, res) {
+      quorumNodeController.nodeHealth(req,res);
+});
+
 
 module.exports=router;

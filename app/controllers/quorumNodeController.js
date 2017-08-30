@@ -1,4 +1,5 @@
 var QuorumNodeService=require('../services/quorumNodeService');
+var Web3JSService=require('../services/web3jsService');
 var response=require('../common/response');
 
 var QuorumNodeController = function() {
@@ -57,6 +58,17 @@ QuorumNodeController.prototype.updateNode = function(req, res) {
         node=req.body;
         var quorumNodeService = new QuorumNodeService();
         quorumNodeService.updateNode(node).then(function(result) {
+           response.handleSuccessResponse(200, result, res);
+        }).catch(function(error){
+           response.handleError(error, res); 
+        }) 
+};
+
+
+QuorumNodeController.prototype.nodeHealth = function(req, res) {
+        request=req.body;
+        var quorumNodeService = new QuorumNodeService();
+        quorumNodeService.getNodeHealth(request).then(function(result) {
            response.handleSuccessResponse(200, result, res);
         }).catch(function(error){
            response.handleError(error, res); 

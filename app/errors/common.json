@@ -177,9 +177,9 @@
     "message": "Invalid Username/Password",
     "code": 100035
   },
-  "FIELD_MAX_SIZE": {
+  "USER_DISABLED": {
     "httpStatusCode": 400,
-    "message": "The field %s exceeds the max length. Max length %s",
+    "message": "User is disabled",
     "code": 100036
   },
   "AWS_SNS_ERROR": {

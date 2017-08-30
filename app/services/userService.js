@@ -44,6 +44,8 @@ UserService.prototype.createUser=function(user,app){
     })
 };
 
+
+
 UserService.prototype.findByUsername=function(username){
     return new Promise(function(resolve,reject){
         models.User.findOne({
@@ -73,6 +75,8 @@ UserService.prototype.authenticate=function (userObj) {
     return this.findByUsername(userObj.username).then(function(user){
         if(user==null){
            return errors.normalizeError('USERNAME_PASSWORD_INVALID', null, null); 
+        }else if(!user.IsActive){
+            return errors.normalizeError('USER_DISABLED', null, null); 
         }
 
         if (user!=null && user.Password==userObj.password){
@@ -118,15 +122,20 @@ UserService.prototype.authenticate=function (userObj) {
 }
 
 UserService.prototype.toggleUser=function(userId){
-    return Promise.resolve(
+    return new Promise(function(resolve,reject){
         models.User.findById(userId)
         .then(function(user){
             user.update({ IsActive: !user.IsActive})
             .then(function(result){
-                return "OK";
+                resolve("OK");
+            })
+            .catch(function(error){
+                console.log(error);
             })
         })
-    )
+    })
+        
+    
 };
 
 module.exports=UserService;

@@ -112,7 +112,7 @@ InstituteService.prototype.createInstitute=function(institute,contractService,ap
                             registrationKey: institute.Hash
                         }, function(err, info){
                             if(err){
-                                 console.log('Error');
+                                 console.log("Email Error"+ err);
                             }else{
                                 console.log('Registration Key is  sent');
                             }

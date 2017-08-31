@@ -1,5 +1,7 @@
 var InstituteService=require('./instituteService');
+var QuorumNodeService=require('./quorumNodeService');
 var Promise=require('bluebird');
+var models  = require('../models');
 
 
 
@@ -50,7 +52,7 @@ DashboardService.prototype.getParticiapantsCount=function(request,app){
                 // group: ['id'],
                     where: {
                         $and :[
-                            {IsActive : true },
+                {IsActive : true },
                             {Registered : true}
                             ,dateClause
                         ]
@@ -98,14 +100,14 @@ DashboardService.prototype.getDashboardData=function(request,app){
         dashboardData={};
         particiapants= DashboardService.prototype.getParticiapantsCount(request,app);
         logs=new InstituteService().getSHLogs(request);
-
-        return Promise.join(particiapants,logs,function(particiapants,logs){
-            return {
-                particiapants   :   particiapants,
-                logs            :   logs
-            }
+        nodeHealth=new QuorumNodeService().getNodeHealth(request);
+        return Promise.join(particiapants,logs,nodeHealth,function(particiapants,logs,nodeHealth){
+                    return {
+                        particiapants   :   particiapants,
+                        logs            :   logs,
+                        nodeHealth      :   nodeHealth
+                    }
         })
-
 }   
 
 

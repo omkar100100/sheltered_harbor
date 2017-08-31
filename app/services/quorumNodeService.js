@@ -27,16 +27,6 @@ NodeService.prototype.updateNode=function(node){
 
 
 
-NodeService.prototype.getNodeHealth=function(request){
-    return new Promise(function(resolve,reject){
-        models.QuorumNode.findById(node.id).then(function(result){
-          return  result.update(node)
-            .then(function(updated){
-                resolve(updated)
-            })
-        })
-    });
-}
 
 NodeService.prototype.getNode=function(nodeId){
     return Promise.resolve(
@@ -60,14 +50,32 @@ NodeService.prototype.createNode=function(node,app){
 
 NodeService.prototype.getNodeHealth=function(request){
     var web3JS=new Web3JSService();
-    // name: {$in: ['Node-0001-AWS-EAST','Node-0002-AWS-WEST']}
     return new Promise(function(resolve,reject){
-                 models.QuorumNode.findAll({
-                      where: {
-                            name: {$in: request.nodeNames}
-                     }
-                 }).then(function(nodes){
-                     console.log('hello')
+        // if(!request.nodeNames){
+        //     models.QuorumNode.findAll({
+        //         attributes: ['name']
+        //     }).then(function(nodeNames){
+        //             var names=[];
+        //             nodeNames.forEach(function(node){
+        //                 names.push(node.name);
+        //             })
+        //             request.nodeNames=names;
+        //     })
+        // }
+
+                  var whereClause=null;
+                  if(!request.nodeNames){
+                    whereClause={};
+                  }else{
+                      whereClause={
+                                    where: {
+                                            name: {$in: request.nodeNames}
+                                    }
+                                }
+                  }
+
+
+                  models.QuorumNode.findAll(whereClause).then(function(nodes){
                      return Promise.all(
                             nodes.map(function(node){
                                 return new Promise(function(resolve,reject){
@@ -104,7 +112,7 @@ NodeService.prototype.getNodeHealth=function(request){
                     console.log(error);
                 })
 
-            
+           
     })
 }
 

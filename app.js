@@ -120,7 +120,9 @@ app.use('/', express.static(path.join(__dirname, 'frontend')));
 app.use(jwt({ secret: process.env.AUTHENTICATION_SECRET }).unless({
   path: [
     { url: '/user/authenticate', methods: [ 'POST','OPTIONS']  },
-    { url: '/user', methods: ['POST']  }
+    { url: '/user', methods: ['POST']  },
+    { url : '/participant/register', methods: [ 'POST','OPTIONS'] },
+    { url : '/shlog/submit', methods: [ 'POST','OPTIONS'] }
   ]
 }));
 

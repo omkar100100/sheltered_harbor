@@ -107,7 +107,7 @@ app.set('models', require('./app/models'));
 var models = app.get('models');
 
 
-//app.use('/', express.static(path.join(__dirname, 'frontend')));
+app.use('/', express.static(path.join(__dirname, 'frontend')));
 
 //app.use(express.static(path.join(__dirname, 'public')));
 //app.use(express.static(path.join(__dirname, 'swagger')));

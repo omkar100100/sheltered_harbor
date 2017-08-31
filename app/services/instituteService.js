@@ -56,45 +56,57 @@ InstituteService.prototype.createInstitute=function(institute,contractService,ap
                 institute.IdType=CONSTANTS.getIDTypeById(institute.IdType);
                 models.Institute.create(institute)
                 .then(function(institute){
+                        //from: 'shelteredharbour@gmail.com'
 
-                        var regKeySender=env.getMailTransporter().templateSender(new EmailTemplate('app/common/mail/templates'), {
-                            from: 'shelteredharbour@gmail.com',
-                            attachments:[{ 
-                                                filename: 'UX.pdf',
-                                                path: 'app/common/mail/attachments/UX.pdf' 
-                                        }]
-                        });
+                        //  MAIL_TEMPLATES.ON_BOARD_TEMPLATE.to=institute.ContactEmail;
+                        //  MAIL_TEMPLATES.ON_BOARD_TEMPLATE.html=MAIL_TEMPLATES.ON_BOARD_TEMPLATE.html.replace(new RegExp('<%PARTICIPANT_REG_KEY%>', 'g'),institute.Hash);
+                        //  MAIL_TEMPLATES.ON_BOARD_TEMPLATE.html=MAIL_TEMPLATES.ON_BOARD_TEMPLATE.html.replace(new RegExp('<%PARTICIPANT_NAME%>', 'g'),institute.LegalName);
+                        //  env.getMailTransporter().sendMail(MAIL_TEMPLATES.ON_BOARD_TEMPLATE, (error, info) => {
+                        //     if (error) {
+                        //         return console.log(error);
+                        //     }
+                        //     console.log('Message %s sent: %s', info.messageId, info.response);
+                        // });
 
-                        // var regKeySender=env.getMailTransporter().templateSender({
-                        //    html:   "<table class='main'>"+
-                        //             "<tr>"+
-                        //                 "<td class='wrapper'>"+
-                        //                 "<table >"+
-                        //                     "<tr>"+
-                        //                     "<td>"+
-                        //                         "<p><b>{{ participantName }}</b></p>"+
-                        //                         "<p>Welcome to Sheltered Harbor, we have successfully introduced <b> {{ participantName }}</b> into our Sheltered Harbor monitoring log distributed ledger. Please verify your details below, and use the included registration key to complete the on-borading process as described in the attached 'On-Boarding Procedure' pdf.</p>"+
-                        //                         "<p>Details:</p>"+
-                        //                         "<p>Registration key for On-Boarding:  <b>{{ registrationKey }}</p>"+
-                        //                         "<p>Thank you for choosing to be a part of the Sheltered Harbor community.</p>"+
-                        //                     "</td>"+
-                        //                     "</tr>"+
-                        //                 "</table>"+
-                        //                 "</td>"+
-                        //             "</tr>"+
-                        //             "</table>",
-                        //     from: 'shelteredharbour@gmail.com',
+                        // var regKeySender=env.getMailTransporter().templateSender(new EmailTemplate('app/common/mail/templates'), {
+                        //     from: 'avula.chandrasekhar@gmail.com',
                         //     attachments:[{ 
                         //                         filename: 'UX.pdf',
                         //                         path: 'app/common/mail/attachments/UX.pdf' 
-                        //                 }]                                    
-                            
+                        //                 }]
                         // });
+
+                        var regKeySender=env.getMailTransporter().templateSender({
+                           html:   "<table class='main'>"+
+                                    "<tr>"+
+                                        "<td class='wrapper'>"+
+                                        "<table >"+
+                                            "<tr>"+
+                                            "<td>"+
+                                                "<p><b>{{ participantName }}</b></p>"+
+                                                "<p>Welcome to Sheltered Harbor, we have successfully introduced <b> {{ participantName }}</b> into our Sheltered Harbor monitoring log distributed ledger. Please verify your details below, and use the included registration key to complete the on-borading process as described in the attached 'On-Boarding Procedure' pdf.</p>"+
+                                                "<p>Details:</p>"+
+                                                "<p>Registration key for On-Boarding:  <b>{{ registrationKey }}</p>"+
+                                                "<p>Thank you for choosing to be a part of the Sheltered Harbor community.</p>"+
+                                            "</td>"+
+                                            "</tr>"+
+                                        "</table>"+
+                                        "</td>"+
+                                    "</tr>"+
+                                    "</table>"
+                        },
+                         {   from: 'avula.chandrasekhar@gmail.com',
+                            attachments:[{ 
+                                                filename: 'UX.pdf',
+                                                path: 'app/common/mail/attachments/UX.pdf' 
+                                        }]                                    
+                            
+                        });
 
 
                         regKeySender({
                             to: institute.ContactEmail,
-                            subject: 'Registration Key '
+                            subject: 'Registration Key'
                         }, {
                             participantName: institute.LegalName,
                             registrationKey: institute.Hash
@@ -105,17 +117,6 @@ InstituteService.prototype.createInstitute=function(institute,contractService,ap
                                 console.log('Registration Key is  sent');
                             }
                         });
-
-
-                        // MAIL_TEMPLATES.ON_BOARD_TEMPLATE.to=institute.ContactEmail;
-                        //  MAIL_TEMPLATES.ON_BOARD_TEMPLATE.html=MAIL_TEMPLATES.ON_BOARD_TEMPLATE.html.replace(new RegExp('<%PARTICIPANT_REG_KEY%>', 'g'),institute.Hash);
-                        //  MAIL_TEMPLATES.ON_BOARD_TEMPLATE.html=MAIL_TEMPLATES.ON_BOARD_TEMPLATE.html.replace(new RegExp('<%PARTICIPANT_NAME%>', 'g'),institute.LegalName);
-                        // env.getMailTransporter().sendMail(MAIL_TEMPLATES.ON_BOARD_TEMPLATE, (error, info) => {
-                        //     if (error) {
-                        //         return console.log(error);
-                        //     }
-                        //     console.log('Message %s sent: %s', info.messageId, info.response);
-                        // });
 
                         var contractService=new ContractService();
                         var contract={};

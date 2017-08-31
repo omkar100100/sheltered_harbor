@@ -2,7 +2,7 @@
 
 MAIL_TEMPLATES ={
     ON_BOARD_TEMPLATE : {
-            from: 'cavula@innominds.com',
+            from: 'avula.chandrasekhar@gmail.com',
             to: 'cavula@innominds.com',
             subject: "Registraton Key with VPN details to request for Registration",
             body: "Welcome to Sheltered Harbor",
@@ -12,14 +12,8 @@ MAIL_TEMPLATES ={
                     "<br/>Registration key for On-Boarding:  <b><%PARTICIPANT_REG_KEY%></b> "+
                     "<br/><br/><br/>Thank you for choosing to be a part of the Sheltered Harbor community." +
                     "<br/><br/><br/><Attach OnBoard.pdf> <Attache ovpn.config> <Attach vpnHelp.pdf>"+
-                    "</pre>",
+                    "</pre>"
             
-            attachments:[
-                        { 
-                                filename: 'UX.pdf',
-                                path: '/app/common/attachments/UX.pdf' 
-                        }
-            ]
           
     }
 }

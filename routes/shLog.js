@@ -223,7 +223,7 @@ router.delete('/private/',authenticate.isAuthenticated,function(req,res){
  *         schema:
  *           $ref: '#/definitions/SHLog'
  */
-router.post('/submit',authenticate.isAuthenticated,function(req,res){
+router.post('/submit',function(req,res){
       shLogController.submitSHLogsForInstitute(req,res);
 });
 

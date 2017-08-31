@@ -313,7 +313,7 @@ router.put('/',authenticate.isAuthenticated, function(req, res) {
 /**
  * @swagger
  * /participant/register:
- *   put:
+ *   post:
  *     tags:
  *       - quorum
  *     description: OnBoard a participant Institute
@@ -332,7 +332,7 @@ router.put('/',authenticate.isAuthenticated, function(req, res) {
  *         schema:
  *           $ref: '#/definitions/Participant'
  */
-router.put('/register', authenticate.isAuthenticated,function(req, res) {
+router.post('/register',function(req, res) {
       instituteController.register(req,res);
 });
 

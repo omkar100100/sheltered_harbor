@@ -240,6 +240,7 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
                                                         var finalRes={};
                                                         finalRes.message=SUCCESS_MESSAGES.ATTESTATION_SUCCESS_MESSAGE;
                                                         finalRes.quorum=result;
+                                                        finalRes.logDetails=shLogResult;
                                                         resolve(finalRes);
                                                     })
                                                 }).catch(function(error){
@@ -253,7 +254,7 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
                                                     
                                                 })
                                                 
-                                                resolve(shLogResult);
+                                               // resolve(shLogResult);
 
                                             }).catch(function(error){
                                                 reject(error);

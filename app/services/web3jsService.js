@@ -2,6 +2,7 @@ const Web3 = require('web3')
 var Promise = require('bluebird');
 var fs=require('fs');
 var CONSTANTS=require('../common/constants')
+var errors = require('../errors');
 
 //const web3 = new Web3(require('../middleware/nodeAddress'))
 //const web3 = new Web3('http://10.11.11.4:8545');

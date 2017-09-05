@@ -31,6 +31,7 @@ var Web3JSService=function(){};
 
 
 Web3JSService.prototype.saveAttestation=function(request){
+  console.log("Request Payload: Contract Address:" + request.ContractAddress + " ,SH-SIGNAGUTE BEFORE RPCSIG: " + request[PARAMETER_LABELS.SH_SIGNATURE] + " ,FILENAME:" + request[PARAMETER_LABELS.SH_FILENAME] + " ,ADDITIONAL DATA:" + request[PARAMETER_LABELS.SH_ADDITIONAL_DATA] + " ,TAG:" + request[PARAMETER_LABELS.SH_TAG] + " ," )
   return new Promise(function(resolve,reject){
       deployedecrecTest = ecrecTestContract.at(request.ContractAddress);
       var res = util.fromRpcSig(request[PARAMETER_LABELS.SH_SIGNATURE]);
@@ -39,7 +40,7 @@ Web3JSService.prototype.saveAttestation=function(request){
 
       var msg = web3.sha3(request[PARAMETER_LABELS.SH_FILENAME]);
       console.log('SHA3 OF MSG:'+ msg);
-      console.log("R,S,V values:" + res.r + ',' + res.s + ',' + res.v);
+      console.log('Hash, V,R,S -'+msg,res.v,util.bufferToHex(res.r),util.bufferToHex(res.s) )
       deployedecrecTest.verify.call(msg,res.v,util.bufferToHex(res.r),util.bufferToHex(res.s),function (error, data){
       console.log('Account Address from Quorum attest level- '+data);
       console.log('Error Address from Quorum attest level- '+error);
@@ -53,6 +54,7 @@ Web3JSService.prototype.saveAttestation=function(request){
                             console.log('Attest File Tx -'+data);
                             result={};
                             result.transactionHash=data;
+                            console.log(" TXHASH:" + data);
                             resolve(result);
                           })
                     }

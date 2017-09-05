@@ -41,8 +41,10 @@ Web3JSService.prototype.saveAttestation=function(request){
   return new Promise(function(resolve,reject){
       deployedecrecTest = ecrecTestContract.at(request.ContractAddress);
       var res = util.fromRpcSig(request[PARAMETER_LABELS.SH_SIGNATURE]);
+      console.log("FromRPCSIG:" + res);
       var msg = web3.sha3(request[PARAMETER_LABELS.SH_FILENAME] + request[PARAMETER_LABELS.SH_TAG] + request[PARAMETER_LABELS.SH_ADDITIONAL_DATA]  + request[PARAMETER_LABELS.SH_HASH]) ;
       console.log('SHA3 OF MSG:'+ msg);
+      console.log("R,S,V values:" + res.r + ',' + res.s + ',' + res.v);
       deployedecrecTest.verify.call(msg,res.v,util.bufferToHex(res.r),util.bufferToHex(res.s),function (error, data){
       console.log('Account Address from Quorum attest level- '+data);
       console.log('Error Address from Quorum attest level- '+error);

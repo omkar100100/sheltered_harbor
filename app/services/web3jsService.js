@@ -52,6 +52,7 @@ Web3JSService.prototype.saveAttestation=function(request){
       console.log('Error - '+error);
       if(data == request.AccountAddress){
           deployedecrecTest.get_owner.call(function(err,contract_owner){
+              console.log(" Error get owner call:" + err);
               console.log('got contract owner from quorum -'+contract_owner);
                   if(contract_owner == data)
                     {
@@ -124,7 +125,8 @@ Web3JSService.prototype.saveOrganization=function(org){
                             console.log('Error when setting the owner'+err);
                           }else{
                                     deployedecrecTest.get_owner.call(function(err,contract_owner){
-                                      console.log("Owner" + contract_owner);
+                                      console.log(" Error: getOwner call:" + err);
+                                      console.log(" Get Owner address:" + contract_owner);
                                     });
 
                             console.log('Tx of setting owner -'+data);

@@ -103,7 +103,7 @@ Web3JSService.prototype.saveOrganization=function(org){
                 if(data == org.ethereumAddress){
                   console.log("Address matched");
 
-                   deployedecrecTest.register_org({from:from,gas: 3000000},"Sample Org",org.ethereumAddress,org.isAgency,function(error,reg_data){
+                   deployedecrecTest.register_org({from:from,gas: 3000000},"123",org.ethereumAddress,org.isAgency,function(error,reg_data){
                       if(error){
                         console.log('Error of Reg_org is -'+error);
                       }else{

@@ -43,7 +43,7 @@ Web3JSService.prototype.saveAttestation=function(request){
       console.log('Hash, V,R,S -'+msg,res.v,util.bufferToHex(res.r),util.bufferToHex(res.s) )
       deployedecrecTest.verify.call(msg,res.v,util.bufferToHex(res.r),util.bufferToHex(res.s),function (error, data){
       console.log('Account Address from Quorum attest level- '+data);
-      console.log('Error Address from Quorum attest level- '+error);
+      console.log('Error - '+error);
       if(data == request.AccountAddress){
           deployedecrecTest.get_owner.call(function(err,contract_owner){
               console.log('got contract owner from quorum -'+contract_owner);
@@ -82,6 +82,8 @@ Web3JSService.prototype.saveOrganization=function(org){
   var contractAddress=null;
  // Deploying new contract for on-board attestation
   return  ecrecTestContract.new( {from:from, data: ecrecTestCode, gas: 3000000}, function (error, deployedContract){
+        console.log("Payload Details: Signature before RPCSIG" + org.signature + " ,Registration Key:" + org.RegKey + " ,Request Eth Address:" + org.ethereumAddress);
+        
         if(deployedContract.address)
         {
           contractAddress=deployedContract.address;
@@ -97,7 +99,7 @@ Web3JSService.prototype.saveOrganization=function(org){
           deployedecrecTest = ecrecTestContract.at(contractAddress);
           
           var msg = web3.sha3(org.RegKey) ;
-          console.log('SHA3 - '+msg);
+           console.log('SHA3 - '+msg);
 
           
             deployedecrecTest.verify.call(msg,res.v,util.bufferToHex(res.r),util.bufferToHex(res.s),function (error, data){

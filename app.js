@@ -27,6 +27,250 @@ var currentConfig = config.getCurrentConfig();
 
 const swaggerUi = require('swagger-ui-express');
 
+const replace = require('replace-in-file');
+
+//unable to parse private key
+// var rexec = require('remote-exec');
+//  // see documentation for the ssh2 npm package for a list of all options  
+// var connection_options = {
+//     port: 22,
+//     username: 'shuser',
+//     privateKey: fs.readFileSync(path.join(__dirname, 'app/common/sheltered_harbor.ppk'))
+// };
+ 
+// var hosts = [
+//     '52.170.84.132'
+// ];
+ 
+// var cmds = [
+//     'ls -l',
+//     'cat /etc/hosts'
+// ];
+ 
+// rexec(hosts, cmds, connection_options, function(err){
+//     if (err) {
+//         console.log(err);
+//     } else {
+//         console.log('Great Success!!');
+//     }
+// });
+
+
+
+
+//const remoteExecSync = require('@xch/node-remote-exec');
+
+
+
+
+// var SSH = require('simple-ssh');
+// var ssh = new SSH({
+//     host: '52.170.84.132',
+//     user: 'shuser',
+//     port: 22,
+//     key: fs.readFileSync(path.join(__dirname, 'app/common/sheltered_harbor.ppk'))
+// });
+ 
+// ssh
+// .exec('export KEY_OU=Test_ORG', {
+//     out: function(stdout) {
+//         console.log(stdout);
+//     },
+    
+// })
+// .exec('echo $KEY_OU',{
+//   out: function(stdout){
+//     console.log(stdout);
+//   }
+// })
+// .start();
+
+
+// var exec = require('ssh-exec')
+// exec('ls -lh', {
+//   user: 'shuser',
+//   host: '52.170.84.132',
+//   port: 22,
+//   key: myKeyFileOrBuffer,
+//   password: '/app/common/sheltered_harbor.ppk'
+// }).pipe(process.stdout)
+
+
+ //connect = require('ssh2-connect');
+// connect({
+//    host: '52.170.84.132',
+//    port:22,
+//    username: 'shuser',
+//    privateKey: '/app/common/sheltered_harbor.ppk'
+//  }, function(err, ssh){
+//   exec('ls -la', {ssh: ssh}, (err, stdout, stderr){
+//     console.log(stdout);
+//   });
+//   console.log('hello');
+// });
+
+//  node_ssh = require('node-ssh')
+//  ssh = new node_ssh()
+// exec = require('ssh2-exec');
+// ssh.connect({
+//    host: '52.170.84.132',
+//    port:22,
+//    username: 'shuser',
+//    privateKey: '/app/common/sheltered_harbor.ppk'
+//  }, function(err, ssh){
+//   child = exec({cmd: 'ls -la', ssh: ssh}, function(err, stdout, stderr){
+//     console.log(stdout);
+//   });
+//   child.stdout.on('data', function(data){
+//     console.log(data);
+//   });
+//   child.on('exit', function(code){
+//     console.log('Exit', code);
+//   });
+// })
+
+
+//   var ovpnFileName='chandra.ovpn'
+//   var localFileName='app/common/keys/' + ovpnFileName;
+
+// //WORKING
+//  node_ssh = require('node-ssh')
+//  ssh = new node_ssh()
+//  ssh.connect({
+//    host: '52.170.84.132',
+//    port:  22,
+//    username: 'shuser',
+//    privateKey: 'app/common/sheltered_harbor.ppk'
+//  })
+// .then(function() {
+//   // Local, Remote 
+//   // ssh.putFile('/home/steel/Lab/localPath', '/home/steel/Lab/remotePath').then(function() {
+//   //   console.log("The File thing is done")
+//   // }, function(error) {
+//   //   console.log("Something's wrong")
+//   //   console.log(error)
+//   // })
+//   // // Array<Shape('local' => string, 'remote' => string)> 
+//   // ssh.putFiles([{ local: '/home/steel/Lab/localPath', remote: '/home/steel/Lab/remotePath' }]).then(function() {
+//   //   console.log("The File thing is done")
+//   // }, function(error) {
+//   //   console.log("Something's wrong")
+//   //   console.log(error)
+//   // })
+//   // Local, Remote 
+//   console.log('connected');
+
+//   var remoteFileName='/home/shuser/client-configs/files/' + ovpnFileName;
+//   ssh.getFile(localFileName, remoteFileName).then(function(Contents) {
+//     console.log("The File's contents were successfully downloaded");
+//     var regExp=new RegExp('^' + 'Subject:', 'i');
+//     const options = {
+//                   //Single file or glob
+//                   files: localFileName,
+//                   //Multiple replacements with different strings (replaced sequentially)
+//                   from: [/foo/g, /baz/g],
+//                   to: (match) =>'test replace',
+//                   encoding: 'utf8',
+//                 };
+
+//     replace(options)
+//     .then(changedFiles => {
+//       console.log('Modified files:', changedFiles.join(', '));
+//     })
+//     .catch(error => {
+//       console.error('Error occurred:', error);
+//     });
+//   }, function(error) {
+//     console.log("Something's wrong")
+//     console.log(error)
+//   })
+//   // Putting entire directories 
+//   // const failed = []
+//   // const successful = []
+//   // ssh.putDirectory('/home/steel/Lab', '/home/steel/Lab', {
+//   //   recursive: true,
+//   //   validate: function(itemPath) {
+//   //     const baseName = path.basename(itemPath)
+//   //     return baseName.substr(0, 1) !== '.' && // do not allow dot files 
+//   //            baseName !== 'node_modules' // do not allow node_modules 
+//   //   },
+//   //   tick: function(localPath, remotePath, error) {
+//   //     if (error) {
+//   //       failed.push(localPath)
+//   //     } else {
+//   //       successful.push(localPath)
+//   //     }
+//   //   }
+//   // }).then(function(status) {
+//   //   console.log('the directory transfer was', status ? 'successful' : 'unsuccessful')
+//   //   console.log('failed transfers', failed.join(', '))
+//   //   console.log('successful transfers', successful.join(', '))
+//   // })
+//   // // Command 
+//   // ssh.execCommand('export OU_ORG=TEST_ORG', { cwd:'/home/shuser' }).then(function(result) {
+//   //   console.log('STDOUT: ' + result.stdout)
+//   //   console.log('STDERR: ' + result.stderr)
+//   //   ssh.execCommand('echo  $OU_ORG', { cwd:'/home/shuser' }).then(function(result) {
+//   //     console.log('STDOUT: ' + result.stdout)
+//   //     console.log('STDERR: ' + result.stderr)
+//   //   })
+//   // })
+   
+// //   // // Command with escaped params 
+// //   // ssh.exec('hh_client', ['--json'], { cwd: '/var/www', stream: 'stdout', options: { pty: true } }).then(function(result) {
+// //   //   console.log('STDOUT: ' + result)
+// //   // })
+//  })
+
+
+    //var regExp=new RegExp('^' + 'Subject:', 'i');
+    // const options1 = {
+    //               //Single file or glob
+    //               files: localFileName,
+    //               //Multiple replacements with different strings (replaced sequentially)
+    //               from: [/Subject:([\s\S]*?)(?=Subject Public Key Info:)/g],
+    //               to: (match) =>'Subject: C=IN, ST=HYD, L=HYD, O=SMALL ORG, OU=UNIT NAME, CN=Test200/name=server/emailAddress=chandra100100@yahoo.com\n',
+    //               encoding: 'utf8'
+    //             };
+
+    // replace(options1)
+    // .then(changedFiles => {
+    //   console.log('Modified files:', changedFiles.join(', '));
+    // })
+
+
+//WORKING
+// var Client = require('ssh2').Client;
+// var conn = new Client();
+// conn.on('ready', function() {
+//   console.log('Client :: ready');
+//   conn.exec('cd ~/openvpn-ca | source vars | ./build-key client1 | cd ~/client-configs | ./make_config.sh client1 | ls', function(err, stream) {
+//     if (err) throw err;
+//     stream.on('close', function(code, signal) {
+//       console.log('Stream :: close :: code: ' + code + ', signal: ' + signal);
+//       conn.end();
+//     }).on('data', function(data) {
+//       console.log('STDOUT: ' + data);
+//     }).stderr.on('data', function(data) {
+//       console.log('STDERR: ' + data);
+//     });
+//   });
+
+//     // conn.sftp(function(err, sftp) {
+//     //   if (err) throw err;
+//     //   sftp.readdir('foo', function(err, list) {
+//     //     if (err) throw err;
+//     //     console.dir(list);
+//     //     conn.end();
+//     //   });
+//     // });
+// }).connect({
+//   host: '52.170.84.132',
+//   port: 22,
+//   username: 'shuser',
+//   privateKey: fs.readFileSync(path.join(__dirname, 'app/common/sheltered_harbor.ppk'))
+// });
+
 
 
 var app = express();
@@ -109,20 +353,14 @@ var models = app.get('models');
 
 app.use('/', express.static(path.join(__dirname, 'frontend')));
 
-//app.use(express.static(path.join(__dirname, 'public')));
-//app.use(express.static(path.join(__dirname, 'swagger')));
-
-
-// var static = express.static(__dirname + '/fronend');
-// static.unless = unless;
-// app.use(static.unless({ method: ['OPTIONS','GET'] }));
 
 app.use(jwt({ secret: process.env.AUTHENTICATION_SECRET }).unless({
   path: [
     { url: '/user/authenticate', methods: [ 'POST','OPTIONS']  },
     { url: '/user', methods: ['POST']  },
     { url : '/participant/register', methods: [ 'POST','OPTIONS'] },
-    { url : '/shlog/submit', methods: [ 'POST','OPTIONS'] }
+    { url : '/shlog/submit', methods: [ 'POST','OPTIONS'] },
+    { url : '/^\/shlog\/.*/', methods: [ 'GET','OPTIONS'] }
   ]
 }));
 

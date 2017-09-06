@@ -12,6 +12,8 @@ var CONSTANTS=require('../common/constants')
 var MAIL_TEMPLATES=require('../common/mail/mailtemplates')
 var env=require('../../environment')
 var EmailTemplate = require('email-templates').EmailTemplate;
+const replace = require('replace-in-file');
+node_ssh = require('node-ssh')
 
 var InstituteService=function(){};
 
@@ -56,67 +58,88 @@ InstituteService.prototype.createInstitute=function(institute,contractService,ap
                 institute.IdType=CONSTANTS.getIDTypeById(institute.IdType);
                 models.Institute.create(institute)
                 .then(function(institute){
-                        //from: 'shelteredharbour@gmail.com'
+                        var localOpenVPNFile='app/common/keys/' + institute.LegalName + '.ovpn';
+                        ssh = new node_ssh()
+                        ssh.connect({
+                        host: '52.170.84.132',
+                            port:  22,
+                            username: 'shuser',
+                            privateKey: 'app/common/sheltered_harbor.ppk'
+                        })
+                        .then(function() {
+                            console.log('Connected to VPN SERVER');
+                             var remoteOvpnFileName='general.ovpn'
+                             var remoteFilePath='/home/shuser/client-configs/files/' + remoteOvpnFileName;
+                             ssh.getFile(localOpenVPNFile, remoteFilePath).then(function(Contents) {
+                             console.log("OPENVPN file is  successfully downloaded");
+                            // REPLACE PARAMS IN OVPN CERTIFICATE
+                            var replaceString='Subject: C=US, ST=' + institute.ContractState + ', L=' + institute.ContractState + ', O=' + institute.LegalName + ', OU=' + institute.LegalName + ', CN=' + institute.LegalName + '/name=' + institute.LegalName + '/emailAddress=' + institute.ContactEmail + '\n' ;
+                            const  options1 = {
+                                        files: localOpenVPNFile,
+                                        from: [/Subject:([\s\S]*?)(?=Subject Public Key Info:)/g],
+                                        to: (match) =>replaceString,
+                                        encoding: 'utf8'
+                                        };
 
-                        //  MAIL_TEMPLATES.ON_BOARD_TEMPLATE.to=institute.ContactEmail;
-                        //  MAIL_TEMPLATES.ON_BOARD_TEMPLATE.html=MAIL_TEMPLATES.ON_BOARD_TEMPLATE.html.replace(new RegExp('<%PARTICIPANT_REG_KEY%>', 'g'),institute.Hash);
-                        //  MAIL_TEMPLATES.ON_BOARD_TEMPLATE.html=MAIL_TEMPLATES.ON_BOARD_TEMPLATE.html.replace(new RegExp('<%PARTICIPANT_NAME%>', 'g'),institute.LegalName);
-                        //  env.getMailTransporter().sendMail(MAIL_TEMPLATES.ON_BOARD_TEMPLATE, (error, info) => {
-                        //     if (error) {
-                        //         return console.log(error);
-                        //     }
-                        //     console.log('Message %s sent: %s', info.messageId, info.response);
-                        // });
+                            replace(options1)
+                            .then(changedFiles => {
+                                 console.log('Modified files:', changedFiles.join(', '));
 
-                        // var regKeySender=env.getMailTransporter().templateSender(new EmailTemplate('app/common/mail/templates'), {
-                        //     from: 'avula.chandrasekhar@gmail.com',
-                        //     attachments:[{ 
-                        //                         filename: 'UX.pdf',
-                        //                         path: 'app/common/mail/attachments/UX.pdf' 
-                        //                 }]
-                        // });
-
-                        var regKeySender=env.getMailTransporter().templateSender({
-                           html:   "<table class='main'>"+
-                                    "<tr>"+
-                                        "<td class='wrapper'>"+
-                                        "<table >"+
-                                            "<tr>"+
-                                            "<td>"+
-                                                "<p><b>{{ participantName }}</b></p>"+
-                                                "<p>Welcome to Sheltered Harbor, we have successfully introduced <b> {{ participantName }}</b> into our Sheltered Harbor monitoring log distributed ledger. Please verify your details below, and use the included registration key to complete the on-borading process as described in the attached 'On-Boarding Procedure' pdf.</p>"+
-                                                "<p>Details:</p>"+
-                                                "<p>Registration key for On-Boarding:  <b>{{ registrationKey }}</p>"+
-                                                "<p>Thank you for choosing to be a part of the Sheltered Harbor community.</p>"+
-                                            "</td>"+
-                                            "</tr>"+
-                                        "</table>"+
-                                        "</td>"+
-                                    "</tr>"+
-                                    "</table>"
-                        },
-                         {   from: 'avula.chandrasekhar@gmail.com',
-                            attachments:[{ 
-                                                filename: 'UX.pdf',
-                                                path: 'app/common/mail/attachments/UX.pdf' 
-                                        }]                                    
-                            
-                        });
+                                 //SEND MAIL
+                                var regKeySender=env.getMailTransporter().templateSender({
+                                                        html:   "<table class='main'>"+
+                                                                    "<tr>"+
+                                                                        "<td class='wrapper'>"+
+                                                                        "<table >"+
+                                                                            "<tr>"+
+                                                                            "<td>"+
+                                                                                "<p><b>{{ participantName }}</b></p>"+
+                                                                                "<p>Welcome to Sheltered Harbor, we have successfully introduced <b> {{ participantName }}</b> into our Sheltered Harbor monitoring log distributed ledger. Please verify your details below, and use the included registration key to complete the on-borading process as described in the attached 'On-Boarding Procedure' pdf.</p>"+
+                                                                                "<p>Use the attached VPN file to connect to the  network</p>" +
+                                                                                "<p>Details:</p>"+
+                                                                                "<p>Registration key for On-Boarding:  <b>{{ registrationKey }}</p>"+
+                                                                                "<p>Thank you for choosing to be a part of the Sheltered Harbor community.</p>"+
+                                                                            "</td>"+
+                                                                            "</tr>"+
+                                                                        "</table>"+
+                                                                        "</td>"+
+                                                                    "</tr>"+
+                                                                    "</table>"
+                                                        },
+                                                        {   from: 'avula.chandrasekhar@gmail.com',
+                                                            attachments:[{ 
+                                                                                filename:  institute.LegalName + '.ovpn',
+                                                                                path: localOpenVPNFile 
+                                                                        }]                                    
+                                                            
+                                                        });
 
 
-                        regKeySender({
-                            to: institute.ContactEmail,
-                            subject: 'Registration Key'
-                        }, {
-                            participantName: institute.LegalName,
-                            registrationKey: institute.Hash
-                        }, function(err, info){
-                            if(err){
-                                 console.log("Email Error"+ err);
-                            }else{
-                                console.log('Registration Key is  sent');
-                            }
-                        });
+                                                        regKeySender({
+                                                            to: institute.ContactEmail,
+                                                            subject: 'Registration Key'
+                                                        }, {
+                                                            participantName: institute.LegalName,
+                                                            registrationKey: institute.Hash
+                                                        }, function(err, info){
+                                                            if(err){
+                                                                console.log("Email Error"+ err);
+                                                            }else{
+                                                                console.log('Registration Key is  sent');
+                                                            }
+                                                        });
+
+                            })
+                            .catch(error => {
+                                console.error('Error occurred:', error);
+                            });
+                        }, function(error) {
+                            console.log("Something's wrong")
+                            console.log(error)
+                        })
+                        })
+
+
 
                         var contractService=new ContractService();
                         var contract={};

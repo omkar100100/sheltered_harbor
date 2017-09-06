@@ -1,0 +1,10 @@
+
+Login to node1 using given ssh key
+ssh -i id_rsa node3
+cd sheltered_harbor/code/service/sheltered_harbor
+sudo su
+git pull
+kill the node existing processes
+export AUTHENTICATION_SECRET=this is my secret << any secret text>>
+export NODE_ENV=test
+nohup node app *

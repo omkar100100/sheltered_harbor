@@ -48,7 +48,7 @@ Web3JSService.prototype.saveAttestation=function(request){
               console.log('got contract owner from quorum -'+contract_owner);
                   if(contract_owner == data)
                     {
-                      deployedecrecTest.add_attest(request[PARAMETER_LABELS.SH_FILENAME],request[PARAMETER_LABELS.SH_ADDITIONAL_DATA],msg,request[PARAMETER_LABELS.SH_TAG],{gas:2000000}, function (err ,data){
+                      deployedecrecTest.add_attest(request[PARAMETER_LABELS.SH_FILENAME],request[PARAMETER_LABELS.SH_ADDITIONAL_DATA],request[PARAMETER_LABELS.SH_HASH],request[PARAMETER_LABELS.SH_TAG],{gas:2000000}, function (err ,data){
                             console.log('Attest File error -'+data);  
                             console.log('Attest File Tx -'+data);
                             result={};

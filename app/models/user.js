@@ -51,9 +51,6 @@ module.exports = function(sequelize, DataTypes) {
       tableName: 'Users'
     })
 
- User.associate = function(models) {
-    User.hasMany(models.AccessLog);
- }
   
   return User;
 };

@@ -183,6 +183,12 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
                     var moment= new Moment({year: fileParts[1].substring(0,4), month: fileParts[1].substring(4,6), day: fileParts[1].substring(6,8)});
                     file.fileDate=moment.format();
 
+
+                    var now=new Moment().format();
+                    if(moment.isAfter(now)){
+                         return reject(errors.normalizeError('LOGFILE_DATE_EXCEEDED', null, null));
+                    }
+
                     var instIdentifierObj={};
                     instIdentifierObj.IDType=CONSTANTS.getIDTypeById(fileParts[3]);
                     

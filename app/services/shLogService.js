@@ -180,14 +180,15 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
                     fileParts=fullFileName.split("_");
                     console.log(fileParts);
                     file.prefix=fileParts[0];
-                    var moment= new Moment({year: fileParts[1].substring(0,4), month: fileParts[1].substring(4,6), day: fileParts[1].substring(6,8)});
+                   // var moment= new Moment({year: fileParts[1].substring(0,4), month: fileParts[1].substring(4,6), day: fileParts[1].substring(6,8)});
+                    var moment= new Moment({year: fileParts[1].substring(0,4), month: Number(fileParts[1].substring(4,6))-1, day: fileParts[1].substring(6,8)});
                     file.fileDate=moment.format();
 
 
-                    // var now=new Moment().utc();
-                    // if(moment.isAfter(now)){
-                    //      return reject(errors.normalizeError('LOGFILE_DATE_EXCEEDED', null, null));
-                    // }
+                    var now=new Moment();
+                    if(!moment.endOf('day').isSameOrBefore(now.endOf('day'),'day')){
+                         return reject(errors.normalizeError('LOGFILE_DATE_EXCEEDED', null, null));
+                    }
 
                     var instIdentifierObj={};
                     instIdentifierObj.IDType=CONSTANTS.getIDTypeById(fileParts[3]);
@@ -274,6 +275,9 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
                             return reject(errors.normalizeError('INSTITUTE_NOT_ELIGIBLE_FOR_ATTESTATION', null, null));
                         }
 
+                })
+                .catch(function(error){
+                    return reject(errors.normalizeError('LOGFILE_INSTITUTE_NOT_FOUND', null, null));
                 })
 
             }) //Promise

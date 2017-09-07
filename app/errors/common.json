@@ -58,5 +58,10 @@
     "httpStatusCode": 400,
     "message": "Log File date cannot exceed the current date",
     "code": 100037
+  },
+  "LOGFILE_INSTITUTE_NOT_FOUND": {
+    "httpStatusCode": 400,
+    "message": "Institute not found for the Log file",
+    "code": 100038
   }
 }

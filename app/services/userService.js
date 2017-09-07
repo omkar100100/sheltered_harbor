@@ -6,6 +6,8 @@ var SequelizeUniqueConstraintError = require("sequelize").ValidationError;
 var SequelizeForeignKeyConstraintError = require("sequelize").ForeignKeyConstraintError;
 var UserService=function(){};
 
+var passwordHash = require('password-hash');
+
 
 
 UserService.prototype.getUser=function(userId){
@@ -27,6 +29,8 @@ UserService.prototype.createUser=function(user,app){
                // user.Username="admin";
                 //TODO: Encrypt the password
               //  user.Password="admin";
+              var hashedPassword = passwordHash.generate(user.Password);
+              user.Password=hashedPassword;
                 models1.User.create(user,{transaction:t1})
                 .then(function(user){
                     resolve(user);
@@ -79,7 +83,7 @@ UserService.prototype.authenticate=function (userObj) {
             return errors.normalizeError('USER_DISABLED', null, null); 
         }
 
-        if (user!=null && user.Password==userObj.password){
+        if (user!=null && passwordHash.verify(userObj.password, user.Password)){
                 return new Promise((resolve, reject) => {
                     models.Role.findById(user.RoleId)
                     .then(function(role){

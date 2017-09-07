@@ -39,11 +39,6 @@ Web3JSService.prototype.saveAttestation=function(request){
       console.log('SHA3 OF MSG:'+ msg);
       console.log('Hash, V,R,S -'+msg,res.v,util.bufferToHex(res.r),util.bufferToHex(res.s) )
 
-      deployedecrecTest.simple_add("Hello World",function(error,data){
-            console.log('Error  Hello World ,setting the data'+error);
-            console.log('Tx of Hello World,setting data -'+data);
-        });
-
       deployedecrecTest.verify.call(msg,res.v,util.bufferToHex(res.r),util.bufferToHex(res.s),function (error, data){
       console.log('Account Address from Quorum attest level- '+data);
       console.log('Error - '+error);

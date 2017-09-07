@@ -212,8 +212,9 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
                                 }
                                 
                                 //VALIDATE WHETHER TO HIT QUORUM CALL FOR ATTESTATIONS
-                                models.RegisterContract.findOne({
-                                        where :{ AccountAddress: log[PARAMETER_LABELS.SH_HASH] }
+                                //where :{ AccountAddress: log[PARAMETER_LABELS.SH_HASH] }
+                               models.RegisterContract.findOne({
+                                        where :{ InstituteId: institute.id }
                                 }).then(function(registerContract){
                                     if(registerContract!=null){
                                                 SHLogService.prototype.createSHLog(shLog).then(function(result){
@@ -250,7 +251,6 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
                                                     ).then(function(result){
                                                         return reject(errors.normalizeError('UNKNOWN_ERROR_FROM_QUORUM', null, null));
                                                     })
-
                                                     
                                                 })
                                                 

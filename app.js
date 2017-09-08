@@ -98,10 +98,13 @@ var models = app.get('models');
 
 app.use('/', express.static(path.join(__dirname, 'frontend')));
 
+app.get('/login', (req,res) => res.sendFile(path.join(__dirname+'/frontend/index.html')))
 
 app.use(jwt({ secret: process.env.AUTHENTICATION_SECRET }).unless({
   path: [
     { url: '/user/authenticate', methods: [ 'POST','OPTIONS']  },
+    { url: '/user/create_password'},
+    { url: '/login'},
     { url: '/user', methods: ['POST']  },
     { url : '/participant/register', methods: [ 'POST','OPTIONS'] },
     { url : '/shlog/submit', methods: [ 'POST','OPTIONS'] },

@@ -8,7 +8,6 @@
     "test": "mocha test/*test.js"
   },
   "dependencies": {
-    "@xch/node-remote-exec": "0.0.3",
     "async": "^2.5.0",
     "bluebird": "^3.4.7",
     "body-parser": "^1.17.2",
@@ -24,8 +23,6 @@
     "express": "^4.13.4",
     "express-jwt": "^5.3.0",
     "express-unless": "^0.3.1",
-    "faker": "^3.1.0",
-    "helmet": "^3.8.0",
     "install": "^0.10.1",
     "jquery-extend": "^2.0.3",
     "jsonwebtoken": "^5.7.0",
@@ -33,12 +30,10 @@
     "log4js": "0.6.22",
     "loopback": "^3.0.0",
     "loopback-boot": "^2.6.5",
-    "loopback-ssl": "1.0.1",
     "md5": "^2.2.1",
     "moment": "^2.18.1",
     "moment-timezone": "^0.5.13",
     "morgan": "^1.6.1",
-    "mysql": "^2.14.0",
     "node-ssh": "^4.2.3",
     "npm": "^5.3.0",
     "optimist": "^0.5.2",
@@ -56,15 +51,10 @@
     "simple-ssh": "^1.0.0",
     "solc": "^0.4.13",
     "sqlite3": "^3.0.8",
-    "ssh-exec": "^2.0.0",
-    "ssh2": "^0.5.5",
-    "ssh2-connect": "^1.0.2",
-    "ssh2-exec": "^0.3.5",
     "swagger-jsdoc": "^1.3.0",
     "swagger-ui-express": "^2.0.6",
     "web3": "0.18.2",
-    "web3-quorum": "^0.1.1",
-    "websocket": "^1.0.24"
+    "web3-quorum": "^0.1.1"
   },
   "devDependencies": {}
 }

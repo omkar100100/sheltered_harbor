@@ -197,7 +197,9 @@ InstituteService.prototype.register=function(institute,app){
                                         }
                                 })
                                 .then(function(result){
-                                     return reject(errors.normalizeError('ALREADY_REGISTERED', null, null));
+                                    if(result!=null){
+                                         return reject(errors.normalizeError('ALREADY_REGISTERED', null, null));
+                                    }
                                 })
                                 
                                 obj={};

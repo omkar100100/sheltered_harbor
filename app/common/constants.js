@@ -1,10 +1,12 @@
 
- ID_TYPES =[   {name:"DTCC CN",id:"1"},
-                {name:"FS RSSD",id:"2"},    
-                {name:"ABA RTN",id:"3"},    
-                {name:"FDIC CN",id:"4"},    
-                {name:"NCUA CN",id:"5"}    
-    ]
+ var MasterService=require('../../app/services/masterService');
+ID_TYPES=null;
+
+masterService=new MasterService();
+masterService.getIdentifierTypes()
+.then(function(results){
+   ID_TYPES=results; 
+})
 
  LOG_SUBMISSION_STATUS ={
       IN_PROGRESS: { label: "In Progress"},

@@ -192,7 +192,6 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
 
                     var instIdentifierObj={};
                     instIdentifierObj.IDType=CONSTANTS.getIDTypeById(fileParts[3]);
-                    
                     instIdentifierObj.Identifier=fileParts[2];
 
                     file.instIdentifier=instIdentifierObj;
@@ -203,8 +202,7 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
                     file.seq=fileParts[7];
                     var instituteService=new InstitueService();
                     instituteService.getInstituteByIdentifier(instIdentifierObj).then(function(institute){
-                        //TODO: Consider Contract Expiry
-                        if(institute.IsActive && institute.Registered){
+                       if(institute.IsActive && institute.Registered){
                                 institute1=institute;
                                 shLog.Filename=fullFileName;
                                 shLog.Tag=log[PARAMETER_LABELS.SH_TAG];

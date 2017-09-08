@@ -1,10 +1,25 @@
 var Promise = require('bluebird');
-var CONSTANTS=require('../common/constants')
+var models  = require('../models');
+
 MasterService=function(){}
 
 MasterService.prototype.getIdentifierTypes=function(){
     return new Promise(function(resolve,reject){
-        resolve(ID_TYPES);
+       models.IdType.findAll({
+            attributes: {exclude: ['updatedAt','createdAt'] },
+        })
+        .then(function(results){
+            if(results!=null){
+                idTypes=[];
+                results.forEach(function(item){
+                    obj={};
+                    obj.id=item.id;
+                    obj.name=item.Name;
+                    idTypes.push(obj);
+                })
+                resolve(idTypes)
+            }
+        })
     })
 }
 

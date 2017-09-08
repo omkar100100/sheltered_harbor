@@ -256,7 +256,7 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
                                                     shLogResult.update(
                                                         { Status: LOG_SUBMISSION_STATUS.FAILED.label}
                                                     ).then(function(result){
-                                                        return reject(errors.normalizeError('UNKNOWN_ERROR_FROM_QUORUM', null, null));
+                                                        return reject(error);
                                                     })
                                                     
                                                 })

@@ -5,10 +5,9 @@ var UserController = function() {
 };
 
 
-UserController.prototype.getUser = function(req, res) {
-        var userId=req.params.userId;
+UserController.prototype.getUserProfile = function(req, res) {
         var userService = new UserService();
-        userService.getUser(userId).then(function(result) {
+        userService.getUserProfile(req).then(function(result) {
             response.handleSuccessResponse(200, result, res);
         }).catch(function(error){
            response.handleError(error, res); 

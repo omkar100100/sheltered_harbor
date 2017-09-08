@@ -13,10 +13,6 @@ module.exports = function(sequelize, DataTypes) {
           type:Sequelize.STRING,
           unique: true
         },
-        EthereumHash : { 
-          type:Sequelize.STRING,
-          unique: true
-        },
         IpAddress: Sequelize.STRING,
         LastSyncDate: Sequelize.STRING,
         createdAt: {

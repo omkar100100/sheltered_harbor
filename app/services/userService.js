@@ -6,17 +6,35 @@ var SequelizeUniqueConstraintError = require("sequelize").ValidationError;
 var SequelizeForeignKeyConstraintError = require("sequelize").ForeignKeyConstraintError;
 var UserService=function(){};
 
+
 var passwordHash = require('password-hash');
 
 
 
-UserService.prototype.getUser=function(userId){
+UserService.prototype.getUserProfile=function(req){
+     if (req.user==null){
+        reject(errors.normalizeError('USER_NOT_AUTHENTICATED', error, null));
+     }
+
     return Promise.resolve(
         models.User.findOne({
-            where: {id:userId},
-            attributes: {exclude: ['Password','Token','updatedAt','createdAt'] }
+            where: {id:req.user.id},
+            attributes: {exclude: ['Password','Token','updatedAt','createdAt'] },
+            include: [{
+                model: models.Role
+            }]
         }).then(function(user){
-            return user;
+          var userProfile={};
+            userProfile.Email=user.Email;
+            userProfile.FirstName=user.FirstName;
+            userProfile.LastName=user.LastName;
+            userProfile.id=user.id;
+            userProfile.Mobile=user.Mobile;
+            userProfile.Username=user.Username;
+            userProfile.Role=user.Role.name;
+            userProfile.IsActive=user.IsActive;
+            return userProfile;
+
         })
     );
 }
@@ -25,11 +43,8 @@ UserService.prototype.createUser=function(user,app){
     var models1 = app.get('models');
    return models1.sequelize.transaction({isolationLevel: models1.Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED}, t1 => {
             return new Promise(function(resolve, reject){
-                //TODO: Adding Username, password requires different workflow
-               // user.Username="admin";
-                //TODO: Encrypt the password
-              //  user.Password="admin";
-              var hashedPassword = passwordHash.generate(user.Password);
+              //var passwordToke=
+              //var hashedPassword = passwordHash.generate(user.Password);
               user.Password=hashedPassword;
                 models1.User.create(user,{transaction:t1})
                 .then(function(user){

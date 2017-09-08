@@ -51,6 +51,8 @@ module.exports = function(sequelize, DataTypes) {
       tableName: 'Users'
     })
 
-  
+    User.associate = function(models){
+      User.belongsTo(models.Role);
+    }
   return User;
 };

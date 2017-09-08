@@ -78,27 +78,21 @@ router.get('/',authenticate.isAuthenticated, function(req, res) {
 
 /**
  * @swagger
- * /user/{userId}:
+ * /user/profile:
  *   get:
  *     tags:
  *       - user
- *     description: Gets User details by Id
+ *     description: Gets User details of the authenticated user
  *     produces:
  *       - application/json
- *     parameters:
- *       - name: userId
- *         description: User Id
- *         in: path
- *         required: true
- *         type: integer
  *     responses:
  *       200:
  *         description: A Single User
  *         schema:
  *           $ref: '#/definitions/User'
  */
-router.get('/:userId', authenticate.isAuthenticated,function(req, res) {
-      userController.getUser(req,res);
+router.get('/profile', authenticate.isAuthenticated,function(req, res) {
+      userController.getUserProfile(req,res);
 });
 
 

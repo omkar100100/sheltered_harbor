@@ -21,6 +21,14 @@
   },
 
 
+  "vpnserver":{
+    "host":"52.170.84.132",
+    "port":22,
+    "user":"shuser",
+    "privateKey":"app/common/sheltered_harbor.ppk"
+  },
+
+
   "dialect" : "postgres",
   "postgres": {
     "host": "localhost",

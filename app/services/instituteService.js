@@ -14,6 +14,8 @@ var env=require('../../environment')
 var EmailTemplate = require('email-templates').EmailTemplate;
 const replace = require('replace-in-file');
 node_ssh = require('node-ssh')
+var config = require('../../config');
+var currentConfig = config.getCurrentConfig();
 
 var InstituteService=function(){};
 
@@ -61,10 +63,10 @@ InstituteService.prototype.createInstitute=function(institute,contractService,ap
                         var localOpenVPNFile='app/common/keys/' + institute.LegalName + '.ovpn';
                         ssh = new node_ssh()
                         ssh.connect({
-                        host: '52.170.84.132',
-                            port:  22,
-                            username: 'shuser',
-                            privateKey: 'app/common/sheltered_harbor.ppk'
+                            host:currentConfig.vpnserver.host,
+                            port:  currentConfig.vpnserver.port,
+                            username: currentConfig.vpnserver.user,
+                            privateKey: currentConfig.vpnserver.privateKey
                         })
                         .then(function() {
                             console.log('Connected to VPN SERVER');
@@ -185,10 +187,19 @@ InstituteService.prototype.register=function(institute,app){
             return new Promise(function (resolve, reject) {
                     InstituteService.prototype.findInstituteByHash(institute[PARAMETER_LABELS.SH_REGISTRATION_KEY],app)
                     .then(function(institute1){
-                        if(institute1){
+                        if(institute1!=null){
                             if(institute1.Registered){
                                 return reject(errors.normalizeError('ALREADY_REGISTERED', null,null));
                             }else{
+                                 models.RegisterContract.findOne({
+                                        where: {
+                                            AccountAddress : institute[PARAMETER_LABELS.SH_PUBLIC_KEY]
+                                        }
+                                })
+                                .then(function(result){
+                                     return reject(errors.normalizeError('ALREADY_REGISTERED', null, null));
+                                })
+                                
                                 obj={};
                                 obj.orgName=institute1.LegalName;
                                 obj.orgAddress=institute1.Address;

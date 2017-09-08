@@ -63,5 +63,10 @@
     "httpStatusCode": 400,
     "message": "Institute not found for the Log file",
     "code": 100038
+  },
+    "USER_NOT_AUTHENTICATED": {
+    "httpStatusCode": 401,
+    "message": "Please try login first",
+    "code": 100038
   }
 }

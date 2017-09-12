@@ -124,6 +124,15 @@ SHLogController.prototype.getLogById= function(req, res) {
         })
 };
 
+SHLogController.prototype.notifyInstituteForSHLog= function(req, res) {
+        var sHLogService = new SHLogService();
+        sHLogService.notifyInstituteForSHLog(req.body,req.app)
+        .then(function(result) {
+            response.handleSuccessResponse(200, result, res);
+        }).catch(function(error){
+           response.handleError(error, res); 
+        })
+};
 
 
 module.exports = new SHLogController();

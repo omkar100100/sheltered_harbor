@@ -53,7 +53,6 @@ return models1.sequelize.transaction({isolationLevel: models1.Sequelize.Transact
             if(userRes!=null){
                 var hashedPassword = passwordHash.generate(user.password);
                 userRes.update({
-                    Username: user.username,
                     Password: hashedPassword,
                     IsActive: true,
                     Token: null
@@ -64,12 +63,8 @@ return models1.sequelize.transaction({isolationLevel: models1.Sequelize.Transact
                     resolve(msg)
                 })
                 .catch(function(error){
-                     if(error instanceof  SequelizeUniqueConstraintError){
-                         reject(errors.normalizeError('UNIQUE_CONSTRAINT_FAILED', error, null));
-                    }else{
                         console.log("Error:" + error);
                         reject(errors.normalizeError(null, error, null));
-                    }
                 })
             }else{
                  reject(errors.normalizeError('INVALID_PASSWORD_RESET', error, null));
@@ -138,13 +133,13 @@ UserService.prototype.createUser=function(user,app){
                 models1.User.create(user,{transaction:t1})
                 .then(function(user){
                         resolve(user);
-
-                       
+                      
                         var passwordCreateMailer=env.getMailTransporter().templateSender({
                              html: encodeURI("<p>Create your password by clicking this URL </p> <a href=http://" + currentConfig.app.server.host + ":" + currentConfig.app.server.port + "/sh/reset/" + passwordToken + ">Click to create Password</a>")
                         });
 
                         passwordCreateMailer({
+                            from: currentConfig.mail.user,
                             to: user.Email,
                             subject: 'Password Creation'
                         }, {

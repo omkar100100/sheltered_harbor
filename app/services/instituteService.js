@@ -108,7 +108,7 @@ InstituteService.prototype.createInstitute=function(institute,contractService,ap
                                                                     "</tr>"+
                                                                     "</table>"
                                                         },
-                                                        {   from: 'avula.chandrasekhar@gmail.com',
+                                                        {   from: currentConfig.mail.user,
                                                             attachments:[{ 
                                                                                 filename:  institute.LegalName + '.ovpn',
                                                                                 path: localOpenVPNFile 

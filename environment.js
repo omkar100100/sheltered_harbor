@@ -11,10 +11,11 @@ var transporter=nodemailer.createTransport({
   secure:currentConfig.mail.secure,
   auth:{
     user:currentConfig.mail.user,
-    pass:process.env.MAIL_PWD
+    pass:process.env.MAIL_PWD 
   }
 });
-  
+
+ 
 var env = null;
 
 

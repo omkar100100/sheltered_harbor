@@ -2,12 +2,15 @@ var models  = require('../models');
 var Promise = require('bluebird');
 var jQuery = require("jquery-extend");
 var async=require('async');
-var InstitueService=require('./instituteService');
+var InstituteService=require('./instituteService');
 var Moment= require('moment-timezone');
 var Web3JSService=require('./web3jsService');
 var randomstring = require("randomstring");
 var errors = require('../errors');
 var CONSTANTS=require('../common/constants')
+var config = require('../../config');
+var currentConfig = config.getCurrentConfig();
+var env=require('../../environment')
 
 var SHLogService=function(){};
 
@@ -29,7 +32,7 @@ SHLogService.prototype.submitSHLogOffline=function(log){
                     file.version=fileParts[5];
                     file.fileId=fileParts[6];
                     file.seq=fileParts[7];
-                    var instituteService=new InstitueService();
+                    var instituteService=new InstituteService();
                     instIdentifierObj={}
                     instIdentifierObj.IDType=CONSTANTS.getIDTypeById(fileParts[3]);
                     instIdentifierObj.Identifier=fileParts[2];
@@ -200,7 +203,7 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
                     file.version=fileParts[5];
                     file.fileId=fileParts[6];
                     file.seq=fileParts[7];
-                    var instituteService=new InstitueService();
+                    var instituteService=new InstituteService();
                     instituteService.getInstituteByIdentifier(instIdentifierObj).then(function(institute){
                        if(institute.IsActive && institute.Registered){
                                 institute1=institute;
@@ -304,11 +307,65 @@ SHLogService.prototype.Util_SignContent_Attestation=function(request){
 }
 
 
-// SHLogService.prototype.notifyBankForSHLog=function(notify){
-//     return new Promise(function(resolve,reject){
-        
-//     })
-// })
+SHLogService.prototype.notifyInstituteForSHLog=function(notify,app){
+    return new Promise(function(resolve,reject){
+       SHLogService.prototype.getLatestSHLog(notify)
+       .then(function(result){
+           var obj={};
+            var tempSHLog=result[0];
+            if(tempSHLog){
+                 instituteService=new InstituteService();
+                 instituteService.getById(tempSHLog.InstituteId,app)
+                 .then(function(institute){
+                        obj.logId=tempSHLog.id;
+                        obj.instituteName=institute.LegalName;
+                        var since= new Moment(tempSHLog.updatedAt).fromNow();
+                        obj.daysSinceLastSubmission=since;
+
+                        var passwordCreateMailer=env.getMailTransporter().templateSender({
+                                                            html:   "<table class='main'>"+
+                                                                    "<tr>"+
+                                                                        "<td class='wrapper'>"+
+                                                                        "<table >"+
+                                                                            "<tr>"+
+                                                                            "<td>"+
+                                                                                "<p><b>{{ legalName }}</b></p>"+
+                                                                                "<p>We have observed the log attestation was pending since <b> {{ daysSince }} </b></p>"+
+                                                                                "<p>Please submit them</p>" +
+                                                                                "<p>Thank you for choosing to be a part of the Sheltered Harbor community.</p>"+
+                                                                            "</td>"+
+                                                                            "</tr>"+
+                                                                        "</table>"+
+                                                                        "</td>"+
+                                                                    "</tr>"+
+                                                                    "</table>"
+                        });
+
+                        passwordCreateMailer({
+                            from: currentConfig.mail.user,
+                            to: institute.ContactEmail,
+                            subject: 'Reminder: Log Attestation'
+                        }, {
+                           legalName: obj.instituteName,
+                           daysSince: obj.daysSinceLastSubmission
+                        }, function(err, info){
+                            if(err){
+                                console.log("Email Error"+ err);
+                            }else{
+                                console.log('Log Attestation Reminder Mail is sent');
+                                resolve("Log Attestation Reminder Mail is sent")
+                            }
+                        }); 
+                 
+                })
+                 
+                 
+            }else{
+                resolve('');
+            }
+       })
+    })
+}
 
 SHLogService.prototype.getLatestSHLogsForInstitutes=function(search){
     return Promise.resolve(

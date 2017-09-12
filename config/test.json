@@ -12,11 +12,14 @@
     "port": "8001"
   },
 
-  "mail":{
-    "host":"smtp.gmail.com",
-    "port":"465",
-    "secure":true,
-    "user":"avula.chandrasekhar@gmail.com"
+"mail":{
+    "host":"smtp.office365.com",
+    "port":"587",
+    "user":"ML-Admin@ShelteredHarbor.org",
+    "secure":false,
+    "TLS Protocol": "off",
+    "strictSSL": false,
+    "SSL Protocol": "off"
   },
   
   "vpnserver":{

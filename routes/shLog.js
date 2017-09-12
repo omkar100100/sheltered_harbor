@@ -72,6 +72,16 @@ router=express.Router();
  *           type: string
  *         publicKey:
  *           type: string
+ * 
+ *   SHLogNotifyRequest:
+ *      properties:
+ *         instituteId:
+ *           type: integer
+ *         startDate:
+ *           type: string
+ *         endDate:
+ *           type: string 
+ * 
  */
 
 
@@ -336,6 +346,32 @@ router.get('/private/:logId',authenticate.isAuthenticated,function(req,res){
  */
 router.get('/institute/private/:tx',authenticate.isAuthenticated,function(req,res){
       shLogController.getSHLogByTxHash(req,res);
+});
+
+
+/**
+ * @swagger
+ * /sh/api/shlog/notify:
+ *   post:
+ *     tags:
+ *       - shlogs
+ *     description: Notify institute in case of pending attestations.
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: notify
+ *         description: Notify request
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/SHLogNotifyRequest'
+ *     responses:
+ *       200:
+ *         description: Notification mail is sent
+ *
+ */
+router.post('/notify',authenticate.isAuthenticated,function(req,res){
+      shLogController.notifyInstituteForSHLog(req,res);
 });
 
 

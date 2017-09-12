@@ -45,8 +45,6 @@ const router=express.Router();
  *     properties:
  *       token:
  *          type: string
- *       username:
- *          type: string
  *       password:
  *          type: string
  * 
@@ -83,6 +81,7 @@ const router=express.Router();
  *           $ref: '#/definitions/User'
  */
 router.post('/',function(req, res) {
+      console.log('inside user creation');
       userController.createUser(req,res);
 });
 

@@ -10,11 +10,13 @@
         "name": "Launch Program1",
         "program": "${workspaceRoot}/app.js",
         "args": [
-            "dev"
+            "swagger_dev"
         ],
         "env": {
-                "NODE_ENV": "dev",
-                "AUTHENTICATION_SECRET": "this is my book"
+                "NODE_ENV": "swagger_dev",
+                "AUTHENTICATION_SECRET": "this is my book",
+                "MAIL_ID":"Balu20091229",
+                "POSTGRES_PWD": "admin123"
         }
     },
         {

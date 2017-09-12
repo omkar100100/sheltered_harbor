@@ -16,8 +16,7 @@
     "host":"smtp.gmail.com",
     "port":"465",
     "secure":true,
-    "user":"avula.chandrasekhar@gmail.com",
-    "pwd":"Balu20091229"
+    "user":"avula.chandrasekhar@gmail.com"
   },
 
 
@@ -36,7 +35,6 @@
     "database": "postgres",
     "schema": "public",
     "username": "postgres",
-    "password": "admin123",
     "pool": {
       "max": 5,
       "min": 0,

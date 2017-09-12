@@ -5,9 +5,11 @@ var errors = require('../errors');
 var SequelizeUniqueConstraintError = require("sequelize").ValidationError;
 var SequelizeForeignKeyConstraintError = require("sequelize").ForeignKeyConstraintError;
 var UserService=function(){};
-
-
+var randomstring = require("randomstring");
+var config = require('../../config');
+var currentConfig = config.getCurrentConfig();
 var passwordHash = require('password-hash');
+var env=require('../../environment')
 
 
 
@@ -32,6 +34,7 @@ UserService.prototype.getUserProfile=function(req){
             userProfile.Mobile=user.Mobile;
             userProfile.Username=user.Username;
             userProfile.Role=user.Role.name;
+            userProfile.RoleId=user.RoleId;
             userProfile.IsActive=user.IsActive;
             return userProfile;
 
@@ -39,16 +42,121 @@ UserService.prototype.getUserProfile=function(req){
     );
 }
 
+UserService.prototype.resetPassword=function(user,app){
+     var models1 = app.get('models');
+return models1.sequelize.transaction({isolationLevel: models1.Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED}, t1 => {
+    return new Promise(function(resolve, reject){    
+        models1.User.findOne({
+            Email: user.token
+        })
+        .then(function(userRes){
+            if(userRes!=null){
+                var hashedPassword = passwordHash.generate(user.password);
+                userRes.update({
+                    Username: user.username,
+                    Password: hashedPassword,
+                    IsActive: true,
+                    Token: null
+                },{transaction:t1})
+                .then(function(updateUser){
+                    console.log("Password Updated");
+                    var msg="Password Updated Successfully"
+                    resolve(msg)
+                })
+                .catch(function(error){
+                     if(error instanceof  SequelizeUniqueConstraintError){
+                         reject(errors.normalizeError('UNIQUE_CONSTRAINT_FAILED', error, null));
+                    }else{
+                        console.log("Error:" + error);
+                        reject(errors.normalizeError(null, error, null));
+                    }
+                })
+            }else{
+                 reject(errors.normalizeError('INVALID_PASSWORD_RESET', error, null));
+            }
+            
+        })
+        .catch(function(error){
+             reject(errors.normalizeError(null, error, null));
+        })
+  })
+})
+};
+
+
+
+UserService.prototype.updatePassword=function(loggedInUser,user,app){
+ var models1 = app.get('models');
+return models1.sequelize.transaction({isolationLevel: models1.Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED}, t1 => {
+    return new Promise(function(resolve, reject){    
+        models1.User.findById(loggedInUser.id)
+        .then(function(userRes){
+            if(userRes!=null){
+                if(passwordHash.verify(user.oldPassword, userRes.Password)){
+                        var newHashedPassword = passwordHash.generate(user.newPassword);
+                        userRes.update({
+                            Password: newHashedPassword
+                        },{transaction:t1})
+                        .then(function(updateUser){
+                            console.log("Password Updated Successfully");
+                            var msg="Password Updated Successfully"
+                            resolve(msg)
+                        })
+                        .catch(function(error){
+                            if(error instanceof  SequelizeUniqueConstraintError){
+                                reject(errors.normalizeError('UNIQUE_CONSTRAINT_FAILED', error, null));
+                            }else{
+                                console.log("Error:" + error);
+                                reject(errors.normalizeError(null, error, null));
+                            }
+                        })
+                }else{
+                    console.log("Invalid Password");
+                }
+                
+            }else{
+                 reject(errors.normalizeError('USERNAME_PASSWORD_INVALID', error, null));
+            }
+            
+        })
+        .catch(function(error){
+             reject(errors.normalizeError(null, error, null));
+        })
+  })
+})
+};
+
+
 UserService.prototype.createUser=function(user,app){
     var models1 = app.get('models');
    return models1.sequelize.transaction({isolationLevel: models1.Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED}, t1 => {
             return new Promise(function(resolve, reject){
-              //var passwordToke=
-              //var hashedPassword = passwordHash.generate(user.Password);
-              user.Password=hashedPassword;
+               var passwordToken=randomstring.generate();
+
+                user.Token=passwordToken;
+                user.IsActive=false;
                 models1.User.create(user,{transaction:t1})
                 .then(function(user){
-                    resolve(user);
+                        resolve(user);
+
+                       
+                        var passwordCreateMailer=env.getMailTransporter().templateSender({
+                             html: encodeURI("<p>Create your password by clicking this URL </p> <a href=http://" + currentConfig.app.server.host + ":" + currentConfig.app.server.port + "/sh/reset/" + passwordToken + ">Click to create Password</a>")
+                        });
+
+                        passwordCreateMailer({
+                            to: user.Email,
+                            subject: 'Password Creation'
+                        }, {
+                           
+                        }, function(err, info){
+                            if(err){
+                                console.log("Email Error"+ err);
+                            }else{
+                                console.log('Password Create mail is  sent');
+                            }
+                        });         
+
                 })
                 .catch(function(error){
                     if(error instanceof  SequelizeUniqueConstraintError){
@@ -107,7 +215,8 @@ UserService.prototype.authenticate=function (userObj) {
                             {
                                 id: user.id,
                                 username: user.Username,
-                                role: role.name
+                                role: role.name,
+                                roleId: user.RoleId
                             },
                             process.env.AUTHENTICATION_SECRET,
                             { expiresIn: '7d' },
@@ -118,6 +227,7 @@ UserService.prototype.authenticate=function (userObj) {
                                     useObj.id=user.id;
                                     userObj.username=user.Username;
                                     userObj.role=role.name;
+                                    userObj.roleId=user.RoleId;
                                     userObj.token=token;
                                     resolve(userObj);
                                 }

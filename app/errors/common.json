@@ -68,5 +68,11 @@
     "httpStatusCode": 401,
     "message": "Please try login first",
     "code": 100038
+  },
+  
+    "INVALID_PASSWORD_RESET": {
+    "httpStatusCode": 400,
+    "message": "Please try with the token sent in the mail",
+    "code": 100038
   }
 }

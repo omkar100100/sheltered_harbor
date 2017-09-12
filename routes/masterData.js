@@ -6,7 +6,7 @@ router=express.Router();
 
 /**
  * @swagger
- * /master/institute/idtypes:
+ * /sh/api/master/institute/idtypes:
  *   get:
  *     tags:
  *       - master
@@ -24,7 +24,7 @@ router.get('/institute/idtypes',authenticate.isAuthenticated,function(req,res){
 
 /**
  * @swagger
- * /master/serviceprovider:
+ * /sh/api/master/serviceprovider:
  *   get:
  *     tags:
  *       - master
@@ -42,7 +42,7 @@ router.get('/serviceprovider',authenticate.isAuthenticated,function(req,res){
 
 /**
  * @swagger
- * /master/private/onboard:
+ * /sh/api/master/private/onboard:
  *   get:
  *     tags:
  *       - master

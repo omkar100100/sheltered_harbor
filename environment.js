@@ -11,7 +11,7 @@ var transporter=nodemailer.createTransport({
   secure:currentConfig.mail.secure,
   auth:{
     user:currentConfig.mail.user,
-    pass:currentConfig.mail.pwd
+    pass:process.env.MAIL_PWD
   }
 });
   

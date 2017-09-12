@@ -40,13 +40,29 @@ const router=express.Router();
  *          type: string
  *       password:
  *          type: string 
- *       
+ * 
+ *   PasswordResetRequest:
+ *     properties:
+ *       token:
+ *          type: string
+ *       username:
+ *          type: string
+ *       password:
+ *          type: string
+ * 
+ *   PasswordUpdateRequest:
+ *     properties:
+ *       oldPassword:
+ *          type: string
+ *       newPassword:
+ *          type: string
+ *          
  */
 
 
 /**
  * @swagger
- * /user/:
+ * /sh/api/user/:
  *   post:
  *     tags:
  *       - user
@@ -78,7 +94,7 @@ router.get('/',authenticate.isAuthenticated, function(req, res) {
 
 /**
  * @swagger
- * /user/profile:
+ * /sh/api/user/profile:
  *   get:
  *     tags:
  *       - user
@@ -99,7 +115,7 @@ router.get('/profile', authenticate.isAuthenticated,function(req, res) {
 
 /**
  * @swagger
- * /user/toggleStatus/{userId}:
+ * /sh/api/user/toggleStatus/{userId}:
  *   get:
  *     tags:
  *       - user
@@ -125,7 +141,7 @@ router.get('/toggleStatus/:userId', authenticate.isAuthenticated,function(req, r
 
 /**
  * @swagger
- * /user/:
+ * /sh/api/user/:
  *   get:
  *     tags:
  *       - user
@@ -146,7 +162,7 @@ router.get('/', authenticate.isAuthenticated,function(req, res) {
 
 /**
  * @swagger
- * /user/authenticate:
+ * /sh/api/user/authenticate:
  *   post:
  *     tags:
  *       - user
@@ -169,5 +185,62 @@ router.get('/', authenticate.isAuthenticated,function(req, res) {
 router.post('/authenticate', function(req, res) {
       userController.authenticateUser(req,res);
 });
+
+
+
+
+/**
+ * @swagger
+ * /sh/api/user/password/reset:
+ *   post:
+ *     tags:
+ *       - user
+ *     description: Reset Users Password
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: PasswordResetRequest
+ *         description: Password Reset Details
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/PasswordResetRequest'
+ *     responses:
+ *       200:
+ *         description: Password Reset Successfully
+ *
+ */
+router.post('/password/reset', function(req, res) {
+      userController.resetPassword(req,res);
+});
+
+
+
+
+/**
+ * @swagger
+ * /sh/api/user/password/update:
+ *   post:
+ *     tags:
+ *       - user
+ *     description: A logged in User can updated his/her password
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: PasswordUpdateRequest
+ *         description: Password Update Details
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/PasswordUpdateRequest'
+ *     responses:
+ *       200:
+ *         description: Password Updated Successfully
+ *
+ */
+router.post('/password/update',authenticate.isAuthenticated, function(req, res) {
+      userController.updatePassword(req,res);
+});
+
 
 module.exports=router;

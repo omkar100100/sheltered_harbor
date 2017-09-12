@@ -21,7 +21,7 @@ router=express.Router();
 
 /**
  * @swagger
- * /dashboard/:
+ * /sh/api/dashboard/:
  *   post:
  *     tags:
  *       - dashboard

@@ -8,30 +8,8 @@ var Sequelize = require("sequelize");
 var config = require('../../config');
 var currentConfig = config.getCurrentConfig();
 
-// const cls = require('continuation-local-storage'),
-//  namespace = cls.createNamespace('my-very-own-namespace');
-//  Sequelize.useCLS(namespace);
 
- 
-// var env       = process.env.NODE_ENV || "development";
-// var config    = require(path.join(__dirname, '..', '..','config', 'config.json'))[env];
-// if (process.env.DATABASE_URL) {
-//   var sequelize = new Sequelize(process.env.DATABASE_URL,config);
-// } else {
- 
-// //  var sequelize = new Sequelize('postgres','shuser','inn0$123',{
-// //     host: '127.0.0.1',
-// //     dialect :'postgres', 
-// //     port:'5432',
-// //     schema:'public'
-// //   });
-
-
-
-
-// }
-
-  var sequelize = new Sequelize(currentConfig.postgres.database,currentConfig.postgres.username,currentConfig.postgres.password,{
+  var sequelize = new Sequelize(currentConfig.postgres.database,currentConfig.postgres.username,process.env.POSTGRES_PWD,{
     host: currentConfig.postgres.host,
     dialect :currentConfig.dialect, 
     port:currentConfig.postgres.port,

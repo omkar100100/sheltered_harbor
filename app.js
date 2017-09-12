@@ -88,42 +88,67 @@ app.get(docsJsonPath, (req, res) => {
   res.send(swaggerSpec);
 });
 
-app.use('/docs', swaggerUi.serve, (req, res, next) => {
+
+
+//app.use('/sh/docs', express.static(path.join(__dirname, 'swagger')));
+
+
+
+app.use('/sh/docs', swaggerUi.serve, (req, res, next) => {
    swaggerUiHandler(req, res, next);
 });
   
+// app.get('/sh/docs',function(req,res,next){
+//   debugger;
+//   if(/(\.png)|(\.css)|(\.js)$/.test(req.url)) res.sendFile(path.join(__dirname, 'swagger', req.url));
+//   else 
+//   res.sendFile(path.join(__dirname+'/swagger/api-docs/index.html'))
+// });
+
+
 app.set('models', require('./app/models'));
 var models = app.get('models');
 
+// app.get('/sh/docs',function(req,res,next){
+//   // debugger;
+//  // if(/(\.png)|(\.css)|(\.js)$/.test(req.url)) res.sendFile(path.join(__dirname, 'public', req.url));
+//   //else 
+//   res.sendFile(path.join(__dirname+'/swagger/api-docs/index.html'))
+// });
+
+
+// app.get('*',function(req,res,next){
+//   // debugger;
+//   if(/(\.png)|(\.css)|(\.js)$/.test(req.url)) res.sendFile(path.join(__dirname, 'public', req.url));
+//   else res.sendFile(path.join(__dirname+'/public/index.html'))
+// });
+  
 
 app.use('/', express.static(path.join(__dirname, 'frontend')));
 
-app.get('/login', (req,res) => res.sendFile(path.join(__dirname+'/frontend/index.html')))
 
 app.use(jwt({ secret: process.env.AUTHENTICATION_SECRET }).unless({
   path: [
-    { url: '/user/authenticate', methods: [ 'POST','OPTIONS']  },
-    { url: '/user/create_password'},
-    { url: '/login'},
-    { url: '/user', methods: ['POST']  },
-    { url : '/participant/register', methods: [ 'POST','OPTIONS'] },
-    { url : '/shlog/submit', methods: [ 'POST','OPTIONS'] },
+    { url: '/sh/api/user/authenticate', methods: [ 'POST','OPTIONS']  },
+    { url: '/sh/api/user', methods: ['POST']  },
+    { url : '/sh/api/participant/register', methods: [ 'POST','OPTIONS'] },
+    { url : '/sh/api/user/password/reset', methods: [ 'POST','OPTIONS'] },
+    { url : '/sh/api/shlog/submit', methods: [ 'POST','OPTIONS'] },
     { url : '/^\/shlog\/.*/', methods: [ 'GET','OPTIONS'] }
   ]
 }));
 
 
-
-app.use('/role',roles);
-app.use('/user',users);
-app.use('/node',nodes);
-app.use('/participant',institute);
-app.use('/shlog',shLog);
-app.use('/master',master);
-app.use('/dashboard',dashboard);
-
+app.use('/sh/api/role',roles);
+app.use('/sh/api/user',users);
+app.use('/sh/api/node',nodes);
+app.use('/sh/api/participant',institute);
+app.use('/sh/api/shlog',shLog);
+app.use('/sh/api/master',master);
+app.use('/sh/api/dashboard',dashboard);
 
 
+  
 
 
     http.createServer(app).listen(currentConfig.app.server.port,function(){
@@ -132,27 +157,27 @@ app.use('/dashboard',dashboard);
 
 
 
-models.Role.sync().then(function(){
-    models.User.sync().then(function(){
-        models.IdType.sync().then(function(){
-            models.QuorumNode.sync().then(function(){
-                models.Institute.sync().then(function(){
-                  models.PasswordRecovery.sync().then(function(){
-                    models.SHLog.sync().then(function(){
-                            models.UserInstitute.sync().then(function(){
-                                models.InstituteHistory.sync().then(function(){
-                                  models.RegisterContract.sync().then(function(){
-                                  })
+// models.Role.sync().then(function(){
+//     models.User.sync().then(function(){
+//         models.IdType.sync().then(function(){
+//             models.QuorumNode.sync().then(function(){
+//                 models.Institute.sync().then(function(){
+//                   models.PasswordRecovery.sync().then(function(){
+//                     models.SHLog.sync().then(function(){
+//                             models.UserInstitute.sync().then(function(){
+//                                 models.InstituteHistory.sync().then(function(){
+//                                   models.RegisterContract.sync().then(function(){
+//                                   })
 
-                                })
-                            })
-                    })
-                  })
-                })
-            })
-          })     
-    })
-})
+//                                 })
+//                             })
+//                     })
+//                   })
+//                 })
+//             })
+//           })     
+//     })
+// })
 
 app.use(function(err, req, res, next) {
    console.log(err);

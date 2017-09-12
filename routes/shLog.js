@@ -77,7 +77,7 @@ router=express.Router();
 
 /**
  * @swagger
- * /shlog/private/institute/submitoffline:
+ * /sh/api/shlog/private/institute/submitoffline:
  *   post:
  *     tags:
  *       - shlogs
@@ -102,7 +102,7 @@ router.post('/private/institute/submitoffline', authenticate.isAuthenticated,fun
 
 /**
  * @swagger
- * /shlog/institute/{instituteId}/latest:
+ * /sh/api/shlog/institute/{instituteId}/latest:
  *   get:
  *     tags:
  *       - shlogs
@@ -128,7 +128,7 @@ router.get('/institute/:instituteId/latest',authenticate.isAuthenticated,functio
 
 /**
  * @swagger
- * /shlog/institute/latest:
+ * /sh/api/shlog/institute/latest:
  *   post:
  *     tags:
  *       - shlogs
@@ -155,7 +155,7 @@ router.post('/institute/latest',authenticate.isAuthenticated,function(req,res){
 
 /**
  * @swagger
- * /shlog/institute/{instituteId}:
+ * /sh/api/shlog/institute/{instituteId}:
  *   post:
  *     tags:
  *       - shlogs
@@ -185,7 +185,7 @@ router.post('/institute/:instituteId',authenticate.isAuthenticated,function(req,
 
 /**
  * @swagger
- * /shlog/private:
+ * /sh/api/shlog/private:
  *   delete:
  *     tags:
  *       - shlogs
@@ -203,7 +203,7 @@ router.delete('/private/',authenticate.isAuthenticated,function(req,res){
 
 /**
  * @swagger
- * /shlog/submit:
+ * /sh/api/shlog/submit:
  *   post:
  *     tags:
  *       - quorum
@@ -232,7 +232,7 @@ router.post('/submit',function(req,res){
 
 /**
  * @swagger
- * /shlog/util/sign/register:
+ * /sh/api/shlog/util/sign/register:
  *   post:
  *     tags:
  *       - quorum
@@ -260,7 +260,7 @@ router.post('/util/sign/register',authenticate.isAuthenticated,function(req,res)
 
 /**
  * @swagger
- * /shlog/util/sign/attest:
+ * /sh/api/shlog/util/sign/attest:
  *   post:
  *     tags:
  *       - quorum
@@ -287,7 +287,7 @@ router.post('/util/sign/attest',authenticate.isAuthenticated,function(req,res){
 
 /**
  * @swagger
- * /shlog/private/{logId}:
+ * /sh/api/shlog/private/{logId}:
  *   get:
  *     tags:
  *       - shlogs
@@ -315,7 +315,7 @@ router.get('/private/:logId',authenticate.isAuthenticated,function(req,res){
 
 /**
  * @swagger
- * /shlog/private/{tx}:
+ * /sh/api/shlog/private/{tx}:
  *   get:
  *     tags:
  *       - shlogs

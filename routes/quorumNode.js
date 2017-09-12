@@ -30,7 +30,7 @@ router=express.Router();
 
 /**
  * @swagger
- * /node/private:
+ * /sh/api/node/private:
  *   post:
  *     tags:
  *       - nodes
@@ -56,7 +56,7 @@ router.post('/private', authenticate.isAuthenticated,function(req, res) {
 
 /**
  * @swagger
- * /node/:
+ * /sh/api/node/:
  *   get:
  *     tags:
  *       - nodes
@@ -77,7 +77,7 @@ router.get('/', authenticate.isAuthenticated,function(req, res) {
 
 /**
  * @swagger
- * /node/private:
+ * /sh/api/node/private:
  *   delete:
  *     tags:
  *       - nodes
@@ -95,7 +95,7 @@ router.delete('/private',authenticate.isAuthenticated, function(req, res) {
 
 /**
  * @swagger
- * /node/private:
+ * /sh/api/node/private:
  *   put:
  *     tags:
  *       - nodes
@@ -121,7 +121,7 @@ router.put('/private',authenticate.isAuthenticated, function(req, res) {
 
 /**
  * @swagger
- * /node/{nodeId}:
+ * /sh/api/node/{nodeId}:
  *   get:
  *     tags:
  *       - nodes
@@ -148,7 +148,7 @@ router.get('/:nodeId', authenticate.isAuthenticated,function(req, res) {
 
 /**
  * @swagger
- * /node/health:
+ * /sh/api/node/health:
  *   post:
  *     tags:
  *       - nodes

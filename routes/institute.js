@@ -115,7 +115,7 @@ router=express.Router();
 
 /**
  * @swagger
- * /participant:
+ * /sh/api/participant:
  *   post:
  *     tags:
  *       - participants
@@ -140,7 +140,7 @@ router.post('/', authenticate.isAuthenticated,function(req, res) {
 
 /**
  * @swagger
- * /participant:
+ * /sh/api/participant:
  *   get:
  *     tags:
  *       - participants
@@ -160,7 +160,7 @@ router.get('/', authenticate.isAuthenticated,function(req, res) {
 
 /**
  * @swagger
- * /participant/{participantId}:
+ * /sh/api/participant/{participantId}:
  *   get:
  *     tags:
  *       - participants
@@ -187,7 +187,7 @@ router.get('/:participantId',authenticate.isAuthenticated, function(req, res) {
 
 /**
  * @swagger
- * /participant/identifier/:
+ * /sh/api/participant/identifier/:
  *   post:
  *     tags:
  *       - participants
@@ -213,7 +213,7 @@ router.post('/identifier',authenticate.isAuthenticated, function(req, res) {
 
 /**
  * @swagger
- * /participant/private:
+ * /sh/api/participant/private:
  *   delete:
  *     tags:
  *       - participants
@@ -230,7 +230,7 @@ router.delete('/private', authenticate.isAuthenticated,function(req, res) {
 
 /**
  * @swagger
- * /participant/contract:
+ * /sh/api/participant/contract:
  *   put:
  *     tags:
  *       - contract
@@ -257,7 +257,7 @@ router.put('/contract',authenticate.isAuthenticated, function(req, res) {
 
 /**
  * @swagger
- * /participant/toggleStatus/{id}:
+ * /sh/api/participant/toggleStatus/{id}:
  *   put:
  *     tags:
  *       - participants
@@ -284,7 +284,7 @@ router.put('/toggleStatus/:id',authenticate.isAuthenticated, function(req, res) 
 
 /**
  * @swagger
- * /participant:
+ * /sh/api/participant:
  *   put:
  *     tags:
  *       - participants
@@ -312,7 +312,7 @@ router.put('/',authenticate.isAuthenticated, function(req, res) {
 
 /**
  * @swagger
- * /participant/register:
+ * /sh/api/participant/register:
  *   post:
  *     tags:
  *       - quorum
@@ -340,7 +340,7 @@ router.post('/register',function(req, res) {
 
 /**
  * @swagger
- * /institute/shlogs:
+ * /sh/api/institute/shlogs:
  *   post:
  *     tags:
  *       - participants

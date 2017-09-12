@@ -22,7 +22,7 @@ router=express.Router();
 
 /**
  * @swagger
- * /role/private:
+ * /sh/api/role/private:
  *   post:
  *     tags:
  *       - roles
@@ -48,7 +48,7 @@ router.post('/private', authenticate.isAuthenticated,function(req, res) {
 
 /**
  * @swagger
- * /role:
+ * /sh/api/role:
  *   get:
  *     tags:
  *       - roles
@@ -70,7 +70,7 @@ router.get('/',authenticate.isAuthenticated,function(req, res) {
 
 /**
  * @swagger
- * /role/{roleId}:
+ * /sh/api/role/{roleId}:
  *   get:
  *     tags:
  *       - roles
@@ -96,7 +96,7 @@ router.get('/:roleId',authenticate.isAuthenticated, function(req, res) {
 
 /**
  * @swagger
- * /role/private/{roleId}:
+ * /sh/api/role/private/{roleId}:
  *   delete:
  *     tags:
  *       - roles
@@ -119,7 +119,7 @@ router.delete('/private/:roleId', authenticate.isAuthenticated,function(req, res
 
 /**
  * @swagger
- * /role/private/{roleId}:
+ * /sh/api/role/private/{roleId}:
  *   put:
  *     tags:
  *       - roles

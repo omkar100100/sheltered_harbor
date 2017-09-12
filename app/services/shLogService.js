@@ -217,7 +217,6 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
                                 }
                                 
                                 //VALIDATE WHETHER TO HIT QUORUM CALL FOR ATTESTATIONS
-                                //where :{ AccountAddress: log[PARAMETER_LABELS.SH_HASH] }
                                models.RegisterContract.findOne({
                                         where :{ InstituteId: institute.id }
                                 }).then(function(registerContract){
@@ -303,6 +302,13 @@ SHLogService.prototype.Util_SignContent_Attestation=function(request){
     })
      
 }
+
+
+// SHLogService.prototype.notifyBankForSHLog=function(notify){
+//     return new Promise(function(resolve,reject){
+        
+//     })
+// })
 
 SHLogService.prototype.getLatestSHLogsForInstitutes=function(search){
     return Promise.resolve(

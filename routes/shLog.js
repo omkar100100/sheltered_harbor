@@ -367,12 +367,42 @@ router.get('/institute/private/:tx',authenticate.isAuthenticated,function(req,re
  *           $ref: '#/definitions/SHLogNotifyRequest'
  *     responses:
  *       200:
- *         description: Notification mail is sent
+ *         description: Response returned Sucessfully
  *
  */
 router.post('/notify',authenticate.isAuthenticated,function(req,res){
       shLogController.notifyInstituteForSHLog(req,res);
 });
 
+
+
+/**
+ * @swagger
+ * /sh/api/shlog/report/{instituteId}/pdf:
+ *   post:
+ *     tags:
+ *       - shlogs
+ *     description: Generates PDF for SHLogs submitted by Participant in a given search  criteria
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - name: shlogsearch
+ *         description: SHLog  search request object for an institute
+ *         in: body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/SHLogSearch'
+ *       - name: instituteId
+ *         description: institute id
+ *         in: path
+ *         required: true
+ *         type: integer
+ *     responses:
+ *       200:
+ *         description: Successfully PDF downloaded
+ */
+router.post('/report/:instituteId/pdf',authenticate.isAuthenticated,function(req,res){
+      shLogController.downloadSHLogReportByInstituteSearchCriteria(req,res);
+});
 
 module.exports=router;

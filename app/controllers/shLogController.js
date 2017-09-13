@@ -52,6 +52,19 @@ SHLogController.prototype.getSHLogsByInstituteId = function(req, res) {
   
 };
 
+SHLogController.prototype.downloadSHLogReportByInstituteSearchCriteria = function(req, res) {
+        instituteId=req.params.instituteId;
+        var search=req.body;
+        search.instituteId=instituteId;
+        var sHLogService = new SHLogService();
+        sHLogService.downloadSHLogReportByInstituteSearchCriteria(search).then(function(shLogs) {
+            response.handleSuccessResponse(200, shLogs, res);
+        }).catch(function(error){
+           response.handleError(error, res); 
+        })
+  
+};
+
 SHLogController.prototype.getSHLogByTxHash = function(req, res) {
         var tx=req.params.tx;
         var sHLogService = new SHLogService();
@@ -67,7 +80,7 @@ SHLogController.prototype.getSHLogByTxHash = function(req, res) {
 SHLogController.prototype.submitSHLogsForInstitute= function(req, res) {
         var sHLogService = new SHLogService();
         var log=req.body;
-       sHLogService.saveSHLogInstitute(log)
+       sHLogService.saveSHLogInstitute(log,req.app)
         .then(function(shLog) {
             response.handleSuccessResponse(200, shLog, res);
         })

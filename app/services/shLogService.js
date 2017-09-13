@@ -11,6 +11,8 @@ var CONSTANTS=require('../common/constants')
 var config = require('../../config');
 var currentConfig = config.getCurrentConfig();
 var env=require('../../environment')
+var pdf = require('html-pdf');
+fs = require('fs');
 
 var SHLogService=function(){};
 
@@ -133,7 +135,83 @@ SHLogService.prototype.getLogById=function(logId){
     );
 }
 
+SHLogService.prototype.downloadSHLogReportByInstituteSearchCriteria=function(search){
+    return new Promise(function(resolve,reject){
+        SHLogService.prototype.getSHLogsForInstitute(search)
+        .then(function(shLogs){
+            if(shLogs){
+                shLogsDTO=[];
+                shLogs.forEach(function(item){
+                       var obj={};
+                       obj["Attestation Date"]=item.submittedDate;
+                       obj["File Name"]=item.Filename;
+                       obj["Monitoring Log Hash"]=item.Hash;
+                       shLogsDTO.push(obj); 
+                })
 
+                var tableify = require('tableify');
+                var html = tableify(shLogsDTO);
+                console.log(html);
+
+                var tmp = require('tmp');
+                var tmpobj = tmp.fileSync();
+                console.log('File: ', tmpobj.name);
+                console.log('Filedescriptor: ', tmpobj.fd);
+
+                fs.writeFile(tmpobj.name, html, function (err) {
+                    if (err) return console.log(err);
+
+                        var htmlContent = fs.readFileSync(tmpobj.name, 'utf8');
+                        config = {
+                            "directory": "/tmp",       // The directory the file gets written into if not using .toFile(filename, callback). default: '/tmp' 
+                            "format": "Letter",        // allowed units: A3, A4, A5, Legal, Letter, Tabloid 
+                            "orientation": "portrait" ,// portrait or landscape 
+                            "border": {
+                                "top": "0in",            // default is 0, units: mm, cm, in, px 
+                                "right": "0in",
+                                "bottom": "0in",
+                                "left": "0in"
+                            },
+                            
+                            "header": {
+                                "height": "0.5in",
+                                "contents": '<div style="text-align: center;">Author: Sheltered Harbor</div>'
+                            },
+
+                            "footer": {
+                                "height": "0.5in",
+                                "contents": {
+                                "first": '<div style="text-align: center;">&copy; 2017 Sheltered Harbor. All Rights Reserved. <span style="text-align: right;"><span style="color: #444;">{{page}}</span>/<span>{{pages}}</span></span></div>',
+                                "2": 'Second page' ,// Any page number is working. 1-based index 
+                                "default": '<span style="color: #444;">{{page}}</span>/<span>{{pages}}</span>', // fallback value 
+                                "last": 'Last Page'
+                                }
+                            },
+
+                            // Zooming option, can be used to scale images if `options.type` is not pdf 
+                            "zoomFactor": "1", // default is 1 
+                            
+                            // File options 
+                            "type": "pdf",             // allowed file types: png, jpeg, pdf 
+                            "quality": "75"          // only used for types png & jpeg 
+            
+                            }
+
+                            pdf.create(htmlContent, config).toFile('./businesscard.pdf', function(err, res) {
+                                if (err) return console.log(err);
+
+                                tmpobj.removeCallback();
+                                console.log(res); 
+                            });
+
+
+                });
+
+              
+            }
+        })
+    })
+}
 
 SHLogService.prototype.getSHLogsForInstitute=function(search){
     return Promise.resolve(
@@ -170,7 +248,7 @@ SHLogService.prototype.getSHLogsForInstitute=function(search){
 
 
 
-SHLogService.prototype.saveSHLogInstitute=function(log){
+SHLogService.prototype.saveSHLogInstitute=function(log,app){
     var institute1=null;
     var shLog={}
     shLogResult=null;
@@ -206,6 +284,20 @@ SHLogService.prototype.saveSHLogInstitute=function(log){
                     var instituteService=new InstituteService();
                     instituteService.getInstituteByIdentifier(instIdentifierObj).then(function(institute){
                        if(institute.IsActive && institute.Registered){
+
+                                //SHOULD NOT BEFORE CONTRACT START DATE
+                                var contractHistoryService=new ContractHistoryService();
+                                contractHistoryService.getInstituteLatestContract(institute.id,app)
+                                .then(function(contract){
+                                    if(contract.RenewalDateFrom && !contract.OldFromDate){
+                                        contractStartDateMoment=new Moment(contract.RenewalDateFrom)
+                                        if(!moment.endOf('day').isSameOrAfter(contractStartDateMoment.endOf('day'),'day')){
+                                            return reject(errors.normalizeError('LOGFILE_ATTESTATION_BEFORE_CONTRACT', null, null));
+                                        }
+                                    }
+                                    
+                                })
+                            
                                 institute1=institute;
                                 shLog.Filename=fullFileName;
                                 shLog.Tag=log[PARAMETER_LABELS.SH_TAG];
@@ -320,6 +412,13 @@ SHLogService.prototype.notifyInstituteForSHLog=function(notify,app){
                         obj.logId=tempSHLog.id;
                         obj.instituteName=institute.LegalName;
                         var since= new Moment(tempSHLog.updatedAt).fromNow();
+
+                        if(!since.includes("days") && !since.includes("months")){
+                            resolve("");
+                        }else if(since.includes("0")){
+                            resolve("");
+                        }
+
                         obj.daysSinceLastSubmission=since;
 
                         var passwordCreateMailer=env.getMailTransporter().templateSender({

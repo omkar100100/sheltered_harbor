@@ -175,7 +175,7 @@ SHLogService.prototype.downloadSHLogReportByInstituteSearchCriteria=function(sea
                             
                             "header": {
                                 "height": "0.5in",
-                                "contents": '<div style="text-align: center;">Author: Sheltered Harbor</div>'
+                                "contents": '<div style="text-align: center;"><img src="./app-header.png" alt="Sheltered Harbor" /></div>'
                             },
 
                             "footer": {
@@ -201,7 +201,10 @@ SHLogService.prototype.downloadSHLogReportByInstituteSearchCriteria=function(sea
                                 if (err) return console.log(err);
 
                                 tmpobj.removeCallback();
-                                console.log(res); 
+                              //console.log(res); 
+                                result={};
+                                result.filename=res.filename;
+                                resolve(result);
                             });
 
 
@@ -291,8 +294,8 @@ SHLogService.prototype.saveSHLogInstitute=function(log,app){
                                 .then(function(contract){
                                     if(contract.RenewalDateFrom && !contract.OldFromDate){
                                         contractStartDateMoment=new Moment(contract.RenewalDateFrom)
-                                        if(!moment.endOf('day').isSameOrAfter(contractStartDateMoment.endOf('day'),'day')){
-                                            return reject(errors.normalizeError('LOGFILE_ATTESTATION_BEFORE_CONTRACT', null, null));
+                                        if(!now.endOf('day').isSameOrAfter(contractStartDateMoment.endOf('day'),'day')){
+                                               return reject(errors.normalizeError('LOGFILE_ATTESTATION_BEFORE_CONTRACT', null, null));
                                         }
                                     }
                                     

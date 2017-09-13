@@ -57,8 +57,9 @@ SHLogController.prototype.downloadSHLogReportByInstituteSearchCriteria = functio
         var search=req.body;
         search.instituteId=instituteId;
         var sHLogService = new SHLogService();
-        sHLogService.downloadSHLogReportByInstituteSearchCriteria(search).then(function(shLogs) {
-            response.handleSuccessResponse(200, shLogs, res);
+        sHLogService.downloadSHLogReportByInstituteSearchCriteria(search).then(function(result) {
+          // response.handleSuccessResponse(200, shLogs, res);
+           res.download(result.filename);
         }).catch(function(error){
            response.handleError(error, res); 
         })

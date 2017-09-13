@@ -384,7 +384,7 @@ router.post('/notify',authenticate.isAuthenticated,function(req,res){
  *       - shlogs
  *     description: Generates PDF for SHLogs submitted by Participant in a given search  criteria
  *     produces:
- *       - application/json
+ *       - application/pdf
  *     parameters:
  *       - name: shlogsearch
  *         description: SHLog  search request object for an institute

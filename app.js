@@ -27,6 +27,7 @@ var currentConfig = config.getCurrentConfig();
 const swaggerUi = require('swagger-ui-express');
 var app = express();
 
+
 env.initialize(app);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

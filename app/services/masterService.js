@@ -15,6 +15,7 @@ MasterService.prototype.getIdentifierTypes=function(){
                     obj={};
                     obj.id=item.id;
                     obj.name=item.Name;
+                    obj.value=item.Name;
                     idTypes.push(obj);
                 })
                 resolve(idTypes)

@@ -36,10 +36,10 @@ UserController.prototype.resetPassword = function(req, res) {
 }
 
 
-UserController.prototype.updatePassword = function(req, res) {
+UserController.prototype.changepassword = function(req, res) {
         var user=req.body;
         var userService=new UserService();
-        userService.updatePassword(req.user,user,req.app).then(function(result){
+        userService.changepassword(req.user,user,req.app).then(function(result){
             response.handleSuccessResponse(200, result, res);
         }).catch(function(error){
            response.handleError(error, res); 

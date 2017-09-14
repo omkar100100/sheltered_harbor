@@ -52,7 +52,7 @@ InstituteService.prototype.getSHLogs=function(search){
 }
 
 InstituteService.prototype.createInstitute=function(institute,contractService,app){
-         var createParticipantNContract = function(){
+         //var createParticipantNContract = function(){
            return  new Promise(function (resolve, reject) {
                 var rndString=randomstring.generate();
                 var hash=md5(rndString);
@@ -170,12 +170,12 @@ InstituteService.prototype.createInstitute=function(institute,contractService,ap
                 })
 
             })
-         } 
+       //  } 
 
   
-        return Promise.map([createParticipantNContract], function (createParticipantNContract) {
-            return createParticipantNContract();
-        }, {concurrency: 1}); 
+        // return Promise.map([createParticipantNContract], function (createParticipantNContract) {
+        //     return createParticipantNContract();
+        // }, {concurrency: 1}); 
 
 
 

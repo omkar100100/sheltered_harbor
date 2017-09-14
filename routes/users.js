@@ -16,6 +16,8 @@ const router=express.Router();
  *         type: string
  *       Email:
  *         type: string
+ *       Username:
+ *         type: string
  *       Mobile:
  *         type: string
  *       RoleId:
@@ -43,9 +45,9 @@ const router=express.Router();
  * 
  *   PasswordResetRequest:
  *     properties:
- *       token:
- *          type: string
  *       password:
+ *          type: string
+ *       token:
  *          type: string
  * 
  *   PasswordUpdateRequest:
@@ -81,7 +83,6 @@ const router=express.Router();
  *           $ref: '#/definitions/User'
  */
 router.post('/',function(req, res) {
-      console.log('inside user creation');
       userController.createUser(req,res);
 });
 
@@ -190,7 +191,7 @@ router.post('/authenticate', function(req, res) {
 
 /**
  * @swagger
- * /sh/api/user/password/reset:
+ * /sh/api/user/resetpassword:
  *   post:
  *     tags:
  *       - user
@@ -209,7 +210,7 @@ router.post('/authenticate', function(req, res) {
  *         description: Password Reset Successfully
  *
  */
-router.post('/password/reset', function(req, res) {
+router.post('/resetpassword', function(req, res) {
       userController.resetPassword(req,res);
 });
 
@@ -218,7 +219,7 @@ router.post('/password/reset', function(req, res) {
 
 /**
  * @swagger
- * /sh/api/user/password/update:
+ * /sh/api/user/changepassword:
  *   post:
  *     tags:
  *       - user
@@ -237,8 +238,8 @@ router.post('/password/reset', function(req, res) {
  *         description: Password Updated Successfully
  *
  */
-router.post('/password/update',authenticate.isAuthenticated, function(req, res) {
-      userController.updatePassword(req,res);
+router.post('/changepassword',authenticate.isAuthenticated, function(req, res) {
+      userController.changepassword(req,res);
 });
 
 

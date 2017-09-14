@@ -26,7 +26,7 @@ UserService.prototype.getUserProfile=function(req){
                 model: models.Role
             }]
         }).then(function(user){
-          var userProfile={};
+            var userProfile={};
             userProfile.Email=user.Email;
             userProfile.FirstName=user.FirstName;
             userProfile.LastName=user.LastName;
@@ -44,10 +44,10 @@ UserService.prototype.getUserProfile=function(req){
 
 UserService.prototype.resetPassword=function(user,app){
      var models1 = app.get('models');
-return models1.sequelize.transaction({isolationLevel: models1.Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED}, t1 => {
+  return models1.sequelize.transaction({isolationLevel: models1.Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED}, t1 => {
     return new Promise(function(resolve, reject){    
         models1.User.findOne({
-            Email: user.token
+            where: {Token: user.token }
         })
         .then(function(userRes){
             if(userRes!=null){
@@ -56,7 +56,7 @@ return models1.sequelize.transaction({isolationLevel: models1.Sequelize.Transact
                     Password: hashedPassword,
                     IsActive: true,
                     Token: null
-                },{transaction:t1})
+                })
                 .then(function(updateUser){
                     console.log("Password Updated");
                     var msg="Password Updated Successfully"
@@ -80,9 +80,9 @@ return models1.sequelize.transaction({isolationLevel: models1.Sequelize.Transact
 
 
 
-UserService.prototype.updatePassword=function(loggedInUser,user,app){
+UserService.prototype.changepassword=function(loggedInUser,user,app){
  var models1 = app.get('models');
-return models1.sequelize.transaction({isolationLevel: models1.Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED}, t1 => {
+//return models1.sequelize.transaction({isolationLevel: models1.Sequelize.Transaction.ISOLATION_LEVELS.READ_COMMITTED}, t1 => {
     return new Promise(function(resolve, reject){    
         models1.User.findById(loggedInUser.id)
         .then(function(userRes){
@@ -91,7 +91,7 @@ return models1.sequelize.transaction({isolationLevel: models1.Sequelize.Transact
                         var newHashedPassword = passwordHash.generate(user.newPassword);
                         userRes.update({
                             Password: newHashedPassword
-                        },{transaction:t1})
+                        })
                         .then(function(updateUser){
                             console.log("Password Updated Successfully");
                             var msg="Password Updated Successfully"
@@ -110,15 +110,17 @@ return models1.sequelize.transaction({isolationLevel: models1.Sequelize.Transact
                 }
                 
             }else{
+                 console.log(error);
                  reject(errors.normalizeError('USERNAME_PASSWORD_INVALID', error, null));
             }
             
         })
         .catch(function(error){
+             console.log(error);
              reject(errors.normalizeError(null, error, null));
         })
   })
-})
+//})
 };
 
 
@@ -134,8 +136,9 @@ UserService.prototype.createUser=function(user,app){
                 .then(function(user){
                         resolve(user);
                       
+                        //html: encodeURI("<p>Create your password by clicking this URL </p> <a href=http://" + currentConfig.app.server.host + ":" + currentConfig.app.server.port + "/sh/reset/" + passwordToken + ">Click to create Password</a>")
                         var passwordCreateMailer=env.getMailTransporter().templateSender({
-                             html: encodeURI("<p>Create your password by clicking this URL </p> <a href=http://" + currentConfig.app.server.host + ":" + currentConfig.app.server.port + "/sh/reset/" + passwordToken + ">Click to create Password</a>")
+                             html: "<p><a href=http://shapp1.eastus.cloudapp.azure.com/reset/" + passwordToken + ">Click to Create Password</a></p>"
                         });
 
                         passwordCreateMailer({

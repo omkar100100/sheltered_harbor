@@ -133,11 +133,12 @@ app.use(jwt({ secret: process.env.AUTHENTICATION_SECRET }).unless({
     { url: '/sh/api/user/authenticate', methods: [ 'POST','OPTIONS']  },
     { url: '/sh/api/user', methods: ['POST']  },
     { url : '/sh/api/participant/register', methods: [ 'POST','OPTIONS'] },
-    { url : '/sh/api/user/password/reset', methods: [ 'POST','OPTIONS'] },
+    { url : '/sh/api/user/resetpassword', methods: [ 'POST','OPTIONS'] },
     { url : '/sh/api/shlog/submit', methods: [ 'POST','OPTIONS'] },
     { url : '/^\/shlog\/.*/', methods: [ 'GET','OPTIONS'] }
   ]
 }));
+
 
 
 app.use('/sh/api/role',roles);
